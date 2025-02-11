@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<mail-template id="11" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/mail-templates/11/">
+  <name>Indus - Par d&#233;faut - Usager - Termin&#233;e</name>
+  <slug>indus-par-defaut-usager-terminee</slug>
+  <documentation>Email envoy&#233; &#224; l'usager lorsque sa demande est termin&#233;e</documentation>
+  <subject>{{ form_name }} - D&#233;marche finalis&#233;e</subject>
+  <body>Bonjour,
+
+Nous vous informons que la d&#233;marche suivante est termin&#233;e : {{ form_name }}.
+
+{% if form_comment %}
+Nouveau commentaire&#160;: {{ form_comment }}
+{% endif %}
+
+{% if form_user %}
+Vous pouvez `consulter la demande. &lt;{{ form_url }}&gt;`_
+{% endif %}
+
+{% if form_tracking_code %}
+Le code de suivi de votre demande est le suivant : **{{form_tracking_code}}**
+En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l'administration.
+{% endif %}
+
+Cordialement,
+</body>
+</mail-template>

@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<workflow id="37" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/37/">
+  <name>iMio - Doc Event - Fiche - Demande d'avis</name>
+  <slug>imio-doc-event-fiche-demande-d-avis</slug>
+  <category slug="imio-doc-event" category_id="7">iMio - Doc Event</category>
+  <roles>
+    <role id="_editor">&#201;diteur</role>
+    <role id="_viewer">Visualisateur</role>
+  </roles>
+  <possible_status>
+    <status>
+      <id>recorded</id>
+      <name>Demande d'avis</name>
+      <colour>#FFFFFF</colour>
+      <visibility />
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Num&#233;ro &#233;v&#232;nement</label>
+          <fields>
+            <field>
+              <field_id>bo85d3fc5d-1000-444d-896f-d6fb63f0c3c3</field_id>
+              <value>{{ form_parent_form_internal_id }}</value>
+            </field>
+            <field>
+              <field_id>bo29f42d38-2f37-4787-aaae-2d2f4896c265</field_id>
+              <value>{{ form_parent_form_var_nom_event }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="dispatch" id="2">
+          <role_key>_editor</role_key>
+          <dispatch_type>manual</dispatch_type>
+          <role_id slug="{{ form_var_service_service }}" role_id="{{ form_var_service_service }}">{{ form_var_service_service }}</role_id>
+          <variable>{{form_var_service_raw}}</variable>
+          <operation_mode>set</operation_mode>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="_editor">_editor</item>
+          </to>
+          <subject>Demande &#224; valider :  ({{ form_parent_form_name }})</subject>
+          <body>+++ Service Event +++
+
+e-mail de l'agent du Service Event assign&#233; : {{ form_parent_form_var_assigne }} 
+
+Ch&#232;r.e.s coll&#232;gues,
+
+Une demande d'autorisation d'&#233;v&#233;nement a &#233;t&#233; introduite. En voici les principales informations : 
+
+{% if form_parent_form_var_rue %}- Lieu de l'&#233;v&#233;nement : {{ form_parent_form_var_rue }} {{ form_parent_form_var_numero }} - {{ form_parent_form_var_cp }} {{ form_parent_form_var_localite }}{% endif %}
+
+- Nom de l'&#233;v&#233;nement : {{ form_parent_form_var_nom_event }}
+
+- Num&#233;ro de dossier : {{ form_parent_form_number }}
+
+- Date de l'&#233;v&#233;nement : {{ form_parent_form_var_debut_evenement|date }} au {{ form_parent_form_var_fin_evenement|date }}
+
+- Type(s) :  {{ form_parent_form_var_type_activite }}
+
+- Nombre de participants pr&#233;vu : {{ form_parent_form_var_participants }}
+
+`Retrouver tous les d&#233;tails de la demande ici &lt;{{form_parent_form_url_backoffice}}&gt;`_
+
+Avant de proposer un octroi ou un refus d'autorisation au Coll&#232;ge, `pourriez-vous nous faire part de vos remarques en utilisant ce formulaire &lt;{{ form_url_backoffice }}&gt;`_
+
+Votre r&#233;ponse doit nous parvenir pour le {{ today|date|add_days:10 }}
+
+Merci de votre collaboration.
+
+La cellule Event.</body>
+        </item>
+        <item type="editable" id="4">
+          <by>
+            <item role_id="_editor">_editor</item>
+          </by>
+          <status>0</status>
+          <label>Cliquez pour pouvoir rendre un avis</label>
+          <backoffice_info_text>&lt;p&gt;Ce bouton vous redirigera vers un formulaire pour rendre votre avis&lt;/p&gt;
+</backoffice_info_text>
+          <operation_mode>single</operation_mode>
+          <page_identifier>page_avis</page_identifier>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>0</id>
+      <name>Envoi des informations</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="external_workflow_global_action" id="2">
+          <slug>formdef:organiser-un-evenement-test</slug>
+          <trigger_id>action:remise_avis</trigger_id>
+          <target_mode>all</target_mode>
+          <condition>
+            <type>django</type>
+            <value>not form_parent_form_var_stop_avis</value>
+          </condition>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="{{ form_parent_form_var_assigne }}">{{ form_parent_form_var_assigne }}</item>
+          </to>
+          <subject>Une demande d'avis a &#233;t&#233; remise - {{ form_parent_form_internal_id }} - {{ form_parent_form_var_nom_event }}</subject>
+          <body>Bonjour une demande d'avis a &#233;t&#233; remise pour l'&#233;v&#232;nement `{{ form_parent_form_internal_id }} - {{ form_parent_form_var_nom_event }} &lt;{{ form_parent_form_backoffice_url }}&gt;`_
+
+`Avis de {{ form_var_service }} &lt;{{ form_backoffice_url }}&gt;`_</body>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>1</id>
+      <name>&#201;v&#232;nement annul&#233;</name>
+      <colour>#FF0000</colour>
+      <forced_endpoint>true</forced_endpoint>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_editor">_editor</item>
+          </to>
+          <subject>{{ form_name }} : &#201;v&#233;nement annul&#233; {{ form_parent_form_internal_id }}</subject>
+          <body>+++ Service Event +++
+
+Ch&#232;r.e.s coll&#232;gues,
+
+La demande d'autorisation d'&#233;v&#233;nement pour laquelle vous avez rendu un avis a &#233;t&#233; annul&#233;e.
+
+* Nom de l'&#233;v&#232;nement : {{ form_parent_form_var_nom_event }}
+* Num&#233;ro de dossier : {{ form_parent_form_internal_id }}
+
+
+Pour rappel, voici les principales informations concernant cet &#233;v&#233;nement :
+
+{% if form_parent_form_var_rue %}- Lieu de l'&#233;v&#233;nement : {{ form_parent_form_var_rue }} {{ form_parent_form_var_numero }} - {{ form_parent_form_var_cp }} {{ form_parent_form_var_localite }}{% endif %}
+
+- Date de l'&#233;v&#233;nement : {{ form_parent_form_var_debut_evenement|date }} au {{ form_parent_form_var_fin_evenement|date }}
+
+- Type(s) : {{ form_parent_form_var_type_activite }}
+
+- Nombre de participants pr&#233;vu : {{ form_parent_form_var_participants }}
+
+`Retrouver tous les d&#233;tails de la demande ici &lt;{{form_parent_form_url_backoffice}}&gt;`_
+
+Merci de votre collaboration.
+
+La cellule Event.</body>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;La demande d'autorisation d'&#233;v&#233;nement pour laquelle vous avez rendu un avis a &#233;t&#233; annul&#233;e.
+
+Pour rappel, voici les principales informations concernant cet &#233;v&#233;nement :
+
+{% if form_parent_form_var_rue %}- Lieu de l'&#233;v&#233;nement : {{ form_parent_form_var_rue }} {{ form_parent_form_var_numero }} - {{ form_parent_form_var_cp }} {{ form_parent_form_var_localite }}{% endif %}
+
+- Date de l'&#233;v&#233;nement : {{ form_parent_form_var_debut_evenement|date }} au {{ form_parent_form_var_fin_evenement|date }}
+
+- Type(s) : {{ form_parent_form_var_type_activite }}
+
+- Nombre de participants pr&#233;vu : {{ form_parent_form_var_participants }}&lt;/p&gt;</comment>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>2</id>
+      <name>Out of date</name>
+      <colour>#FF0000</colour>
+      <forced_endpoint>true</forced_endpoint>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_editor">_editor</item>
+          </to>
+          <subject>{{ form_name }} : Date de remise d'avis d&#233;pass&#233;e {{ form_parent_form_internal_id }}</subject>
+          <body>+++ Service Event +++
+
+Ch&#232;r.e.s coll&#232;gues,
+
+La demande d'autorisation d'&#233;v&#233;nement pour laquelle nous vous avions demand&#233; un avis passera incessamment sous peu devant la CAE {{ form_parent_form_workflow_form_cae_var_datecae }}.
+
+* Nom de l'&#233;v&#232;nement : {{ form_parent_form_var_nom_event }}
+* Num&#233;ro de dossier : {{ form_parent_form_internal_id }}
+
+Il n'est donc plus n&#233;cessaire de rendre un avis.
+
+Pour rappel, voici les principales informations concernant cet &#233;v&#233;nement :
+
+{% if form_parent_form_var_rue %}- Lieu de l'&#233;v&#233;nement : {{ form_parent_form_var_rue }} {{ form_parent_form_var_numero }} - {{ form_parent_form_var_cp }} {{ form_parent_form_var_localite }}{% endif %}
+
+- Date de l'&#233;v&#233;nement : {{ form_parent_form_var_debut_evenement|date }} au {{ form_parent_form_var_fin_evenement|date }}
+
+- Type(s) : {{ form_parent_form_var_type_activite }}
+
+- Nombre de participants pr&#233;vu : {{ form_parent_form_var_participants }}
+
+`Retrouver tous les d&#233;tails de la demande ici &lt;{{form_parent_form_url_backoffice}}&gt;`_
+
+Merci de votre collaboration.
+
+La cellule Event.</body>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>3</id>
+      <name>Archive</name>
+      <colour>#000000</colour>
+      <forced_endpoint>true</forced_endpoint>
+      <visibility />
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Date d'archivage</label>
+          <fields>
+            <field>
+              <field_id>bo7c4fea58-4901-45f9-a431-d0322d2818e9</field_id>
+              <value>{{ today }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;Date d'archivage : {{today}}&lt;/p&gt;
+&lt;p&gt;{{ caller_session_user }}&lt;/p&gt;</comment>
+        </item>
+      </items>
+    </status>
+  </possible_status>
+  <global_actions>
+    <action>
+      <id>1</id>
+      <name>Relance des services</name>
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_editor">_editor</item>
+          </to>
+          <subject>Mail de rappel pour valider une demande par un service.</subject>
+          <body>+++ Service Event +++
+
+e-mail de l'agent du Service Event assign&#233; : {{ form_parent_form_var_assigne }} 
+
+Ch&#232;r.e.s coll&#232;gues,
+
+POUR RAPPEL, une demande d'autorisation d'&#233;v&#233;nement a &#233;t&#233; introduite. En voici les principales informations :
+- Lieu de l'&#233;v&#233;nement : {{ form_parent_form_var_rue }} {{ form_parent_form_var_numero }} - {{ form_parent_form_var_cp }} {{ form_parent_form_var_localite }}
+- Date de l'&#233;v&#233;nement : {{ form_parent_form_var_debut_evenement|date }} au {{ form_parent_form_var_fin_evenement|date }}
+
+- Type(s) : {{ form_parent_form_var_type_activite }}
+- Nombre de participants pr&#233;vu : {{ form_parent_form_var_participants }}
+
+`Vous pouvez retrouver tous les d&#233;tails de la demande ici &lt;{{form_parent_form_url_backoffice}}&gt;`_
+
+Avant de proposer un octroi ou un refus d'autorisation au Coll&#232;ge, pourriez-vous nous faire part de vos remarques en utilisant `ce formulaire &lt;{{ form_url_backoffice }}&gt;`_
+
+Votre r&#233;ponse doit nous parvenir pour le {{ today|date|add_days:7 }}
+
+Merci de votre collaboration.
+
+La cellule Event.</body>
+          <condition>
+            <type>django</type>
+            <value>form_status == "Demande d'avis"</value>
+          </condition>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="d20fb7ae-bb65-428e-ace2-1b7fefba60a2">
+          <identifier>relance_services</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>2</id>
+      <name>Annulation de l'&#233;v&#232;nement</name>
+      <items>
+        <item type="jump" id="1">
+          <status>1</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="5e67ae11-f6e2-4c5c-ac1b-60ee4cf22049">
+          <identifier>annulation_evenement</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>3</id>
+      <name>Supprimer la fiche</name>
+      <items>
+        <item type="remove" id="1" />
+      </items>
+      <triggers>
+        <trigger type="manual" id="4eb0230c-5641-48b0-abe2-9eeedb48c0ad">
+          <roles>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>4</id>
+      <name>Out of date</name>
+      <items>
+        <item type="jump" id="1">
+          <status>2</status>
+          <condition>
+            <type>django</type>
+            <value>form_status == "Demande d'avis"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="18c4207b-3250-440f-b57d-52100b80c57c">
+          <identifier>out_of_date</identifier>
+          <roles>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+          </roles>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>5</id>
+      <name>Archivage</name>
+      <items>
+        <item type="jump" id="1">
+          <status>3</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="d0a67d24-291f-4fee-b92c-f16251bc50f8">
+          <identifier>archivage</identifier>
+        </trigger>
+      </triggers>
+    </action>
+  </global_actions>
+  <backoffice-fields>
+    <formdef>
+      <name>-</name>
+      <fields>
+        <field>
+          <type>string</type>
+          <label type="str">Num&#233;ro &#233;v&#232;nement</label>
+          <required type="bool">True</required>
+          <display_locations>
+            <item>summary</item>
+            <item>listings</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo85d3fc5d-1000-444d-896f-d6fb63f0c3c3</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Nom &#233;v&#232;nement</label>
+          <required type="bool">True</required>
+          <display_locations>
+            <item>summary</item>
+            <item>listings</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo29f42d38-2f37-4787-aaae-2d2f4896c265</id>
+        </field>
+        <field>
+          <type>date</type>
+          <label type="str">Date d'archivage</label>
+          <required type="bool">True</required>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <minimum_is_future type="bool">False</minimum_is_future>
+          <date_in_the_past type="bool">False</date_in_the_past>
+          <date_can_be_today type="bool">False</date_can_be_today>
+          <id type="str">bo7c4fea58-4901-45f9-a431-d0322d2818e9</id>
+        </field>
+      </fields>
+    </formdef>
+  </backoffice-fields>
+</workflow>

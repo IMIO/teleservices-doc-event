@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<block id="22" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/22/">
+  <name>Charleroi place de stationnement</name>
+  <slug>charleroi_place_de_stationnement</slug>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Rue</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf41824210-e738-48ad-a05a-a736fd759d5f</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Du n&#176;</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-12</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf235b255c-498d-45ac-95e5-b16bb16b3b69</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Au n&#176;</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-12</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfcfb8e249-d8d9-4311-b0ce-4ffbbe82fbc5</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date de d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bf3b22b7c4-d577-40b1-a243-c70e134adbfc</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure de d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bfaff3caf0-88f6-4900-b184-73b571ecc37d</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date de fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bfb03dbc43-7da4-4da7-97c4-78b0117c706a</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure de fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bf91289a18-d665-4608-8138-f264355318bf</id>
+    </field>
+  </fields>
+</block>

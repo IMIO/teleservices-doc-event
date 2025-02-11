@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<block id="16" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/16/">
+  <name>Activit&#233; suppl&#233;mentaire</name>
+  <slug>activite_supplementaire</slug>
+  <digest_template>{{activite_supplementaire_var_nom}}</digest_template>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Activit&#233; suppl&#233;mentaire</label>
+      <required type="bool">True</required>
+      <varname type="str">nom</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bff991e5a8-f175-4524-808e-cdf5a2218b6f</id>
+    </field>
+  </fields>
+</block>

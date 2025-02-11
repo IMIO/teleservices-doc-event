@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<block id="15" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/15/">
+  <name>Fichier (optionnel)</name>
+  <slug>fichier_optionnel</slug>
+  <fields>
+    <field>
+      <type>file</type>
+      <label type="str">Fichier</label>
+      <required type="bool">False</required>
+      <varname type="str">fichier</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <allow_portfolio_picking type="bool">False</allow_portfolio_picking>
+      <automatic_image_resize type="bool">False</automatic_image_resize>
+      <storage type="str">default</storage>
+      <id type="str">bf853e2862-66aa-4b6b-8956-2621b6d84c91</id>
+    </field>
+  </fields>
+</block>

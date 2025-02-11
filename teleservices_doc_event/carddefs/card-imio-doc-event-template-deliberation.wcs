@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<carddef id="15" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/cards/15/">
+  <name>iMio - Doc Event - Template D&#233;lib&#233;ration</name>
+  <url_name>imio-doc-event-template-deliberation</url_name>
+  <submission_user_association>none</submission_user_association>
+  <discussion>false</discussion>
+  <detailed_emails>true</detailed_emails>
+  <disabled>false</disabled>
+  <only_allow_one>false</only_allow_one>
+  <enable_tracking_codes>false</enable_tracking_codes>
+  <confirmation>false</confirmation>
+  <always_advertise>false</always_advertise>
+  <has_captcha>false</has_captcha>
+  <skip_from_360_view>false</skip_from_360_view>
+  <workflow slug="_carddef_default" workflow_id="_carddef_default">Par d&#233;faut (fiches)</workflow>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Titre</label>
+      <required type="bool">True</required>
+      <varname type="str">title</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+        <item>listings</item>
+      </display_locations>
+      <anonymise type="str">final</anonymise>
+      <id type="str">9e9efeea-3837-48eb-b6f6-67eb958d450a</id>
+    </field>
+    <field>
+      <type>text</type>
+      <label type="str">Objet</label>
+      <required type="bool">True</required>
+      <varname type="str">objet</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">pre</display_mode>
+      <id type="str">8c8128e3-b42b-45db-8fd4-a18c65622819</id>
+    </field>
+    <field>
+      <type>text</type>
+      <label type="str">Motivation</label>
+      <required type="bool">True</required>
+      <varname type="str">motivation</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">pre</display_mode>
+      <id type="str">3c4ef644-26d8-4682-8145-f58e2b656955</id>
+    </field>
+    <field>
+      <type>text</type>
+      <label type="str">D&#233;cision</label>
+      <required type="bool">True</required>
+      <varname type="str">decision</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">pre</display_mode>
+      <id type="str">fad0f8dd-5afc-4f39-9fec-108302b21395</id>
+    </field>
+  </fields>
+  <user-roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+  </user-roles>
+  <backoffice-submission-roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+  </backoffice-submission-roles>
+  <roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_editor">Debug</role>
+  </roles>
+  <options />
+  <custom_views>
+    <custom_view>
+      <title>Par d&#233;faut - ordre</title>
+      <slug>par-defaut-ordre</slug>
+      <visibility>any</visibility>
+      <filters />
+      <is_default>True</is_default>
+      <columns>
+        <id>id</id>
+        <id>time</id>
+        <id>9e9efeea-3837-48eb-b6f6-67eb958d450a</id>
+      </columns>
+      <order_by>f9e9efeea-3837-48eb-b6f6-67eb958d450a</order_by>
+    </custom_view>
+  </custom_views>
+  <geolocations />
+  <management_sidebar_items>
+    <item>__default__</item>
+  </management_sidebar_items>
+  <digest_templates>
+    <template key="custom-view:par-defaut-ordre">{{ form_var_title }}</template>
+    <template key="default">{{ form_var_title }}</template>
+  </digest_templates>
+</carddef>

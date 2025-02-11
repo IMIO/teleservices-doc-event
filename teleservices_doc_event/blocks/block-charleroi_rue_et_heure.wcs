@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<block id="20" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/20/">
+  <name>Charleroi rue et heure</name>
+  <slug>charleroi_rue_et_heure</slug>
+  <fields>
+    <field>
+      <type>text</type>
+      <label type="str">Noms et portions de rues concern&#233;s</label>
+      <required type="bool">True</required>
+      <hint type="str">Merci d'indiquer une ou plusieurs rues associ&#233;es &#224; un horaire de fermeture particulier. Si plusieurs rues sont bloqu&#233;es &#224; des moments diff&#233;rents, merci de s&#233;lectionner le bouton "Ajouter un autre".</hint>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">pre</display_mode>
+      <id type="str">bff0b40552-4ba3-445b-a960-93518e4bf803</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bfbf898703-fc94-4e41-ace0-b477be7fdd6a</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bf64c6c5cf-0e4c-4e4e-90b5-0e501a808db7</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bf2ad454c3-d826-4cdf-94f3-8af4c393e809</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bfdb1e037d-4883-4e08-9304-2a1c2bd9e8b8</id>
+    </field>
+  </fields>
+</block>

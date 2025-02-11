@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<block id="18" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/18/">
+  <name>Coordonn&#233;es</name>
+  <slug>coordonnees</slug>
+  <digest_template>{{coordonnees_var_nom}} {{coordonnees_var_prenom}}</digest_template>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Nom</label>
+      <required type="bool">True</required>
+      <varname type="str">nom</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf9834aa02-963e-4d0f-a423-d0ecd95042c5</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Pr&#233;nom</label>
+      <required type="bool">True</required>
+      <varname type="str">prenom</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-5-12</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bff63cb4fc-e228-480f-9d2c-2ce0ab0544de</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Rue</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-3-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bff5d5d31a-9da4-4b07-ba5b-564920499dfa</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Num&#233;ro</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfd981d0f9-268e-4721-97fe-851cbfba4945</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Code postal</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf71a5c9fa-1b85-4870-83b0-6256ba13fb9d</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Ville</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-3-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf0383b122-384a-4247-96aa-bef4bba111f4</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">T&#233;l&#233;phone</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf9c28c13f-4e30-437c-a30f-c69842a20261</id>
+    </field>
+    <field>
+      <type>email</type>
+      <label type="str">Email</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfff015ed6-f247-45f9-9c38-6c2b8840940d</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Num&#233;ro national</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf1ba8329e-cc4d-4d4e-893a-47d781a86d53</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date de naissance</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_date type="str">01/01/1900</minimum_date>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <maximum_date type="str">01/01/2020</maximum_date>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bff35b5d39-8534-4d96-8672-e87b64c7c7c2</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Mission / Responsabilit&#233;</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-1</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfcea1338b-0a91-448d-9ad6-91e19996955c</id>
+    </field>
+  </fields>
+</block>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<block id="21" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/21/">
+  <name>Charleroi deviation tec</name>
+  <slug>charleroi_deviation_tec</slug>
+  <fields>
+    <field>
+      <type>text</type>
+      <label type="str">Liste des rues concern&#233;es par une d&#233;viation des transports en commun</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-1</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">plain</display_mode>
+      <id type="str">bf975a76f8-b7a0-4b4a-af53-25c42f552bf7</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bfb7d5a3bb-437d-4b53-b0a5-3e6170f9d481</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure d&#233;but</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bfe0ffd0d2-4432-407b-b501-eda03384e5eb</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bf2ef06ecf-6eed-4272-872e-c5d6c75a59cd</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure fin</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bfa1c43c00-7a56-4528-900a-d4d8b4da98d5</id>
+    </field>
+  </fields>
+</block>

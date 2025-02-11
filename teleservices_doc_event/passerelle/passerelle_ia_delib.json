@@ -1,0 +1,16 @@
+{
+  "resources": [
+    {
+      "@type": "passerelle-resource",
+      "resource_type": "passerelle_imio_ia_delib.iadelibconnector",
+      "title": "Connecteur iA.Delib",
+      "slug": "delib",
+      "description": "Connecteur iA.Delib",
+      "log_level": "ERROR",
+      "access_rights": [],
+      "url": "https://delib.be/",
+      "username": "username",
+      "password": "password"
+    }
+  ]
+}

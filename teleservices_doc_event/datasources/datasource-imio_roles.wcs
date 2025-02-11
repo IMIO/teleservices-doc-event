@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<datasource id="33" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/settings/data-sources/33/">
+  <name>iMio - R&#244;les</name>
+  <slug>imio_roles</slug>
+  <data_attribute>results</data_attribute>
+  <id_attribute>slug</id_attribute>
+  <text_attribute>name</text_attribute>
+  <data_source>
+    <type>json</type>
+    <value>{{ idp_url }}api/roles/?limit=1000</value>
+  </data_source>
+</datasource>

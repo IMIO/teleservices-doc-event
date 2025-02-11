@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<block id="23" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/23/">
+  <name>Charleroi led</name>
+  <slug>charleroi_led</slug>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Nombre</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>digits</type>
+      </validation>
+      <id type="str">bff3a5906f-f175-4bdb-9bc8-d3adc04fca01</id>
+    </field>
+    <field>
+      <type>map</type>
+      <label type="str">Localisation</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <initial_zoom type="str">13</initial_zoom>
+      <initial_position type="str">point</initial_position>
+      <default_position type="str">50.4107055084976;4.444313049316407</default_position>
+      <id type="str">bf59a6fdcf-dd1b-4266-bd6e-a436008a9bac</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Rue</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-3-4</extra_css_class>
+      <prefill>
+        <type>geolocation</type>
+        <value>road</value>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf48e2025c-252f-4c8e-aa28-49ce1a9f01d1</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Numero</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <prefill>
+        <type>geolocation</type>
+        <value>house</value>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>digits</type>
+      </validation>
+      <id type="str">bf4b0c1151-acf9-463b-9b2a-761d53244032</id>
+    </field>
+    <field>
+      <type>text</type>
+      <label type="str">But</label>
+      <required type="bool">True</required>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <display_mode type="str">pre</display_mode>
+      <id type="str">bf6dcf7038-feb4-432a-8945-433f59565f66</id>
+    </field>
+  </fields>
+</block>

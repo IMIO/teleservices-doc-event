@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<block id="19" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/19/">
+  <name>Date et heure</name>
+  <slug>date_et_heure</slug>
+  <fields>
+    <field>
+      <type>date</type>
+      <label type="str">date</label>
+      <required type="bool">True</required>
+      <varname type="str">date</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">bf20aa8587-9547-42e6-adbe-2208a96eccd1</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">heure</label>
+      <required type="bool">True</required>
+      <hint type="str">Exemple 11:30</hint>
+      <varname type="str">heure</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-4</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">bfcb76fde6-47dd-40b9-8667-f29205b9d972</id>
+    </field>
+  </fields>
+</block>

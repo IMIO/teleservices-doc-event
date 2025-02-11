@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<block id="14" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/14/">
+  <name>iMio - Ajouter un fichier</name>
+  <slug>ajouter_un_fichier</slug>
+  <fields>
+    <field>
+      <type>file</type>
+      <label type="str">Fichier</label>
+      <required type="bool">True</required>
+      <varname type="str">fichier</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <allow_portfolio_picking type="bool">False</allow_portfolio_picking>
+      <automatic_image_resize type="bool">True</automatic_image_resize>
+      <storage type="str">default</storage>
+      <id type="str">bf229ecbb4-57e1-4f03-bac4-31f10a00acc3</id>
+    </field>
+  </fields>
+</block>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<mail-template id="33" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/mail-templates/33/">
+  <name>Indus - Par d&#233;faut - Usager - Nouvelle demande</name>
+  <slug>indus-par-defaut-usager-nouvelle-demande</slug>
+  <documentation>Email envoy&#233; &#224; l'usager lors de l'envoi de sa demande pour confirmation</documentation>
+  <subject>{{ form_name }} - R&#233;ception de votre demande</subject>
+  <body>Bonjour,
+
+Nous vous confirmons la r&#233;ception de la d&#233;marche suivante : {{form_name}}
+
+Nos services traitent les demandes dans les meilleurs d&#233;lais. Vous serez inform&#233;&#183;e par mail de l'avancement de votre d&#233;marche.
+
+{% if form_user %}
+Vous pouvez `consulter la demande. &lt;{{ form_url }}&gt;`_
+{% endif %}
+
+{% if form_details %}
+Pour r&#233;f&#233;rence, voici le d&#233;tail de la demande&#160;:
+
+{{ form_details }}
+{% endif %}
+
+{% if form_tracking_code %}
+Le code de suivi de votre demande est le suivant : **{{form_tracking_code}}**
+En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l'administration.
+{% endif %}
+
+
+Cordialement,</body>
+</mail-template>

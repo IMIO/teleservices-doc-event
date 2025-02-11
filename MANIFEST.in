@@ -1,0 +1,3 @@
+recursive-include teleservices_doc_event *
+include MANIFEST.in
+include README.md

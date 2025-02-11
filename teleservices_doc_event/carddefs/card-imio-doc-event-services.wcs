@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<carddef id="13" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/cards/13/">
+  <name>iMio - Doc Event - Services</name>
+  <url_name>imio-doc-event-services</url_name>
+  <submission_user_association>none</submission_user_association>
+  <discussion>false</discussion>
+  <detailed_emails>true</detailed_emails>
+  <disabled>false</disabled>
+  <only_allow_one>false</only_allow_one>
+  <enable_tracking_codes>false</enable_tracking_codes>
+  <confirmation>false</confirmation>
+  <always_advertise>false</always_advertise>
+  <has_captcha>false</has_captcha>
+  <skip_from_360_view>false</skip_from_360_view>
+  <workflow slug="_carddef_default" workflow_id="_carddef_default">Par d&#233;faut (fiches)</workflow>
+  <fields>
+    <field>
+      <type>item</type>
+      <label type="str">Service</label>
+      <required type="bool">True</required>
+      <hint type="str">S&#233;lectionnez un r&#244;le</hint>
+      <varname type="str">service</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+        <item>listings</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">autocomplete</display_mode>
+      <items />
+      <data_source>
+        <type>imio_roles</type>
+        <value>{{ idp_url }}api/roles/?slug__startswith=agents-traitants</value>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">75f46509-90e0-4b99-9bf7-24b3fcf03318</id>
+    </field>
+  </fields>
+  <user-roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</role>
+  </user-roles>
+  <backoffice-submission-roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</role>
+  </backoffice-submission-roles>
+  <roles>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_editor">Debug</role>
+    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_viewer">Debug</role>
+  </roles>
+  <options />
+  <custom_views />
+  <geolocations />
+  <management_sidebar_items>
+    <item>__default__</item>
+  </management_sidebar_items>
+  <digest_templates>
+    <template key="default">{{ form_var_service }}</template>
+  </digest_templates>
+</carddef>

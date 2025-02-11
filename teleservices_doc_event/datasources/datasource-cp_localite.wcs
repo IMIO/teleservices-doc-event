@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<datasource id="35" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/settings/data-sources/35/">
+  <name>CP - Localit&#233;</name>
+  <slug>cp_localite</slug>
+  <documentation>Liste des localit&#233;s de Charleroi associ&#233;es &#224; leur code postal.</documentation>
+  <data_source>
+    <type>jsonvalue</type>
+    <value>[{"id": "charleroi", "text": "6000 Charleroi"}, {"id": "marcinelle", "text": "6001 Marcinelle"}, {"id": "couillet", "text": "6010 Couillet"}, {"id": "dampremy", "text": "6020 Dampremy"}, {"id": "marchienne", "text": "6030 Marchienne-au-Pont"}, {"id": "goutroux", "text": "6030 Goutroux"}, {"id": "monceau", "text": "6031 Monceau-sur-Sambre"}, {"id": "montsurmarchienne", "text": "6032 Mont-sur-Marchienne"}, {"id": "jumet", "text": "6040 Jumet"}, {"id": "gosselies", "text": "6041 Gosselies"}, {"id": "lodelinsart", "text": "6042 Lodelinsart"}, {"id": "ransart", "text": "6043 Ransart"}, {"id": "roux", "text": "6044 Roux"}, {"id": "gilly", "text": "6060 Gilly"}, {"id": "montigniessursambre", "text": "6061 Montignies-sur-Sambre"}]</value>
+  </data_source>
+</datasource>

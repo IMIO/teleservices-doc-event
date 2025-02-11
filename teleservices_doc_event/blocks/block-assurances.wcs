@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<block id="17" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/17/">
+  <name>Assurances</name>
+  <slug>assurances</slug>
+  <digest_template>Nom de l'assurance : {{assurances_var_nom_assurance}}saut_de_ligne Nom de la compagnie d'assurance : {{assurances_var_nom_compagnie}}saut_de_ligne Num&#233;ro de police d'assurance : {{assurances_var_numero}}saut_de_ligne</digest_template>
+  <fields>
+    <field>
+      <type>string</type>
+      <label type="str">Nom de l'assurance</label>
+      <required type="bool">True</required>
+      <varname type="str">nom_assurance</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfc695984c-d987-4934-95c4-c1c5d12dc2e9</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Nom de la compagnie d'assurance</label>
+      <required type="bool">True</required>
+      <varname type="str">nom_compagnie</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bfc25ea6bd-3857-430c-853e-7ca4465d5a55</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Num&#233;ro de police d'assurance</label>
+      <required type="bool">True</required>
+      <varname type="str">numero</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-1-2</extra_css_class>
+      <prefill>
+        <type>none</type>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">bf3e16b9dc-6a3c-4855-b945-9307682b8fcb</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;Une copie de l'assurance devra &#234;tre jointe &#224; la demande &#224; la derni&#232;re page de ce formulaire.&lt;/p&gt;</label>
+      <display_locations />
+      <id type="str">bf23c82682-5f41-4e3a-b1f1-c8ff9840bf4d</id>
+    </field>
+  </fields>
+</block>

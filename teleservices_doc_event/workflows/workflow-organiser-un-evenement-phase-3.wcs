@@ -1,0 +1,4256 @@
+<?xml version="1.0"?>
+<workflow id="38" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/38/">
+  <name>Organiser un &#233;v&#232;nement -  Phase 3.1</name>
+  <slug>organiser-un-evenement-phase-31</slug>
+  <category slug="imio-doc-event" category_id="7">iMio - Doc Event</category>
+  <roles>
+    <role id="_agent-finance">Agent Finance</role>
+    <role id="_cabinet-du-bourgmestre">Cabinet du bourgmestre</role>
+    <role id="_cae">CAE</role>
+    <role id="_observateurs">Observateurs</role>
+    <role id="_receiver">Destinataire</role>
+    <role id="_service-evenement">Service &#233;v&#232;nement</role>
+  </roles>
+  <possible_status>
+    <status>
+      <id>just_submitted</id>
+      <name>Juste envoy&#233;</name>
+      <colour>#FFFFFF</colour>
+      <visibility />
+      <items>
+        <item type="displaymsg" id="1">
+          <message>Merci d'avoir pris le temps de remplir ce formulaire. Nos services vont prendre en charge votre demande et revenir vers vous dans les plus brefs d&#233;lais.</message>
+          <level>success</level>
+          <position>top</position>
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <label>Initialisation</label>
+          <fields>
+            <field>
+              <field_id>bo18a80be3-9cfb-4965-8708-26e92392783b</field_id>
+              <value>Historique des services consult&#233;s</value>
+            </field>
+            <field>
+              <field_id>bo3655d016-e1c0-4be8-b91f-2ca49e73ffeb</field_id>
+              <value>{{ form_slug}}{{ form_internal_id }}</value>
+            </field>
+            <field>
+              <field_id>bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</field_id>
+              <value>False</value>
+            </field>
+          </fields>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <subject>Nouvelle demande {{ form_name }} {{ form_var_nom_event }} {{ form_var_debut_evenement }}</subject>
+          <body>Bonjour,
+
+Une nouvelle demande {{ form_name }} a &#233;t&#233; re&#231;ue, vous pouvez la consulter
+en suivant ce lien :
+  {{ form_url_backoffice }}
+
+Nom de l'&#233;v&#232;nement {{ form_var_nom_event }}
+
+Date de l'&#233;v&#232;nement {{ form_var_debut_evenement }}
+
+Le code de suivi {{ form_tracking_code }}
+
+</body>
+        </item>
+        <item type="sendmail" id="4">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <mail_template>indus-par-defaut-usager-nouvelle-demande</mail_template>
+          <subject>Nouvelle demande ({{ form_name }})</subject>
+          <body>Bonjour,
+
+Ce message est un rappel concernant la demande que vous venez d&#8217;envoyer.
+{% if form_user %}
+Vous pouvez la consulter en suivant ce lien&#160;: {{ form_url }}
+{% endif %}
+
+Votre code de suivi {{ form_tracking_code }}</body>
+        </item>
+        <item type="jump" id="5">
+          <status>53</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_demande_location_materiel == "Oui" and form_option_location_materiel_atal or form_var_demande_location_salle == "Oui" and form_option_location_salle_atal</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="6">
+          <status>25</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>53</id>
+      <name>Cr&#233;ation des demandes annexes</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="create_formdata" id="1">
+          <formdef_slug>demande-de-location-de-materiel</formdef_slug>
+          <map_fields_by_varname>True</map_fields_by_varname>
+          <mappings />
+          <backoffice_submission>False</backoffice_submission>
+          <draft>True</draft>
+          <draft_edit_operation_mode>full</draft_edit_operation_mode>
+          <keep_submission_context>False</keep_submission_context>
+          <varname>demande_location_materiel</varname>
+          <attach_to_history>False</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>form_var_demande_location_materiel == "Oui"</value>
+          </condition>
+        </item>
+        <item type="create_formdata" id="2">
+          <formdef_slug>demande-location-de-salles-atal</formdef_slug>
+          <map_fields_by_varname>True</map_fields_by_varname>
+          <mappings />
+          <backoffice_submission>False</backoffice_submission>
+          <draft>True</draft>
+          <draft_edit_operation_mode>full</draft_edit_operation_mode>
+          <user_association_mode>keep-user</user_association_mode>
+          <keep_submission_context>False</keep_submission_context>
+          <varname>demande_location_salle</varname>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>form_var_demande_location_salle == "Oui"</value>
+          </condition>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>Compl&#233;tez votre demande de location de salle et/ou de mat&#233;riel</subject>
+          <body>Bonjour, 
+
+Vous avez effectu&#233; une demande d'autorisation d'&#233;v&#233;nement &#224; Charleroi. Cette demande ne sera trait&#233;e que lorsque vous aurez compl&#233;t&#233; le formulaire de location de salle et/ou de mat&#233;riel. 
+
+{% if form_links_demande_location_materiel_0_form_url %}
+`Compl&#233;ter le formulaire de r&#233;servation de mat&#233;riel &lt;form_links_demande_location_materiel_0_form_url&gt;`_
+{% endif %}
+
+{% if form_links_demande_location_salle_0_form_url %}
+`Compl&#233;ter le formulaire de r&#233;servation de salle &lt;form_links_demande_location_salle_0_form_url&gt;`_
+{% endif %}
+
+Cordialement, 
+
+La Ville de Charleroi</body>
+        </item>
+        <item type="jump" id="4">
+          <status>54</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>54</id>
+      <name>Demandes annexes</name>
+      <colour>#FF00FF</colour>
+      <visibility />
+      <items>
+        <item type="displaymsg" id="1">
+          <message>{% if form_var_demande_location_salle == "Oui" and not form_links_demande_location_salle_0_form_details %}
+&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de salle&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
+
+&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_salle_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_salle_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
+{% endif %}
+{% if form_var_demande_location_materiel == "Oui" and not form_links_demande_location_materiel_0_form_details %}
+&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de mat&#233;riel&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
+
+&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_materiel_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_materiel_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
+{% endif %}</message>
+          <level>warning</level>
+          <position>top</position>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>{% if form_var_demande_location_salle == "Oui" and not form_links_demande_location_salle_0_form_details %}
+&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de salle&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
+
+&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_salle_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_salle_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
+{% endif %}
+{% if form_var_demande_location_materiel == "Oui" and not form_links_demande_location_materiel_0_form_details %}
+&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de mat&#233;riel&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
+
+&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_materiel_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_materiel_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
+{% endif %}</comment>
+        </item>
+        <item type="jump" id="3">
+          <status>55</status>
+          <condition>
+            <type>django</type>
+            <value>form_links_demande_location_materiel_form_details and form_links_demande_location_materiel or form_links_demande_location_salle_form_details and form_links_demande_location_salle</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>55</id>
+      <name>Merci</name>
+      <colour>#FF0066</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>Merci d'avoir compl&#233;t&#233; vos demandes annexes</comment>
+        </item>
+        <item type="displaymsg" id="2">
+          <message>Merci d'avoir compl&#233;t&#233; vos demandes annexes</message>
+          <level>success</level>
+          <position>top</position>
+        </item>
+        <item type="jump" id="3">
+          <status>25</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>25</id>
+      <name>Prise en charge de la demande</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="choice" id="1">
+          <label>Prendre en charge la demande</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>57</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action vous d&amp;eacute;signera comme seul responsable de cette demande.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>57</id>
+      <name>Assignation de la demande</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Assignation</label>
+          <fields>
+            <field>
+              <field_id>bo5d846168-a145-4fd5-af08-85e2d2f18eed</field_id>
+              <value>{{ session_user_email }}</value>
+            </field>
+            <field>
+              <field_id>bo0e7f6a3a-266a-4b6a-bb1c-ebdd2dae0ec6</field_id>
+              <value>Non</value>
+            </field>
+          </fields>
+        </item>
+        <item type="choice" id="3">
+          <label>Vers En vours de traitement</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>new</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="4">
+          <label>Pr&#233;-parametrage</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>76</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>76</id>
+      <name>Pr&#233;-param&#233;trage du point iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>pr&#233;-param&#233;tr&#233;</label>
+          <fields>
+            <field>
+              <field_id>bo847a8de1-b635-46bc-b488-2c71f8e2a0e8</field_id>
+              <value>{{ True }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="form" id="4">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>point</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>item</type>
+                <label type="str">Choisissez un mod&#232;le</label>
+                <required type="bool">True</required>
+                <hint type="str">Choisissez un mod&#232;le</hint>
+                <varname type="str">modele</varname>
+                <display_locations />
+                <anonymise type="str">no</anonymise>
+                <display_mode type="str">list</display_mode>
+                <items />
+                <data_source>
+                  <type>carddef:imio-doc-event-template-deliberation</type>
+                </data_source>
+                <in_filters type="bool">False</in_filters>
+                <display_disabled_items type="bool">False</display_disabled_items>
+                <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+                <image_desktop_size type="str">150</image_desktop_size>
+                <image_mobile_size type="str">75</image_mobile_size>
+                <id type="str">1</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Objet</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">objet</varname>
+                <display_locations />
+                <prefill>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_objet|default:"" %}</value>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">plain</display_mode>
+                <id type="str">2</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Motivation</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">motivation</varname>
+                <display_locations />
+                <prefill>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_motivation|default:"" %}</value>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">3</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">D&#233;cision</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">decision</varname>
+                <display_locations />
+                <prefill>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_decision|default:"" %}</value>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">4</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="3">
+          <status>77</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>77</id>
+      <name>Pr&#233;-cr&#233;ation du point dans iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="4">
+          <label>Champs texte du point</label>
+          <fields>
+            <field>
+              <field_id>bocd330030-9434-41a1-85f9-6762a0d06f35</field_id>
+              <value>{{ form_workflow_form_point_var_objet }}</value>
+            </field>
+            <field>
+              <field_id>bo7149c76a-d98b-4467-89e4-99f438b814a3</field_id>
+              <value>{{ form_workflow_form_point_var_motivation }}</value>
+            </field>
+            <field>
+              <field_id>bo3fc0eb5a-2c28-48b0-a69f-8dddf122a7a9</field_id>
+              <value>{{ form_workflow_form_point_var_decision }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="webservice_call" id="2">
+          <label>Pr&#233;-Cr&#233;ation d'un point dans D&#233;lib</label>
+          <method>POST</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/{{form_option_connecteur}}/create-item</url>
+          <post>False</post>
+          <post_data>
+            <item>
+              <name>api_url</name>
+              <value>{{ form_api_url }}</value>
+            </item>
+            <item>
+              <name>category</name>
+              <value>autorisation-d2019organisation-d2019evenement</value>
+            </item>
+            <item>
+              <name>config_id</name>
+              <value>meeting-config-college</value>
+            </item>
+            <item>
+              <name>decision</name>
+              <value>{{ form_var_decision|linebreaks }}</value>
+            </item>
+            <item>
+              <name>externalIdentifier</name>
+              <value>{{ form_var_external_identifier }}</value>
+            </item>
+            <item>
+              <name>motivation</name>
+              <value>{{ form_var_motivation|linebreaks }}</value>
+            </item>
+            <item>
+              <name>proposingGroup</name>
+              <value>service-cev</value>
+            </item>
+            <item>
+              <name>proposingGroupWithGroupInCharge</name>
+              <value>b15242dcf91a4bbc9bc626b25adca6a5__groupincharge__14d7d8a6bf194f80978b77a539158a31</value>
+            </item>
+            <item>
+              <name>title</name>
+              <value>{{ form_var_titre }}</value>
+            </item>
+            <item>
+              <name>type</name>
+              <value>MeetingItemCollege</value>
+            </item>
+          </post_data>
+          <response_type>json</response_type>
+          <varname>creation_point</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>79</action_on_app_error>
+          <action_on_4xx>79</action_on_4xx>
+          <action_on_5xx>79</action_on_5xx>
+          <action_on_bad_data>79</action_on_bad_data>
+          <action_on_network_errors>79</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="3">
+          <status>78</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>79</id>
+      <name>Erreur pr&#233;-param&#233;trage</name>
+      <colour>#FF0000</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="displaymsg" id="1">
+          <message>&lt;p&gt;Une erreur s'est produite, veuillez v&#233;rifier dans iA.D&#233;lib si le point s'est cr&#233;&#233;.
+
+Si c'est le cas, cliquez sur &lt;bold&gt;Continuer le processus&lt;/bold&gt;.
+
+Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le pr&#233;-param&#233;trage&lt;bold&gt;&lt;/p&gt;</message>
+          <level>error</level>
+          <position>top</position>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>form_previous_status == "Pr&#233;-cr&#233;ation du point dans iA.D&#233;lib"</value>
+          </condition>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;Une erreur s'est produite, veuillez v&#233;rifier dans iA.D&#233;lib si le point s'est cr&#233;&#233;.
+
+Si c'est le cas, cliquez sur &lt;bold&gt;Continuer le processus&lt;/bold&gt;.
+
+Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le pr&#233;-param&#233;trage&lt;bold&gt;&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>form_previous_status == "Pr&#233;-cr&#233;ation du point dans iA.D&#233;lib"</value>
+          </condition>
+        </item>
+        <item type="choice" id="3">
+          <label>Relancer le pr&#233;-param&#233;trage</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </by>
+          <status>77</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>form_previous_status == "Pr&#233;-cr&#233;ation du point dans iA.D&#233;lib"</value>
+          </condition>
+        </item>
+        <item type="choice" id="4">
+          <label>Continuer le processus</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </by>
+          <status>78</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>form_previous_status == "Pr&#233;-cr&#233;ation du point dans iA.D&#233;lib"</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>78</id>
+      <name>R&#233;cup&#233;rer UID</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="webservice_call" id="1">
+          <label>R&#233;cup&#233;ration UID</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/{{form_option_connecteur}}/search-items</url>
+          <qs_data>
+            <item>
+              <name>config_id</name>
+              <value>meeting-config-college</value>
+            </item>
+            <item>
+              <name>externalIdentifier</name>
+              <value>{{ form_var_external_identifier }}</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>recup_uid</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>80</action_on_app_error>
+          <action_on_4xx>80</action_on_4xx>
+          <action_on_5xx>80</action_on_5xx>
+          <action_on_bad_data>80</action_on_bad_data>
+          <action_on_network_errors>80</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <label>R&#233;cup&#233;ration UID</label>
+          <fields>
+            <field>
+              <field_id>bo51723cc3-a1bf-4078-bda0-8c07b696cdcd</field_id>
+              <value>{{ form_workflow_data_recup_uid_response_items|first|get:"UID" }}</value>
+            </field>
+          </fields>
+          <condition>
+            <type>django</type>
+            <value>form_workflow_data_recup_uid_response_items|length == 1</value>
+          </condition>
+        </item>
+        <item type="jump" id="3">
+          <status>new</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>80</id>
+      <name>Erreur r&#233;cup&#233;ration UID</name>
+      <colour>#FF0000</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="displaymsg" id="1">
+          <message>&lt;p&gt;Une erreur s'est produite, veuillez cliquez sur &lt;bold&gt;Relancer le porcessus&lt;/bold&gt;.
+
+Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&gt;&lt;/p&gt;</message>
+          <level>error</level>
+          <position>top</position>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;Une erreur s'est produite, veuillez cliquez sur &lt;bold&gt;Relancer le porcessus&lt;/bold&gt;.
+
+Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&gt;&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+          </to>
+        </item>
+        <item type="choice" id="3">
+          <label>Relancer le porcessus</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </by>
+          <status>78</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>new</id>
+      <name>En cours de traitement</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="choice" id="1">
+          <label>Choisir les services &#224; consulter</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>0</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action vous permettra de s&amp;eacute;lectionner dans une liste tous les services qui doivent rendre un avis concernant la demande de l&amp;#39;usager. Chaque service recevra un email leur demandant de rendre un avis positif/n&amp;eacute;gatif et de l&amp;#39;expliciter au besoin. Vous aurez la possibilit&amp;eacute; de les relancer s&amp;#39;ils ne donnent pas leur avis dans le d&amp;eacute;lais imparti.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="2">
+          <label>Demander une facturation</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>rejected</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet de demander aux agents charg&amp;eacute;s de la facturation d&amp;#39;indiquer un montant &amp;agrave; payer et des pr&amp;eacute;cisions le cas &amp;eacute;ch&amp;eacute;ant.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>rejected</id>
+      <name>Demande d'information pour la facturation</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </to>
+          <subject>Nouvelle demande de facturation pour  ({{ form_name }})</subject>
+          <body>Bonjour,
+
+Une demande d'autorisation d'&#233;v&#233;nement n&#233;cessite une facturation. Vous pouvez consulter la demande et ajouter votre note en suivant ce lien :
+{{ form_url_backoffice }}
+
+{% if form_details %}
+Pour r&#233;f&#233;rence, voici le d&#233;tail de la demande :
+
+{{ form_details }}
+{% endif %}
+
+Bonne journ&#233;e !</body>
+        </item>
+        <item type="form" id="2">
+          <by>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </by>
+          <varname>montant</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Formulaire pour la facturation</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">3</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Informations concernant la facturation</label>
+                <required type="bool">True</required>
+                <hint type="str">Cette information sera visible par le citoyen.</hint>
+                <varname type="str">info_facturation</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">2</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="3">
+          <status>56</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>56</id>
+      <name>Validation facture</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;p&gt;Montant propos&#233; par la coordination des salles :&lt;/p&gt;
+&lt;p&gt;{{ montant_var_info_facturation }}&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </to>
+        </item>
+        <item type="sendmail" id="2">
+          <to>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </to>
+          <subject>{{form_name}} : validation de la facturation</subject>
+          <body>Bonjour,
+
+Une demande d'autorisation d'&#233;v&#233;nement n&#233;cessite une validation de la facturation. Vous pouvez consulter la demande et valider en suivant ce lien :
+{{ form_url_backoffice }}
+
+{% if form_details %}
+Pour r&#233;f&#233;rence, voici le d&#233;tail de la demande :
+
+{{ form_details }}
+{% endif %}
+
+Bonne journ&#233;e !</body>
+        </item>
+        <item type="form" id="3">
+          <by>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </by>
+          <varname>facture_definitive</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>string</type>
+                <label type="str">Montant</label>
+                <required type="bool">True</required>
+                <hint type="str">Modifiez si besoin puis cliquez sur valider</hint>
+                <varname type="str">montant</varname>
+                <display_locations />
+                <prefill>
+                  <type>string</type>
+                  <value>{{ form_workflow_form_montant_var_info_facturation }}</value>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="4">
+          <status>21</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>21</id>
+      <name>Facturation</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="register-comment" id="1">
+          <comment>{{ form_workflow_form_facture_definitive_var_montant }}</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="sendmail" id="2">
+          <to>
+            <item role_id="{{ form_var_assigne }}">{{ form_var_assigne }}</item>
+          </to>
+          <subject>Facturation termin&#233;e</subject>
+          <body>Facturation termin&#233;e pour la demande {{form_name}} n&#176;{{form_number}} attribu&#233;e &#224; {{form_var_assigne}}
+
+`Lien vers la demande en backoffice &lt;{{form_url_backoffice}}&gt;`_</body>
+        </item>
+        <item type="jump" id="3">
+          <status>0</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>0</id>
+      <name>Choix des services</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>service</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Choix des services</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">7</id>
+              </field>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;address&gt;Cochez les services de la ville qui doivent rendre un avis pour cet &amp;eacute;v&amp;egrave;nement. Les services coch&amp;eacute;s recevront un e-mail les invitant &amp;agrave; rendre un avis sur la demande.&lt;/address&gt;</label>
+                <display_locations />
+                <id type="str">8</id>
+              </field>
+              <field>
+                <type>items</type>
+                <label type="str">Liste des services</label>
+                <required type="bool">True</required>
+                <varname type="str">liste</varname>
+                <display_locations />
+                <display_mode type="str">checkboxes</display_mode>
+                <min_choices type="int">0</min_choices>
+                <max_choices type="int">0</max_choices>
+                <data_source>
+                  <type>carddef:imio-doc-event-services</type>
+                </data_source>
+                <in_filters type="bool">False</in_filters>
+                <display_disabled_items type="bool">False</display_disabled_items>
+                <image_desktop_size type="str">150</image_desktop_size>
+                <image_mobile_size type="str">75</image_mobile_size>
+                <id type="str">6</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>27</status>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>27</id>
+      <name>Cr&#233;ation de fiche</name>
+      <colour>#999999</colour>
+      <loop_items_template>{{ service_var_liste_structured }}</loop_items_template>
+      <after_loop_status>66</after_loop_status>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="create_carddata" id="1">
+          <action_label>Cr&#233;ation demande d'avis</action_label>
+          <formdef_slug>imio-doc-event-demande-avis</formdef_slug>
+          <map_fields_by_varname>False</map_fields_by_varname>
+          <mappings>
+            <mapping field_id="5">{{ status_loop.current_item.id }}</mapping>
+          </mappings>
+          <varname>fiche_avis</varname>
+        </item>
+        <item type="dispatch" id="4">
+          <role_key>_observateurs</role_key>
+          <dispatch_type>manual</dispatch_type>
+          <role_id slug="{{ status_loop.current_item.text }}" role_id="{{ status_loop.current_item.text }}">{{ status_loop.current_item.text }}</role_id>
+          <operation_mode>add</operation_mode>
+        </item>
+        <item type="set-backoffice-fields" id="3">
+          <label>ID Fiches</label>
+          <fields>
+            <field>
+              <field_id>bo6636c47f-ce33-409f-b942-af37eac4b0b0</field_id>
+              <value>{% if form_var_id_fiches %}{{form_var_id_fiches}},{% endif %}{{form_links_fiche_avis_form_number_raw}}</value>
+            </field>
+          </fields>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>66</id>
+      <name>Historique des services consult&#233;s</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Historique des services consult&#233;s</label>
+          <fields>
+            <field>
+              <field_id>bo18a80be3-9cfb-4965-8708-26e92392783b</field_id>
+              <value>{{ form_var_historique_services }}, {{service_var_liste}}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;
+{% for i in form_var_historique_services|split:", " %}
+{{ i }}&lt;br&gt;
+{% endfor %}
+&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="jump" id="3">
+          <status>1</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>1</id>
+      <name>Demande d'avis des services concern&#233;s</name>
+      <colour>#FF00FF</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;p&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Service&lt;/th&gt;
+        &lt;th&gt;R&#233;pondu&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for id_fiche in form_var_id_fiches|split:"," %}
+    &lt;tr&gt;
+        &lt;td&gt;{{cards|objects:"imio-doc-event-demande-avis"|filter_by_internal_id:id_fiche|first|get:"service"}}&lt;/td&gt;
+        &lt;td&gt;
+            {% if cards|objects:"imio-doc-event-demande-avis"|filter_by_internal_id:id_fiche|first|get:"avis_favorable" %}
+            Oui
+            {% else %}
+            Non
+            {% endif %}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+&lt;/p&gt;
+</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>form_var_id_fiches</value>
+          </condition>
+        </item>
+        <item type="choice" id="2">
+          <label>Proposer la demande au CAE</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>60</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet de proposer la demande de l&amp;#39;usager au CAE. Le CAE aura la possibilit&amp;eacute; de donner son avis via un formulaire, ou de demander des informations compl&amp;eacute;tentaires n&amp;eacute;cessaires.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="3">
+          <label>Relancer les services</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>37</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet de relancer par email les services qui n&amp;#39;ont pas encore r&amp;eacute;pondu &amp;agrave; la demande d&amp;#39;avis.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+        </item>
+        <item type="choice" id="4">
+          <label>Services oubli&#233;s</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>67</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Permet de s&amp;eacute;lectionner de nouveaux services et de voir ceux d&amp;eacute;j&amp;agrave; interrog&amp;eacute;&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>37</id>
+      <name>Relance des services</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="external_workflow_global_action" id="1">
+          <slug>carddef:imio-doc-event-demande-avis</slug>
+          <trigger_id>action:relance_services</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="jump" id="2">
+          <status>1</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>67</id>
+      <name>Services oubli&#233;s</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;h3&gt;Services d&#233;j&#224; s&#233;lectionn&#233;s&lt;/h3&gt;
+{% for i in form_workflow_form_service_var_liste_structured %}
+{{i.text}}&lt;/br&gt;
+{% endfor %}</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="form" id="2">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>service</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Choix des services</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">1</id>
+              </field>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;&lt;em&gt;Cochez les services de la ville qui doivent rendre un avis pour cet &amp;eacute;v&amp;egrave;nement. Les services coch&amp;eacute;s recevront un e-mail les invitant &amp;agrave; rendre un avis sur la demande.&lt;/em&gt;&lt;/p&gt;
+</label>
+                <display_locations />
+                <id type="str">2</id>
+              </field>
+              <field>
+                <type>items</type>
+                <label type="str">Liste des services</label>
+                <required type="bool">True</required>
+                <varname type="str">liste</varname>
+                <display_locations />
+                <display_mode type="str">checkboxes</display_mode>
+                <min_choices type="int">0</min_choices>
+                <max_choices type="int">0</max_choices>
+                <data_source>
+                  <type>carddef:imio-doc-event-services</type>
+                </data_source>
+                <in_filters type="bool">False</in_filters>
+                <display_disabled_items type="bool">False</display_disabled_items>
+                <image_desktop_size type="str">150</image_desktop_size>
+                <image_mobile_size type="str">75</image_mobile_size>
+                <id type="str">486d244a-d2dd-4e31-92ca-3a9e823c1416</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="3">
+          <status>27</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>60</id>
+      <name>Date de la s&#233;ance CAE</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>cae</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>date</type>
+                <label type="str">Indiquez la date &#224; laquelle le dossier devrait &#234;tre propos&#233; &#224; la CAE</label>
+                <required type="bool">True</required>
+                <varname type="str">datecae</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <minimum_is_future type="bool">False</minimum_is_future>
+                <date_in_the_past type="bool">False</date_in_the_past>
+                <date_can_be_today type="bool">False</date_can_be_today>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>7</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>7</id>
+      <name>Retour avis CAE</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Stop remise avis</label>
+          <fields>
+            <field>
+              <field_id>bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</field_id>
+              <value>True</value>
+            </field>
+          </fields>
+        </item>
+        <item type="external_workflow_global_action" id="2">
+          <slug>carddef:imio-doc-event-demande-avis</slug>
+          <trigger_id>action:out_of_date</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="_cae">_cae</item>
+          </to>
+          <subject>Demande d'avis du CAE pour une autorisation d'&#233;v&#233;nement</subject>
+          <body>Bonjour,
+
+Une nouvelle demande d'autorisation d'&#233;v&#233;nement n&#233;cessite votre avis, vous pouvez la consulter en suivant ce lien :
+{{ form_url_backoffice }}
+
+Date de retour souhait&#233;e : {{ form_workflow_form_cae_var_datecae }}
+
+{% if form_details %}
+Pour r&#233;f&#233;rence, voici le d&#233;tail de la demande :
+
+{{ form_details }}
+{% endif %}
+
+Vous aurez la possibilit&#233; de compl&#233;ter un formulaire avec votre avis, demander davantage d'informations aux services concern&#233;s, ou encore notifier que la demande rel&#232;ve d'une communication au Coll&#232;ge.
+
+Bonne journ&#233;e !</body>
+        </item>
+        <item type="register-comment" id="4">
+          <comment>Date de retour souhait&#233;e : {{ form_workflow_form_cae_var_datecae }}</comment>
+          <to>
+            <item slug="agents-traitants-cae" role_id="20c778214ca646f09f5c2da98c2bb6c7">Agents traitants - CAE</item>
+          </to>
+        </item>
+        <item type="set-backoffice-fields" id="5">
+          <label>Date CAE</label>
+          <fields>
+            <field>
+              <field_id>bobed095ba-2099-4a5a-850d-26b1c03c1136</field_id>
+              <value>{{ form_workflow_form_cae_var_datecae }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="choice" id="6">
+          <label>Compl&#233;ter le formulaire pour rendre un avis</label>
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
+          <status>9</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;afficher un formulaire dans lequel le CAE peut formuler son avis.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="7">
+          <label>Demander plus d'informations</label>
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
+          <status>8</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Si le CAE a besoin d&amp;#39;informations compl&amp;eacute;mentaires pour rendre sa d&amp;eacute;cision, cette action va permettre de pr&amp;eacute;ciser quelles sont les informations manquantes et les communiquer aux services s&amp;eacute;lectionn&amp;eacute;s.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>8</id>
+      <name>Demande d'information CAE</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
+          <varname>demande_info_cae</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Demande d'information</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">2</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Sp&#233;cifiez les informations n&#233;cessaires</label>
+                <required type="bool">True</required>
+                <varname type="str">texte</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>15</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>15</id>
+      <name>Choix des services apr&#232;s CAE</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="{{ form_var_assigne }}">{{ form_var_assigne }}</item>
+          </to>
+          <subject>{{ form_name }} : Notification de r&#233;ponse CAE</subject>
+          <body>Bonjour,
+
+Nous vous pr&#233;venons que le CAE souhaite obtenir des compl&#233;ments d'information concernant la demande d'autorisation d'&#233;v&#233;nement suivante :
+{{ form_url_backoffice }}
+
+{% if form_status_changed %}
+Le statut de la demande est pass&#233; de &#171; {{ form_previous_status }} &#187;
+&#224; &#171; {{ form_status }} &#187;).
+{% endif %}
+
+{% if form_comment %}Nouveau commentaire : {{ form_comment }}{% endif %}
+
+{% if form_evolution %}
+{{ form_evolution }}
+{% endif %}
+
+Nous vous invitons &#224; s&#233;lectionner les services concern&#233;s pour qu'ils puissent &#224; nouveau rendre un avis/ajouter un compl&#233;ment d'information demand&#233;.
+
+Bonne journ&#233;e !</body>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;{{ demande_info_cae_var_texte }}&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="form" id="3">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>service</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Choix des services</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">6</id>
+              </field>
+              <field>
+                <type>items</type>
+                <label type="str">Liste des services</label>
+                <required type="bool">True</required>
+                <varname type="str">liste</varname>
+                <display_locations />
+                <display_mode type="str">checkboxes</display_mode>
+                <min_choices type="int">0</min_choices>
+                <max_choices type="int">0</max_choices>
+                <data_source>
+                  <type>roles_evenement</type>
+                </data_source>
+                <in_filters type="bool">False</in_filters>
+                <display_disabled_items type="bool">False</display_disabled_items>
+                <image_desktop_size type="str">150</image_desktop_size>
+                <image_mobile_size type="str">75</image_mobile_size>
+                <id type="str">5</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="4">
+          <status>27</status>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>9</id>
+      <name>Formulaire Avis CAE</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
+          <varname>avis_cae</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">Remettre votre avis</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">2</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Avis CAE</label>
+                <required type="bool">True</required>
+                <varname type="str">texte</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1</id>
+              </field>
+              <field>
+                <type>block</type>
+                <label type="str">Ajouter des fichiers</label>
+                <required type="bool">True</required>
+                <varname type="str">fichiers</varname>
+                <display_locations />
+                <anonymise type="str">final</anonymise>
+                <default_items_count type="int">1</default_items_count>
+                <max_items type="int">10</max_items>
+                <add_element_label type="str">+</add_element_label>
+                <label_display type="str">hidden</label_display>
+                <remove_button type="bool">True</remove_button>
+                <block_slug type="str">fichier_optionnel</block_slug>
+                <id type="str">3</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>11</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>11</id>
+      <name>Avis CAE</name>
+      <colour>#FFFF99</colour>
+      <visibility />
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Avis CAE</label>
+          <fields>
+            <field>
+              <field_id>bo72b706f6-3ae0-446a-9d5d-437a78680f76</field_id>
+              <value>{% if form_var_avis_cae %}{{ form_var_avis_cae|retour_chariot }}{% endif %}{{ form_workflow_form_avis_cae_var_texte }}</value>
+            </field>
+            <field>
+              <field_id>bo742affe6-4bd0-480a-99a3-b5204050b181</field_id>
+              <value>{{ form_var_liste_avis_services }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}------------------------------------{{ "&lt;br&gt;&lt;br/&gt;"|safe }}{{ now|datetime:"d/m/Y H:i" }}{{ "&lt;br&gt;"|safe }}{{ "&lt;h3&gt;Service CAE&lt;/h3&gt;"|safe }}{{ form_workflow_form_avis_cae_var_texte|linebreaks }}{{ "&lt;br&gt;"|safe }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;h4&gt;Avis CAE&lt;/h4&gt;
+
+&lt;p&gt;{{ avis_cae_var_texte }}&lt;/p&gt;</comment>
+        </item>
+        <item type="editable" id="3">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>11</status>
+          <label>Modifier la demande</label>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="sendmail" id="4">
+          <to>
+            <item role_id="{{ form_var_assigne }}">{{ form_var_assigne }}</item>
+          </to>
+          <subject>{{ form_name }} : Notification de r&#233;ponse du CAE</subject>
+          <body>Bonjour,
+
+Le CAE a rendu son avis concernant une demande d'autorisation d'&#233;v&#233;nement. Vous pouvez le consulter en suivant ce lien :
+{{ form_url_backoffice }}
+
+{% if form_details %}
+Pour r&#233;f&#233;rence, voici le d&#233;tail de la demande :
+
+{{ form_details }}
+{% endif %}
+
+Bonne journ&#233;e !</body>
+        </item>
+        <item type="choice" id="5">
+          <label>Valider pour envoi au Coll&#232;ge</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>44</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action valide l&amp;#39;avis rendu par le CAE et permettra &amp;agrave; l&amp;#39;agent traitant de cr&amp;eacute;er le point Coll&amp;egrave;ge n&amp;eacute;cessaire.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="6">
+          <label>La communication est plac&#233;e dans iA.D&#233;lib</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>31</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action est &amp;agrave; utiliser si la demande de l&amp;#39;usager ne doit pas faire l&amp;#39;objet d&amp;#39;un point au Coll&amp;egrave;ge. Il s&amp;#39;agit d&amp;#39;une communication simple.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="7">
+          <label>Ev&#233;nement g&#233;r&#233; par la Police Administrative</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>59</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Ce bouton classe la demande, puisque celle-ci sera g&amp;eacute;r&amp;eacute;e par la police administrative.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>44</id>
+      <name>Cr&#233;ation du document avis des services</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Liste des avis des services</label>
+          <fields>
+            <field>
+              <field_id>boc46a19a3-d87a-4c5e-be4e-4e26b3b09fc3</field_id>
+              <value>{{ form_var_liste_avis_services|format_liste_avis }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="export_to_model" id="2">
+          <model_file_mode>file</model_file_mode>
+          <model_file>
+            <base_filename>avis_services_2_.odt</base_filename>
+            <content_type>application/vnd.oasis.opendocument.text</content_type>
+            <b64_content>UEsDBBQAAAgAAOFs21hexjIMJwAAACcAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi92bmQub2Fz
+aXMub3BlbmRvY3VtZW50LnRleHRQSwMEFAAACAAA4WzbWAAAAAAAAAAAAAAAABgAAABDb25maWd1
+cmF0aW9uczIvdG9vbGJhci9QSwMEFAAACAAA4WzbWAAAAAAAAAAAAAAAABgAAABDb25maWd1cmF0
+aW9uczIvZmxvYXRlci9QSwMEFAAACAAA4WzbWAAAAAAAAAAAAAAAABoAAABDb25maWd1cmF0aW9u
+czIvcG9wdXBtZW51L1BLAwQUAAAIAADhbNtYAAAAAAAAAAAAAAAAGAAAAENvbmZpZ3VyYXRpb25z
+Mi9tZW51YmFyL1BLAwQUAAAIAADhbNtYAAAAAAAAAAAAAAAAGgAAAENvbmZpZ3VyYXRpb25zMi9z
+dGF0dXNiYXIvUEsDBBQAAAgAAOFs21gAAAAAAAAAAAAAAAAcAAAAQ29uZmlndXJhdGlvbnMyL2Fj
+Y2VsZXJhdG9yL1BLAwQUAAAIAADhbNtYAAAAAAAAAAAAAAAAHwAAAENvbmZpZ3VyYXRpb25zMi9p
+bWFnZXMvQml0bWFwcy9QSwMEFAAACAAA4WzbWAAAAAAAAAAAAAAAABwAAABDb25maWd1cmF0aW9u
+czIvcHJvZ3Jlc3NiYXIvUEsDBBQAAAgAAOFs21gAAAAAAAAAAAAAAAAaAAAAQ29uZmlndXJhdGlv
+bnMyL3Rvb2xwYW5lbC9QSwMEFAAICAgA4WzbWAAAAAAAAAAAAAAAAAwAAABtYW5pZmVzdC5yZGbN
+k81ugzAQhO88hWXO2EAvBQVyKMq5ap/ANYZYBS/ymhLevo6TVlGkquqf1OOuRjPfjrSb7WEcyIuy
+qMFUNGMpJcpIaLXpKzq7Lrml2zra2LYrH5od8WqDpZ8qunduKjlfloUtNwxsz7OiKHia8zxPvCLB
+1ThxSAzGtI4ICR6NQmn15HwaOc7iCWZXUXTroJB59yA9i906qaCyCmG2Ur2HtiCRgUCNCUzKhHSD
+HLpOS8UzlvNROcGh7eLHYL3Tg6I8YPArjs/Y3ogMpuVe4L2w7lyD33yVaHruY3p108Xx3yOUYJwy
+7k/quzt5/+f+Ls//GeKvtHZEbEDOo2f6kOe08h9VR69QSwcItPdo0gUBAACDAwAAUEsDBBQACAgI
+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
+sEOLEzj8sAeGr0Oyy5OnJ6entZPzEgVLBNEKk0rhm2sq+Vy5Xmppc7kDLyD+cU04n/SupZSlQrEt
+sx7FSFF74q64wVuqfOBTiW40tCpZNcs8ELBVoqAeBWZcOo9x8A3DPLxKeRKh/hehxkzc5udKiNZ5
+60yD9s+vV4nmTe/QT54hQHqjZBeaeoh59cb/Qmj9NnrdYn2hNug7hW+J3Ib8jDZwVlxgGDNRyDnK
+taIQy39yjp5E46HlPKjqmicsTyncRxoJFDVCBPMTSehmgdslzAp69IrXprVpyw43/jZX6aSGp73J
+vBfiL2LbU4mU/XX/IDNeW/pMbPkZrXy3CaP1G2xs+f8hEbpVD8p+TY3lkyVNw7iKlcmUCV/9/F/2
+7Qejji8VbsfMk3c5sw3AgGtLBtZqg3GDa089ZD/pwZWEvckEdXopDJ07U4cvkFGGNTgjcokmE2Eq
+fNWJHcWiAVZWSop9jq/stFBNllDnnTbiEbBNT5JX+Fml76AtD5nwvFqPcoGrE8IP0Arr09+UpqX6
+BR02hlc25yf9CBioOZ2Y8oGZmLEHWBBsq8BqHy9OTi73PBHoMOaeYxEmiQ94PLWANM0rw+hySXGe
+nS1uLFteAvHnMRtCTErNvzsXU7L59D07tt6TTaGMj2jvMjtrYLqllOzKwPcCpAS5JTKLCGb6gAEv
+LULX+bkXcisEagGXNqnqeK9nXZqX0ZnFPxdeeNiwuvGvhGrR/zVu/gNQSwcI6FjP5CYHAADxMQAA
+UEsDBBQAAAgAAOFs21ghB0OpfwoAAH8KAAAYAAAAVGh1bWJuYWlscy90aHVtYm5haWwucG5niVBO
+Rw0KGgoAAAANSUhEUgAAAWoAAAIACAMAAACcgdZwAAADAFBMVEUbHCIZHCg0JxwuKy4uMjs7LSEy
+LjEyMTYqNEU2OkE7RlZGMihENjVBODJEOzpIPDZJPDxOQjlaSjxgTT1JRUZMSUxBS1hLU15cTURc
+VVBBUGJLVGNJXHFTXmtbW2BPYXReZG9SYnRWZ3xaZndcanpjT0FiU0VnU0hqVURpVkluWUdtWkxl
+W1ZhX2F1ZlpoZ2lqa3JudX50bGd5cmt1cnNwdn19dXB7eXlbboJfcoZjcoFjd4tqcoNoeoxqfJFz
+d4B2fodxfo57f4ZxfJByhJZyh5t5hJN5hph7i5x2i6B+kqaHcl6CdG6Gem+JdWGOeWOPfW+LfXGS
+fGuVgGuUgnKThnuWin6YhnSdinWai3ygjHmmknyIhoeAiJSDjp2KjZSCkZ2OkZaMk5uQjIiXko+U
+k5OXmZyYlpaYmJWcmpqFma6PnaeYnaONoreboaeUqLqrmIWjnJakoJ2oop6zoIy4o46wpJi4pJC8
+qJSioqKjpqmkqKuppqOtqKOoqKmlrLOjrrqorrOrsbWssrm0raazram5rqW0say6s6uzs7S2t7m3
+ur25trS/ubK7uruZrcGdscaousynvNG0vMSwvcu4u8Cuw9e6w8uyw9Sxxdm3yNe2yty9x9G8yNW5
+zd6+0d+80OLAq5fGsZ3JuKTDvLXSv6vOwK/OwrfMxb3Swa3UxbPXybvZxrLYyLfbzbzf0b/j0r3B
+wcDDyc7KxcLOycPNy8jDy9PDztrJztPE09zL09rSysPVz8jX0cvd0sTb08vc2MzR0tLR19zX2dnd
+1tDe2dLb2trA0+LF2ObF2ejL3OHT2+HR3ujZ3uLc4d/O4OrO4/LU4u3a4Oba4+vb6O7T5fLV6vnb
+6fTl1sXh2s7o18ft3szg2dPi39zk4Nzs4tPq5Nzy59jy6Nv57trj4+Pl5+jn6Ofj6Ozs5uDt6eTq
+7Ozl7PLg7fjq7vHl8Pfi8fns8fTr9Prs+/707ePz7un57uL08Ov89eT58+z9+e7y8/Tx9fn0+fz5
+9vL7+fT+/v6CnfZXAAAHOklEQVR42u3aDWzU5R3AcbK5qchwdhPdHC6gEhlCa7sXyTDbMqZOFDZk
+C2+OKdYNAhRrYzgLQ6zbWhmjvARmCA4LQ4IOX8KYUENhisgIQyQMMhA6crG0yNZWLQrH/fa/Y1mc
+hiZLtiUbn2/TXJ/n/7+75JPnnrvrXZfQf6kuCFCjFmrUQo0atVCjFmrUqIUatVCjRi3UqIUaNWqh
+Ri3UqFELNWqhRi3UqFHrf576xAenGr+45996F99ZijrpyS5/Zz3Vvf0fk/1e7uQal+78F+9i4wNW
+da4fjPxmrK05emD2lgejY/r9mWRqReqibTEndTSqU03JcFVqQ9Snth+ZveVHNa8eqXmppjWap6ea
+OqZXRXNqVu42GlKVsTb1bDz/bPXMiOdTM2NLat1bD6dn/3xz+brI/rjy5KkZqbaznfrdO/efF/vO
+iz9/L9utfeiyx9+ImHb9ib5bK27aeNm0iQfWR+y/omPB0z2bP3msW+UPP/rGOzdk++zsuPjVNQv7
+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
+</b64_content>
+          </model_file>
+          <convert_to_pdf>True</convert_to_pdf>
+          <varname>document_avis_services</varname>
+          <backoffice_filefield_id>bod290d5a2-7f94-4ec0-8696-7f766261af9f</backoffice_filefield_id>
+          <attach_to_history>False</attach_to_history>
+          <method>non-interactive</method>
+          <filename>avis_des_services</filename>
+        </item>
+        <item type="export_to_model" id="3">
+          <model_file_mode>file</model_file_mode>
+          <model_file>
+            <base_filename>details.odt</base_filename>
+            <content_type>application/vnd.oasis.opendocument.text</content_type>
+            <b64_content>UEsDBBQAAAgAAKQqc1BexjIMJwAAACcAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi92bmQub2Fz
+aXMub3BlbmRvY3VtZW50LnRleHRQSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABgAAABDb25maWd1
+cmF0aW9uczIvdG9vbGJhci9QSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABgAAABDb25maWd1cmF0
+aW9uczIvZmxvYXRlci9QSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABgAAABDb25maWd1cmF0aW9u
+czIvbWVudWJhci9QSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABoAAABDb25maWd1cmF0aW9uczIv
+cG9wdXBtZW51L1BLAwQUAAAIAACkKnNQAAAAAAAAAAAAAAAAHAAAAENvbmZpZ3VyYXRpb25zMi9h
+Y2NlbGVyYXRvci9QSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABoAAABDb25maWd1cmF0aW9uczIv
+dG9vbHBhbmVsL1BLAwQUAAAIAACkKnNQAAAAAAAAAAAAAAAAHAAAAENvbmZpZ3VyYXRpb25zMi9w
+cm9ncmVzc2Jhci9QSwMEFAAACAAApCpzUAAAAAAAAAAAAAAAABoAAABDb25maWd1cmF0aW9uczIv
+c3RhdHVzYmFyL1BLAwQUAAAIAACkKnNQAAAAAAAAAAAAAAAAHwAAAENvbmZpZ3VyYXRpb25zMi9p
+bWFnZXMvQml0bWFwcy9QSwMEFAAICAgApCpzUAAAAAAAAAAAAAAAAAwAAABtYW5pZmVzdC5yZGbN
+k81ugzAQhO88hWXO2EAvBQVyKMq5ap/ANYZYBS/ymhLevo6TVlGkquqf1OOuRjPfjrSb7WEcyIuy
+qMFUNGMpJcpIaLXpKzq7Lrml2zra2LYrH5od8WqDpZ8qunduKjlfloUtNwxsz7OiKHia8zxPvCLB
+1ThxSAzGtI4ICR6NQmn15HwaOc7iCWZXUXTroJB59yA9i906qaCyCmG2Ur2HtiCRgUCNCUzKhHSD
+HLpOS8UzlvNROcGh7eLHYL3Tg6I8YPArjs/Y3ogMpuVe4L2w7lyD33yVaHruY3p108Xx3yOUYJwy
+7k/quzt5/+f+Ls//GeKvtHZEbEDOo2f6kOe08h9VR69QSwcItPdo0gUBAACDAwAAUEsDBBQACAgI
+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
+fCXvWhT7InDMxO3qnNkyB29TMFD+KdwaOF/NWnyq6Y//hcj4nVM5232xU5x3Wp3y0RpS+bez23Wp
+CRMmCktatT6d0O5nSetLMh5ZzoOqO/1IDYnNvpGi+kxuaQnmJ7AJTAJ3QJC3cBQVLzM33ZU9rv2d
+q9iDVE/HEt2pJML2Mp3M99aVPqF59YbDQKGhjKJk+gZvDuP+sJLf4j2avzNt+GRpt6EfuZndMZkx
+4WsW+cuJ2nDU86XCjeM9Od+ZbQgajA3lwBilKazJ93b+5YeEuoagP5mQTi9tgQtnO3IJZJxDAe3I
+hkSbiSgTvrqEHrJ4SLwapShzsLyTo9ostVNDe0RGeKr70kaFHy99B2V4xIRnbz3IBXkngh+gkLqT
+3zQmlbrFHhvDC/fxUx0EDHH+DcAH27HtwxBxc+WuhTg7vvh4eVkBYr5y6iKkrdZ+jsMszFsS5UH6
+zwNpi2B2jvu7E+SKo4Dv+UuYfdkWqH1k3x0zsxaVP1siXRPzXsBW4IKW+xGi6AFQAkpDUHJ+7oUL
+CkFawJUxOz30c5q8GuLbt3s8zGjk2JIId6iy5kVeToeomzQ+W/DQLAXoe7yFCctEmWwvfIOp/uZ1
+5HrRi9o3/wFQSwcIpYDMfrkGAADqLQAAUEsDBBQAAAgAAKQqc1AiActR/AMAAPwDAAAYAAAAVGh1
+bWJuYWlscy90aHVtYm5haWwucG5niVBORw0KGgoAAAANSUhEUgAAALUAAAEACAMAAADC/cfpAAAB
+IFBMVEUpKZQxMZg4OJxERKFKSqRQUKdSUqhbW61Qf6xgYK9jY7Bra7VwcLdzc7h9fb5Yha9jjbVx
+l7t3nL56nb9MqN5XruBesOF6nsB9oMFhsuJqt+NuuOR2vOV+wOd/weiPj4+ampqkpKSsrKyzs7O7
+u7uDg8GKisSWlsqbm82DpMSLqsiWs82atc+fudGnp9OsrNWkvdS0tNm7u9yFxOiKxumOyOqUy+ub
+zuyuxNmxxdm7zt6k0u2u2O+/0OCx2fC53fK/4PPDw8PMzMzBwd/T09Pa2trNzebJ1+XM2ebW1urQ
+3enb2+3E4vPM5vXV6vbb7ffa7fjk5OTg4O/s7Ozk5PHg6PDq6/Tk8fnu8/fo9Pvz8/Pz8/nz+fz+
+/v4AAAD///+mWwLnAAACl0lEQVR42u3VXU/bMBSA4YpGYYrVsgFDiI+tpGlp91VauoBapCyZQ9Fo
+gSxdtMb1//8b81q0Oy6Qpi2R3mPZPrl7cuIcV3QZo4IaNWrUqFGjRo0aNWrUqFE/W62eyIur7tlW
++/RrT6mVV12L9W6WbLUpVcha9+vKEsKqd4SjVbXmdITQWUW0ekK0RGVub94WUt1S1dNP9twRNXVr
+Xwu7VlOZ9d1u16vWvDrYqA2KqB60lN13NrO+09LKkHtOW2cbTqdWt9pOZb4p5mXpIZm1/gxtq1Sd
+77G+txn9GjXqf6lW5VOPXmx1Jx/VT52VqtbvL7vbWzvb3Vfdkqk/dPdvXr47K5N6NLmc7Jz9+LY/
+ooegRo36+eqr6Z90ubxblkMdHI5nw+nV+MG/04fBxa4fjC+Kr15cvd6733tzMDvyPx/Pzg+OHnaP
+F8VXn/vT4Wzo3/lTHQSB7y/H4+LX+j6YrsZ6Cb6YCBb0ENSo/4c6N8Os+Tpfz8Krkzj34jyJpEy1
+lIlOQvMUm3h8kYKqk9SNPRlFobG60shlHEbSk7EusFp6YdOLQi/0pPS88PcMzXSbUkY5f+NfVruJ
+lzTzNE0THUWJziPPpLE574VWp2/jhgnXHAqv0Ujc6MRtuCdmFLtfR2mzGcXNME7NmTb1Dl2zh424
+jLdMrMuo5kZHjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1
+atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSo
+UaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNG/WT8Aud/hKrX
+lhewAAAAAElFTkSuQmCCUEsDBBQACAgIAKQqc1AAAAAAAAAAAAAAAAAKAAAAc3R5bGVzLnhtbO1b
+bY/jthH+3l9hKEi/aS3J++reXoAeemjSu2uRvfRrQEu0zZ4kCiS1Xt+v7wxfJEqWvFrv5pKimwAJ
+zHmGHM4bZyjumx8einx2T4VkvLwN4rMomNEy5RkrN7fBL5/fh9fBD2//9Iav1yyly4yndUFLFUq1
+z6mcAXMpl4bIOb8NtkpVy/mcV7Q0o2dcbOZJFN3Mze/A8qRSLlSD3+12Z7uFxn7+eY60UNEHNW/Q
+WyIAXYtyyYlkclmSgsqlSpe4kpNq6YGXeitmQN5vpvICNEx5URHFVjn1J8kE2U2dBbGgQJ9dVOqI
+di7mglZcKIfGzU9dDLGd3aJpJu8XwT53QRWZyoxYn/chZ+WXIZvGNzc3c01toFtV5ONQpDromk+V
+50Hm4ZqP2I+vp07D18CXNHZPGzGrWuRayCyd05wii5zHZ3HjphuRZYO7AhMv5sBHFAnvGd1910h1
+NGjOe0GTiUU23QcXmb//lORp61Vi08TymtclCAbxb+ejDxUVDEkk12zLzgz9oDi6hTiaI6axJaO5
+20EDHVoWJg0LGbJSUcGrpcfdtSnyT7erXs3jV2Q1PVQ02Ocu62JFxWR7gO0Pog22uTtq/51goAEP
+nh6Fo4k6m3ssKWuQ48j5CQ5iterN0EknRG1Hwvx6/hGI+j8fP7TBLoqpGkVsJ/GlglWT06ZBd5yZ
+FyOxG88BEdJ7DPhgZnfsHZpJ8NadkGsOp+OapDTMaJrLt2+MzZvhmfmNkt0G7wWld6SUcTCDg8eB
+CpbvW1ow68yAxHBDSzAAuILcMSmD+fFVPjBwU22/2R2wrQcW+zOpuPxLH2hGjwogeEHKDqJiKgWT
+3xPBtG89QTiz28dlA9wE0YxuniGaZ4HTjLOXihbPkeATV1xvd/bup3/M7t6NaqcPnKKeF5IOHWWa
+eB7yxeSbj4WdHTd1qttHRtekzm316ma2km4EqbYsDRzW/g4rOH+oUAyqXdydVIJ/oVBj5BxS/3eL
+88sLch7M8JCD8ynPG8pVcrNOIdbWfLmDqUJeKZ0tSh7ib8sityTjuxCklVSFD7dBdLZIi0HivkdU
+UOWGUFPRUFYkhXIz3HLBvnLMyghNro+C73FT6SEUEuXUWQ+gA3NaJeewjx1T29BUtmuSS8+/KiKI
+1ndH25qE+JDUiuMa4HQso9xASV5tiVtAi7ESlED9CSZiqXIUPEFRtoJnwJ6LUK06TsXKjOLpgF2N
+vxknpJMRTkrwG15J9LpxsRs4yn2wm1pSUEOJVtWLW2dRoqYdocYSNziTpkv2FehxUik9lpNyU5MN
+DK2FHkjhyFYCPOavf2s0RBVUEuEXKkq9u8E1Qzg2STkc2i0SV3fIODq7qBplO0Ec9evWUaxEjvDu
+0+HaWLfn9GEku+pFG4jZem/Rhrpl/WUb0o+fgtaAnXwwJUk0Fg+Oui5YgAvwzlLeBolJAQxs3vza
+7qstLbVlw5xkGdhFC6qzQ84K1uxtovtXdZmq2kyI2QVUAEoBOz8eH86vw4xBlihxEShoLuI2eLsR
+VIGm28h9dfM/rJv7jkZdNut7n6AFYWWIVybOBQ9dtKrltg8xlb6PAtdNSSW95H5qlJmmxEu8OfV9
+zDRiKy4wbtAp4bwBD8thcfT45y4cCr7rLQ4jvfD+QmkVKr6haostIEboYwv7CxrHv4N4y4jIgtEs
+48ybEwmKxWBrQ+9wvr9TknkxPzodDDR3eOGwKCXGtQ/4DAO/JtGvK57th8R6LB8WREA+ApVVWByc
+J7o4aMdXXClsv6BuiBMkGf9KISTg/zXJ+8dyYwRdVZS6qiD5juzlY8lpJPPoQHSJ57fvPfo57rwN
+9JE01WkDDpa20BPbAcc+VnQ7eiv+WJ4c3MfxlGdFmQRy8jbgUYkbxLjMbZpFqdvwfSRsh0IBDs8q
+J3svWGY++TmheHKUjUbY+dXUCNNlw5ayzRbCK44vvp+upQ9QTpyy/SOJJscpJwR3xyGTSQ4Zv6BH
+ujuZaXp6R3Rj+IKeAooR5IkJ2Wbd5yRk/R3C3InqRkp2KdqV3JVpNJ6kR2o/M4YcUARDLwqd+mST
+G51Z6gDzN3KJaWWeJ3FDtzJP9qkfoZ19eEGPYnq+ox71Qtb/X41iW3ph4oqHzwSLmMWn2KVX2U2q
+zlwRymultZ/Te6yU42efKy9QvU2N/kX0fRv9O3sOrXiejQe/ZvGIhsuRh3nbQBzhbgCa/xSvSI57
+RfI7e0XyfK9YXHwrr8A65IleoVlO9ooR7ud7xeK4Vyx+Z69YPN8rbLH5Dbwiip/sFZrlZK8Y4T7R
+K/5FNhTN8pmptlfpugVCZh36CX7RPaKG7d7eGsruHI5QEIm3bHgX6CgT7vIN3BYB+srkhS7X9VWg
++ewSwT/X0VG7XEbRdLO856J4xCwIeRGzJCebZZJizi+uL5++8bt6pR7Zex9y4vYXv+32r8+zxu81
+sIaqVphPPqavkDxn2QhkxzJ8yaC9dhhhV2ovvJ+ga3zYgir4QFY0H9E0YmYdwEmV/RMP9ZHk/dzE
+7cxyqf/5o5vl3ySvxwJAm6UD+MaXPTldKzRVfHPTNZYwR6C7B9J6YfpDpx0006Puwg6xf4Fv1aQb
+OReTh9r6p6EEPaAOXgs3rWCvD4EDIcSnPER5kaxj3LD2m0yfxCXT3x5Aidr7qPvMi2ESQtO8KfHJ
+z9C0PYidWw+ueZ7zHc3C1d5cOsHx5KljUDagjm17okKSV4V0FbJ4VUhXIeevCukq5OJVIV2FXL4q
+pKuQq1eFdBVy/aqQrkJuXhXSK8yi/yONdEm+mkquqISOoVyzTW2//jeE0Nbpa84V/h7SWGw/fZi3
+l/fYIeCnDzPoGGWjKfuyyucxVyX49Arnc+/Xcb/TJaRlNiYgGxbQTY8aaSUYWmb0a495sao/FZim
+ZFw7dpJWC9jOWBorU6H/ygZPeu+xr56tfeOLDQzMydLQEVzftAFrkz1Yt9OofKyKOBgA9dorTbH9
+ZRKfRVFsGylNcB/Fk5uzq9Ed2iVAgSrkguEfTFhTc6EEYSrod9wjX2F7w6blSwbbvWTs4V7n6avd
+8UawrHmxnEb47xDCmjgZJK6IbNURnV1Fl60EPk7Uq72Hs58LDnFG2pKXdHQWSAX4dzPW5Q5BWuNH
+6LaF7yFcTIYFeWgFBSHbZ/AWIGnlVGz8IzqL4ut2O+4pJQgK3qDxukOP4gEMWeNV6hBk9BKEZP+p
+pTKRYeLFjAtIbM5j208W/tVo5+pz2PfdbreU4AM7/WPuq8AbPJyojdLDsLQEe3ncDVbvRrkTrP0L
+El9mL5y97NCbfj78p6tv/wtQSwcIMVgT4KYJAAD6OgAAUEsDBBQACAgIAKQqc1AAAAAAAAAAAAAA
+AAALAAAAY29udGVudC54bWy9WM1u4zYQvvcpBBXoTaF/knajJt7DFgbaJsWiToveApqkZKKUqJKU
+7bzNXvsa7Yt1KEoy5UQON170Yluc+Ybf/JLyzft9IaItU5rL8jaeXkziiJVEUl7mt/FvD8vkXfx+
+8dWNzDJOWEolqQtWmoTI0sB3BOhSp04qpbyNN8ZUKUKyYqVbvZAqR7PJ5Bq557jFEK3nptff7XYX
+u3mj+/ArsrLEsL1BnXauKBUvaYPlOcoRxQYnW852X3eI/cYULyKm19fXqJH2qpqPmJ6iP+7vVmTD
+CpzwUhtceg5ssAIHalWmEmuu0xIXTKeGpNb5LlKpp5w24XULepuHYkEV4l1U2PC1YL4RqvAu1IrV
+haT6cFWZEwm7QopVUplO2+YjdDOrO/DWPAkW7K9V9tEFMzgUbHV97F7w8s/xMrDSTjWToZvstUgy
+OZIUmYWakRngZn0ySU+zqpVoSFKCmGAWotH0Ytq3w+lWuzxqNarmNLxM5tT3JpOq2LfgfqPWAttX
+THELxgIoASCRNINGMUzJKj0Y8A0SLMihklTez5RM1iW0Mcyhl8xbWDqwcNwIJ2MynSCr03vFmaBh
+Xsmk0McuWfQw5RYfnvZmNw9v8Dq8PRplH13WxZqp4ATDpHzWYeDm7mRB7RSHCHjq5KS6TdHAudfO
+hkapQwj5hgJpo+pZGIwQbDYjU+Adugdh83F/55d9aESPK1wTxavgUem0B8Usi9HjyPYY29p50A84
+u70eAcyQEx9OOvr6SRdHbSy9a8EsXnR3AEdYo34hg7tAkmHCEsqI0IsbV179cuSebRBu46VibIVL
+PY0jONc6pYKLp4MsjgYWrDDJWQm5hqrTO651jE7vcsehI5pSiVYAy17Y7BtcSf39saJbPUlAyQKX
+A42KGwLVtcWKN2X8GeSct69zA70Aai42Z1DzMvC25Dxpw4pzGPwijWzcjT789HO0+jAanWPFkPB8
+IXa2UMLoeZpfjB8aa7t2HdcGKtRwkjR2+n5sPgfefJz2e7XcK6xwrnC16QSwYK/7zUPiUCu4BVOs
+aNwZtpe9pILjkSnDmY76t4EUxgfMm8lk8u1VNr+MPUm/UXKkYx30+J4gP3sL+aU9uh9nk8ffsahZ
+gAsvEGWX66vvPoPo/Cyid3jNxP9CdMWIeVYRGhZhAvUE2mefgxMwyttrTIaFPoSWSFEX0KWZbH/C
+tbku4XiErQ5rOa6AMil8ts92OnYEjVZ8K1hL+tQ/2NAtbpo3E83+quEtt++c54tRs0S5rgR+SmRt
+4EWBJQKOXninhJO6Ebuw/ShErY0b1Jb+WcYeui4/zwr8PNvID+6F8Ww7S57Xyk2uU8Fvku1wg2nj
+itKzZy80jxRe87jQcQuvngM/4pzZ/nngBiK6gC/FIsqiCtZbJtU4emk3OUKHo1b12jjgStY6MWFo
+GBQLe+YL8e/flinZ4KL651MaBUDhfgYTjdWqBx5AyI/wCRtT/3Rx3YIGjYRG/gVa/AdQSwcIMW8F
+zFwEAABGEgAAUEsDBBQACAgIAKQqc1AAAAAAAAAAAAAAAAAVAAAATUVUQS1JTkYvbWFuaWZlc3Qu
+eG1srZPPasMwDMbvfYrg64i99TRM0x4Ke4LuAbxETgWObPynNG8/JzRNxig00Jtlyb/vk5B3h2tn
+igv4gJYq9sHfWQFU2waprdj36av8ZIf9ZtcpQg0hyulQ5HcU7mHFkidpVcAgSXUQZKyldUCNrVMH
+FOXfejkq3aOFgS27oY2F68T1rZxA2iZqVMzVNyG4OvA4pJSRVmusQS4Io9J+U8wtaDRQ5nLfzwZ0
+MqZ0Kp4rJh76mocADaoy9g4qppwzWI+GxIUaPs6AL1vnMdtgYo2HoyWNbfIjNmzFk9ohEc+t84S8
+XhLWiU933Df6CeFc9ZZFV2pAVIPVB/xhYmI1NECMeW/Dy8Gnc+p+SKEJIk5H7qh9IIKdakEM+XX2
+Y2/g9ebzJsRhC5/j7sS/r77/BVBLBwgh7C3TLQEAACUEAABQSwECFAAUAAAIAACkKnNQXsYyDCcA
+AAAnAAAACAAAAAAAAAAAAAAAAAAAAAAAbWltZXR5cGVQSwECFAAUAAAIAACkKnNQAAAAAAAAAAAA
+AAAAGAAAAAAAAAAAAAAAAABNAAAAQ29uZmlndXJhdGlvbnMyL3Rvb2xiYXIvUEsBAhQAFAAACAAA
+pCpzUAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAgwAAAENvbmZpZ3VyYXRpb25zMi9mbG9hdGVy
+L1BLAQIUABQAAAgAAKQqc1AAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAALkAAABDb25maWd1cmF0
+aW9uczIvbWVudWJhci9QSwECFAAUAAAIAACkKnNQAAAAAAAAAAAAAAAAGgAAAAAAAAAAAAAAAADv
+AAAAQ29uZmlndXJhdGlvbnMyL3BvcHVwbWVudS9QSwECFAAUAAAIAACkKnNQAAAAAAAAAAAAAAAA
+HAAAAAAAAAAAAAAAAAAnAQAAQ29uZmlndXJhdGlvbnMyL2FjY2VsZXJhdG9yL1BLAQIUABQAAAgA
+AKQqc1AAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAAAAGEBAABDb25maWd1cmF0aW9uczIvdG9vbHBh
+bmVsL1BLAQIUABQAAAgAAKQqc1AAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAJkBAABDb25maWd1
+cmF0aW9uczIvcHJvZ3Jlc3NiYXIvUEsBAhQAFAAACAAApCpzUAAAAAAAAAAAAAAAABoAAAAAAAAA
+AAAAAAAA0wEAAENvbmZpZ3VyYXRpb25zMi9zdGF0dXNiYXIvUEsBAhQAFAAACAAApCpzUAAAAAAA
+AAAAAAAAAB8AAAAAAAAAAAAAAAAACwIAAENvbmZpZ3VyYXRpb25zMi9pbWFnZXMvQml0bWFwcy9Q
+SwECFAAUAAgICACkKnNQtPdo0gUBAACDAwAADAAAAAAAAAAAAAAAAABIAgAAbWFuaWZlc3QucmRm
+UEsBAhQAFAAICAgApCpzUHcXGiDgAQAA9gMAAAgAAAAAAAAAAAAAAAAAhwMAAG1ldGEueG1sUEsB
+AhQAFAAICAgApCpzUKWAzH65BgAA6i0AAAwAAAAAAAAAAAAAAAAAnQUAAHNldHRpbmdzLnhtbFBL
+AQIUABQAAAgAAKQqc1AiActR/AMAAPwDAAAYAAAAAAAAAAAAAAAAAJAMAABUaHVtYm5haWxzL3Ro
+dW1ibmFpbC5wbmdQSwECFAAUAAgICACkKnNQMVgT4KYJAAD6OgAACgAAAAAAAAAAAAAAAADCEAAA
+c3R5bGVzLnhtbFBLAQIUABQACAgIAKQqc1AxbwXMXAQAAEYSAAALAAAAAAAAAAAAAAAAAKAaAABj
+b250ZW50LnhtbFBLAQIUABQACAgIAKQqc1Ah7C3TLQEAACUEAAAVAAAAAAAAAAAAAAAAADUfAABN
+RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
+</b64_content>
+          </model_file>
+          <convert_to_pdf>True</convert_to_pdf>
+          <varname>formulaire</varname>
+          <backoffice_filefield_id>boc89892bb-207d-4d87-a012-9d956fe49908</backoffice_filefield_id>
+          <attach_to_history>False</attach_to_history>
+          <method>non-interactive</method>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <filename>formulaire</filename>
+        </item>
+        <item type="jump" id="4">
+          <status>41</status>
+          <condition>
+            <type>django</type>
+            <value>not form_var_pre_parametre</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="5">
+          <status>81</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_pre_parametre</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>81</id>
+      <name>Envoi des pi&#232;ces jointes dans iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="webservice_call" id="1">
+          <label>Envoi des pi&#232;ces jointes dans iA.D&#233;lib</label>
+          <method>POST</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/{{form_option_connecteur}}/add-annexes</url>
+          <post>False</post>
+          <post_data>
+            <item>
+              <name>UID</name>
+              <value>{{ form_var_uid }}</value>
+            </item>
+            <item>
+              <name>api_url</name>
+              <value>{{ form_api_url }}</value>
+            </item>
+            <item>
+              <name>workflow_files</name>
+              <value>{{ "avis_des_services, formulaire, ettetet"|split:", " }}</value>
+            </item>
+            <item>
+              <name>orig</name>
+              <value>{{ form_role_acces_api_name }}</value>
+            </item>
+            <item>
+              <name>key</name>
+              <value>{{ form_role_acces_api_uuid }}</value>
+            </item>
+            <item>
+              <name>blocs_of_files</name>
+              <value>{{ "sdf, sdsdf"|split:", " }}</value>
+            </item>
+            <item>
+              <name>simple_files</name>
+              <value>{{ "fgh"|split:", " }}</value>
+            </item>
+          </post_data>
+          <response_type>json</response_type>
+          <varname>add_annexes</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>85</action_on_app_error>
+          <action_on_4xx>85</action_on_4xx>
+          <action_on_5xx>85</action_on_5xx>
+          <action_on_bad_data>85</action_on_bad_data>
+          <action_on_network_errors>85</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <documentation>&lt;p&gt;Mettre les identifiants de fichier dans des form_options&lt;/p&gt;</documentation>
+        </item>
+        <item type="jump" id="2">
+          <status>45</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>41</id>
+      <name>Param&#232;trage du point iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="3">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>point</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>item</type>
+                <label type="str">Choisissez un mod&#232;le</label>
+                <required type="bool">True</required>
+                <hint type="str">Choisissez un mod&#232;le</hint>
+                <varname type="str">modele</varname>
+                <display_locations />
+                <display_mode type="str">list</display_mode>
+                <data_source>
+                  <type>carddef:imio-doc-event-template-deliberation</type>
+                </data_source>
+                <in_filters type="bool">False</in_filters>
+                <display_disabled_items type="bool">False</display_disabled_items>
+                <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+                <image_desktop_size type="str">150</image_desktop_size>
+                <image_mobile_size type="str">75</image_mobile_size>
+                <id type="str">af67b013-ae0f-4eaa-8352-aaaeae1192d4</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Objet</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">objet</varname>
+                <display_locations />
+                <prefill>
+                  <locked>False</locked>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_objet|default:"" %}</value>
+                </prefill>
+                <display_mode type="str">plain</display_mode>
+                <id type="str">68f621c1-84e3-4540-bd68-38fad957bc74</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">Motivation</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">motivation</varname>
+                <display_locations />
+                <prefill>
+                  <locked>False</locked>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_motivation|default:"" %}</value>
+                </prefill>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1ef06637-eac9-4324-8b1f-6fd911d5675d</id>
+              </field>
+              <field>
+                <type>text</type>
+                <label type="str">D&#233;cision</label>
+                <condition>
+                  <type>django</type>
+                  <value>form_workflow_form_point_var_modele</value>
+                </condition>
+                <required type="bool">True</required>
+                <varname type="str">decision</varname>
+                <display_locations />
+                <prefill>
+                  <locked>False</locked>
+                  <type>string</type>
+                  <value>{% format_text form_workflow_form_point_var_modele_decision|default:"" %}</value>
+                </prefill>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">63452131-9f5f-4720-ade9-18b35002e00c</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>42</status>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>42</id>
+      <name>Cr&#233;ation du point dans iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Champs texte du point</label>
+          <fields>
+            <field>
+              <field_id>bocd330030-9434-41a1-85f9-6762a0d06f35</field_id>
+              <value>{{ form_workflow_form_point_var_objet }}</value>
+            </field>
+            <field>
+              <field_id>bo7149c76a-d98b-4467-89e4-99f438b814a3</field_id>
+              <value>{{ form_workflow_form_point_var_motivation }}</value>
+            </field>
+            <field>
+              <field_id>bo3fc0eb5a-2c28-48b0-a69f-8dddf122a7a9</field_id>
+              <value>{{ form_workflow_form_point_var_decision }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="webservice_call" id="2">
+          <label>Cr&#233;ation d'un point dans D&#233;lib</label>
+          <method>POST</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/delib/create-item</url>
+          <post>False</post>
+          <post_data>
+            <item>
+              <name>api_url</name>
+              <value>{{ form_api_url }}</value>
+            </item>
+            <item>
+              <name>category</name>
+              <value>autorisation-d2019organisation-d2019evenement</value>
+            </item>
+            <item>
+              <name>config_id</name>
+              <value>meeting-config-college</value>
+            </item>
+            <item>
+              <name>proposingGroup</name>
+              <value>service-cev</value>
+            </item>
+            <item>
+              <name>proposingGroupWithGroupInCharge</name>
+              <value>b15242dcf91a4bbc9bc626b25adca6a5__groupincharge__14d7d8a6bf194f80978b77a539158a31</value>
+            </item>
+            <item>
+              <name>type</name>
+              <value>MeetingItemCollege</value>
+            </item>
+            <item>
+              <name>title</name>
+              <value>{{ form_var_titre }}</value>
+            </item>
+            <item>
+              <name>motivation</name>
+              <value>{{ form_var_motivation|linebreaks }}</value>
+            </item>
+            <item>
+              <name>decision</name>
+              <value>{{ form_var_decision|linebreaks }}</value>
+            </item>
+            <item>
+              <name>externalIdentifier</name>
+              <value>{{ form_var_external_identifier }}</value>
+            </item>
+          </post_data>
+          <response_type>json</response_type>
+          <varname>creation_point</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:pass</action_on_4xx>
+          <action_on_5xx>:pass</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:pass</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="3">
+          <status>84</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>46</id>
+      <name>Erreur Webservice</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="displaymsg" id="1">
+          <message>&lt;p&gt;Une erreur s'est produite, veuillez v&#233;rifier dans iA.D&#233;lib si le point s'est cr&#233;&#233;.
+
+Si c'est le cas cliquer sur &lt;bold&gt;Vers en attente du coll&#232;ge&lt;/bold&gt;.
+
+Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt;&lt;/p&gt;</message>
+          <level>error</level>
+          <position>top</position>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>&lt;p&gt;Une erreur s'est produite, veuillez v&#233;rifier dans iA.D&#233;lib si le point s'est cr&#233;&#233;.
+
+Si c'est le cas cliquer sur &lt;bold&gt;Vers en attente du coll&#232;ge&lt;/bold&gt;.
+
+Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt;&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+          </to>
+        </item>
+        <item type="choice" id="3">
+          <label>Relancer le webservice</label>
+          <by>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>42</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="4">
+          <label>Vers en attente du coll&#232;ge</label>
+          <by>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>81</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>84</id>
+      <name>R&#233;cup&#233;ration UID</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="webservice_call" id="1">
+          <label>R&#233;cup&#233;ration UID</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/{{form_option_connecteur}}/search-items</url>
+          <qs_data>
+            <item>
+              <name>config_id</name>
+              <value>meeting-config-college</value>
+            </item>
+            <item>
+              <name>externalIdentifier</name>
+              <value>{{ form_var_external_identifier }}</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>recup_uid</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:stop</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:stop</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <label>R&#233;cup&#233;ration UID</label>
+          <fields>
+            <field>
+              <field_id>bo51723cc3-a1bf-4078-bda0-8c07b696cdcd</field_id>
+              <value>{{ form_workflow_data_recup_uid_response_items|first|get:"UID" }}</value>
+            </field>
+          </fields>
+          <condition>
+            <type>django</type>
+            <value>form_workflow_data_recup_uid_response_items|length == 1</value>
+          </condition>
+        </item>
+        <item type="jump" id="3">
+          <status>81</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_uid</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="4">
+          <status>46</status>
+          <condition>
+            <type>django</type>
+            <value>not form_var_uid</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>45</id>
+      <name>En attente du Coll&#232;ge</name>
+      <colour>#FF00FF</colour>
+      <visibility />
+      <items>
+        <item type="jump" id="1">
+          <status>43</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>43</id>
+      <name>V&#233;rification du statut du point</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="1">
+          <status>43</status>
+          <mode>timeout</mode>
+          <timeout>86400</timeout>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="webservice_call" id="2">
+          <label>V&#233;rification du statut du point</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/delib/read-item</url>
+          <qs_data>
+            <item>
+              <name>config_id</name>
+              <value>meeting-config-college</value>
+            </item>
+            <item>
+              <name>uid</name>
+              <value>{% firstof form_var_uid creation_point_response_UID %}</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>deliberation</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>False</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <condition>
+            <type>django</type>
+            <value>today|date:"w"|add:0 == 3</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="3">
+          <status>13</status>
+          <condition>
+            <type>django</type>
+            <value>deliberation_response_review_state in "accepted accepted_with_modification refused"|split</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="4">
+          <label>V&#233;rification manuelle</label>
+          <by>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>47</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="5">
+          <label>Forcer l'avancement de la demande</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>13</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>13</id>
+      <name>D&#233;cision du Coll&#232;ge</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="choice" id="1">
+          <label>Accord du Coll&#232;ge</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>63</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que le Coll&amp;egrave;ge a valid&amp;eacute; la demande de l&amp;#39;usager.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="2">
+          <label>Refus du coll&#232;ge</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>17</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que le Coll&amp;egrave;ge a refus&amp;eacute; la demande de l&amp;#39;usager.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="3">
+          <label>Modifications demand&#233;es</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>19</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que le Coll&amp;egrave;ge souhaite que des modifications soient apport&amp;eacute;es &amp;agrave; la demande de l&amp;#39;usager. En cliquant sur ce bouton, vous pourrez indiquer dans un formulaire les modifications n&amp;eacute;cessaires. Ensuite, un email sera envoy&amp;eacute; &amp;agrave; l&amp;#39;usager pour qu&amp;#39;il modifie sa demande selon ce qui lui sera indiqu&amp;eacute;.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_display_name == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="4">
+          <label>Retir&#233; du Coll&#232;ge</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>33</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que la demande a &amp;eacute;t&amp;eacute; retir&amp;eacute;e du Coll&amp;egrave;ge. Il n&amp;#39;y aura plus de suite &amp;agrave; donner &amp;agrave; la demande.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>True</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>17</id>
+      <name>Refus Coll&#232;ge</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <required>False</required>
+          <title>Copie de l'extrait conforme</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
+          <display_button>True</display_button>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="addattachment" id="2">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <required>False</required>
+          <title>Courrier de notification</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer le courrier de notification</button_label>
+          <display_button>True</display_button>
+          <varname>courrier_notification</varname>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="3">
+          <label>Refuser d&#233;finitivement la demande</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>18</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet de cl&amp;ocirc;turer la demande de l&amp;#39;usager. Celui-ci recevra un email l&amp;#39;invitant &amp;agrave; consulter le courrier de notification dans son porte-document.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>19</id>
+      <name>Modifications demand&#233;es</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <required>False</required>
+          <title>Copie de l'extrait conforme</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
+          <display_button>True</display_button>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+        </item>
+        <item type="form" id="2">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>modification</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>text</type>
+                <label type="str">Modifications demand&#233;es</label>
+                <required type="bool">True</required>
+                <varname type="str">texte</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="3">
+          <status>20</status>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>20</id>
+      <name>Demande de modification</name>
+      <colour>#FF9900</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="2">
+          <comment>&lt;h2&gt;Modifications demand&#233;es&lt;/h2&gt;
+&lt;p&gt;{{ form_workflow_form_modification_var_texte }}&lt;/p&gt;</comment>
+        </item>
+        <item type="sendmail" id="3">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>{{ form_name }} : Demande de modification(s)</subject>
+          <body>Bonjour{% if form_var_prenom %} {{ form_var_prenom }}{% endif %},
+
+{% if form_status_changed %}
+Nous vous informons que votre demande pour la d&#233;marche "{{ form_name }}" n&#233;cessite d'&#234;tre modifi&#233;e. {% endif %}
+
+Voici les modifications demand&#233;es : 
+
+{{ modification_var_texte }}
+
+{% if form_comment %}Nouveau commentaire : {{ form_comment }}{% endif %}
+
+Le statut de votre demande a donc chang&#233; (il est pass&#233; de &#171; {{ form_previous_status }} &#187; &#224; &#171; {{ form_status }} &#187;).
+
+{% if form_user %}
+Vous pouvez `modifier votre demande en suivant ce lien, puis en cliquant sur le bouton "Modifier la demande" en bas de l'historique de celle-ci. &lt;{{ form_url }}&gt;`_
+{% endif %}
+
+{% if form_tracking_code %}
+Le code de suivi de votre demande est le suivant : **{{form_tracking_code}}**
+En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l'administration.
+{% endif %}
+
+{% if form_evolution %}
+{{ form_evolution }}
+{% endif %}
+
+Cordialement,
+
+La Ville de Charleroi</body>
+        </item>
+        <item type="editable" id="4">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>0</status>
+          <label>Modifier la demande</label>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="editable" id="5">
+          <by>
+            <item role_id="_submitter">_submitter</item>
+          </by>
+          <status>0</status>
+          <label>Modifier la demande</label>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="6">
+          <label>By pass de l'&#233;dition</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>0</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Permet de passer au choix des services sans attendre la modification de l&amp;#39;usager&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>31</id>
+      <name>Envoy&#233; comme communication</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="choice" id="1">
+          <label>La communication est plac&#233;e dans iA.D&#233;lib</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>32</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action confirme que la demande de l&amp;#39;usager a &amp;eacute;t&amp;eacute; int&amp;eacute;gr&amp;eacute;e &amp;agrave; iA.D&amp;eacute;lib en tant que communication.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>32</id>
+      <name>Communication mise dans D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="1">
+          <status>accepted</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>33</id>
+      <name>Retir&#233; du Coll&#232;ge</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="external_workflow_global_action" id="1">
+          <slug>formdef:demande-de-location-de-salle</slug>
+          <trigger_id>action:enregistrement_atal</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="external_workflow_global_action" id="2">
+          <slug>formdef:demande-de-location-de-materiel</slug>
+          <trigger_id>action:enregistrement_atal</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>63</id>
+      <name>Validations Locations</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="external_workflow_global_action" id="1">
+          <slug>formdef:demande-de-location-de-salle</slug>
+          <trigger_id>action:enregistrement_atal</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="external_workflow_global_action" id="2">
+          <slug>formdef:demande-de-location-de-materiel</slug>
+          <trigger_id>action:enregistrement_atal</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="jump" id="3">
+          <status>35</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>35</id>
+      <name>Documents acceptation</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <required>True</required>
+          <title>Copie de l'extrait conforme</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
+          <display_button>False</display_button>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne</value>
+          </condition>
+        </item>
+        <item type="choice" id="2">
+          <label>Ajouter le courrier de notification</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>40</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;ajouter le courrier de notification &amp;agrave; l&amp;#39;historique de la demande et au porte-document de l&amp;#39;usager.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>40</id>
+      <name>Copie de l'extrait conforme</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <required>True</required>
+          <title>Courrier de notification</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer un fichier</button_label>
+          <display_button>False</display_button>
+          <attach_to_history>True</attach_to_history>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="2">
+          <label>Envoyer le mail d'acceptation</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>accepted</status>
+          <require_confirmation>True</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;envoyer &amp;agrave; l&amp;#39;usager un email contenant le lien vers son porte-document dans lequel se trouvera le courrier de notification.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>accepted</id>
+      <name>Accept&#233;</name>
+      <colour>#66CCFF</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>{{ form_name }} : Demande accept&#233;e</subject>
+          <body>Bonjour{% if form_var_prenom %} {{ form_var_prenom }}{% endif %},
+
+{% if form_status_changed %}
+Nous vous informons que votre demande pour la d&#233;marche "{{ form_name }}" a &#233;t&#233; accept&#233;e. {% endif %}
+
+Le courrier de notification est disponible dans `votre porte document &lt;{{porte_doc_url}}&gt;`_.
+
+Le statut de votre demande a donc chang&#233; (il est pass&#233; de &#171; {{ form_previous_status }} &#187; &#224; &#171; {{ form_status }} &#187;).
+
+{% if form_user %}
+Vous pouvez `consulter la demande. &lt;{{ form_url }}&gt;`_
+{% endif %}
+
+{% if form_evolution %}
+{{ form_evolution }}
+{% endif %}
+
+{% if form_tracking_code %}
+Le code de suivi de votre demande est le suivant : **{{form_tracking_code}}**
+En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l'administration.
+{% endif %}
+
+Cordialement,
+</body>
+        </item>
+        <item type="jump" id="3">
+          <status>finished</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>18</id>
+      <name>Refus&#233;</name>
+      <colour>#FF0000</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>{{ form_name }} : Demande refus&#233;e</subject>
+          <body>Bonjour{% if form_var_prenom %} {{ form_var_prenom }}{% endif %},
+
+{% if form_status_changed %}
+Nous vous informons que votre demande pour la d&#233;marche "{{ form_name }}" a &#233;t&#233; refus&#233;e. {% endif %}
+
+Le courrier de notification est disponible dans `votre porte document &lt;{{porte_doc_url}}&gt;`_.
+
+Le statut de votre demande a donc chang&#233; (il est pass&#233; de &#171; {{ form_previous_status }} &#187; &#224; &#171; {{ form_status }} &#187;).
+
+{% if form_user %}
+Vous pouvez `consulter la demande. &lt;{{ form_url }}&gt;`_
+{% endif %}
+
+{% if form_evolution %}
+{{ form_evolution }}
+{% endif %}
+
+{% if form_tracking_code %}
+Le code de suivi de votre demande est le suivant : **{{form_tracking_code}}**
+En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l'administration.
+{% endif %}
+
+Cordialement,
+</body>
+        </item>
+        <item type="external_workflow_global_action" id="2">
+          <slug>formdef:demande-de-location-de-salle</slug>
+          <trigger_id>action:demande_refus&#233;e</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="external_workflow_global_action" id="3">
+          <slug>formdef:demande-de-location-de-materiel</slug>
+          <trigger_id>action:demande_refus&#233;e</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>finished</id>
+      <name>Termin&#233;</name>
+      <colour>#CCCCCC</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <mail_template>indus-par-defaut-usager-terminee</mail_template>
+          <subject>Changement de statut de la demande ({{ form_name }})</subject>
+          <body>Bonjour,
+
+{% if form_status_changed %}
+Le statut de la demande que vous avez transmise vient de changer (il est
+pass&#233; de &#171;&#160;{{ form_previous_status }}&#160;&#187; &#224; &#171;&#160;{{ form_status }}&#160;&#187;).
+{% endif %}
+
+{% if form_user %}
+Vous pouvez en prendre connaissance en suivant ce lien&#160;: {{ form_url }}
+{% endif %}
+
+{% if form_comment %}Nouveau commentaire&#160;: {{ form_comment }}{% endif %}
+
+{% if form_evolution %}
+{{ form_evolution }}
+{% endif %}
+</body>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>38</id>
+      <name>Changement d'assignation</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </by>
+          <varname>nouvelle</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">R&#233;assignation de la demande</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">2</id>
+              </field>
+              <field>
+                <type>string</type>
+                <label type="str">Nouvelle assignation</label>
+                <required type="bool">True</required>
+                <hint type="str">Entrez le mail du nouveau responsable de la demande</hint>
+                <varname type="str">assignation</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>39</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>39</id>
+      <name>Validation du changement d'assignation</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="set-backoffice-fields" id="1">
+          <label>Nouvelle assignation</label>
+          <fields>
+            <field>
+              <field_id>bo5d846168-a145-4fd5-af08-85e2d2f18eed</field_id>
+              <value>{{ nouvelle_var_assignation }}</value>
+            </field>
+          </fields>
+        </item>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>30</id>
+      <name>Annul&#233;</name>
+      <colour>#FF0000</colour>
+      <forced_endpoint>true</forced_endpoint>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+        </item>
+        <item type="external_workflow_global_action" id="2">
+          <slug>carddef:imio-doc-event-demande-avis</slug>
+          <trigger_id>action:annulation_evenement</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="external_workflow_global_action" id="3">
+          <slug>formdef:demande-de-location-de-salle</slug>
+          <trigger_id>action:demande_annul&#233;e</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="external_workflow_global_action" id="4">
+          <slug>formdef:demande-de-location-de-materiel</slug>
+          <trigger_id>action:demande_annul&#233;e</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>47</id>
+      <name>V&#233;rification manuel</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="1">
+          <status>43</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>51</id>
+      <name>Demande de location de mat&#233;riel</name>
+      <colour>#FFFF00</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>{% for i in form_links_demande_location_materiel_0_form_var_locations_materiels %}
+&lt;p&gt;{{i.quantite}} {{i.materiel}}&lt;/br&gt;
+du {{i.date_debut}} {{i.heure_debut}} au {{i.date_fin}} {{i.heure_fin}}&lt;/p&gt;
+{% endfor %}</comment>
+        </item>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>52</id>
+      <name>Demande de location de salle</name>
+      <colour>#FFFF00</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>{{ form_links_demande_location_salle_0_form_details|linebreaks }}</comment>
+        </item>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>59</id>
+      <name>Ev&#233;nement g&#233;r&#233; par la Police Administrative</name>
+      <colour>#FFFFFF</colour>
+      <visibility />
+      <items />
+    </status>
+    <status>
+      <id>62</id>
+      <name>&#201;dition par agent traitant</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="choice" id="1">
+          <label>Annuler la modification</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>_previous</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Permet de sortir de l&amp;#39;&amp;eacute;dition par agent traitant et de revenir au statut pr&amp;eacute;c&amp;eacute;dent.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="editable" id="2">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>61</status>
+          <label>&#201;diter la demande</label>
+          <backoffice_info_text>&lt;p&gt;Permet d&amp;#39;&amp;eacute;diter la demande, par agent traitant&lt;/p&gt;
+</backoffice_info_text>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>61</id>
+      <name>Demande &#233;dit&#233;e par agent traitant</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="1">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>64</id>
+      <name>&#201;dition par usager</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;p&gt;Cliquez sur &lt;b&gt;Modifier la demande&lt;/b&gt; pour modifier la demande &lt;/br&gt;
+Cliquez sur &lt;b&gt;Annuler&lt;/b&gt; pour revenir en arri&#232;re&lt;/p&gt;</comment>
+        </item>
+        <item type="editable" id="2">
+          <by>
+            <item role_id="_submitter">_submitter</item>
+          </by>
+          <status>65</status>
+          <label>Modifier la demande</label>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="3">
+          <label>Annuler</label>
+          <by>
+            <item role_id="_submitter">_submitter</item>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>68</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="4">
+          <label>Passer &#224; la suite sans attendre les modifications</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>68</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Permet de passer &amp;agrave; la suite de la demande sans attendre les modifications du citoyen.&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>65</id>
+      <name>Demande &#233;dit&#233;e par usager</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="{{ form_var_assigne }}">{{ form_var_assigne }}</item>
+          </to>
+          <subject>Modification d'une demande d'&#233;v&#232;nement - {{ form_number }} - {{ form_var_nom_event }}</subject>
+          <body>Bonjour,
+
+La demande d'&#233;v&#232;nement - {{ form_number }} - {{ form_var_nom_event }} a &#233;t&#233; modifi&#233;e par l'organisateur.
+
+`Vous pouvez la consulter ici &lt;{{ form_url_backoffice }}&gt;`</body>
+        </item>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>68</id>
+      <name>Modification annul&#233;e</name>
+      <colour>#FF9900</colour>
+      <visibility />
+      <items>
+        <item type="jump" id="1">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>69</id>
+      <name>Informations Manquantes</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>informations_manquantes</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>text</type>
+                <label type="str">Informations demand&#233;es</label>
+                <required type="bool">True</required>
+                <varname type="str">texte_long</varname>
+                <display_locations />
+                <prefill>
+                  <type>none</type>
+                </prefill>
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>70</status>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>70</id>
+      <name>Dossier incomplet</name>
+      <colour>#FF9900</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;h2&gt;Informations Manquantes&lt;/h2&gt;
+&lt;p&gt;{{ form_workflow_form_informations_manquantes_var_texte_long }}&lt;/p&gt;</comment>
+        </item>
+        <item type="sendmail" id="2">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>{{ form_name }} - {{ form_number }} Informations manquantes</subject>
+          <body>Bonjour, 
+
+Nous vous informons que votre demande d'autorisation d'&#233;v&#233;nement n'est pas compl&#232;te. Il nous manque en effet les informations ou documents suivants pour pouvoir y donner suite : 
+
+
+{{ form_workflow_form_informations_manquantes_var_texte_long }}
+
+Merci de `modifier votre demande d'autorisation d'&#233;v&#232;nement &lt;{{ form_url }}&gt;`_ pour que nous puissions poursuivre le traitement de votre demande.
+
+Cordialement, 
+
+La Cellule Event de Charleroi</body>
+        </item>
+        <item type="editable" id="3">
+          <by>
+            <item role_id="_submitter">_submitter</item>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>71</status>
+          <label>Mettre &#224; jour la demande</label>
+          <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>71</id>
+      <name>Validation des changements</name>
+      <colour>#0099FF</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <subject>{{ form_name }} - {{ form_number }} Demande mise &#224; jour</subject>
+          <body>Bonjour, 
+
+Vous aviez inform&#233; l'organisateur du fait que son dossier n'&#233;tait pas complet. Celui-ci a donc compl&#233;t&#233; sa demande, merci donc de v&#233;rifier si elle est d&#233;sormais compl&#232;te pour continuer son traitement.
+
+`V&#233;rifier les modifications de la demande &lt;{{ form_url_backoffice }}&gt;`_</body>
+        </item>
+        <item type="choice" id="2">
+          <label>Je valide les changements</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>72</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Retour au flux normal&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+        <item type="choice" id="3">
+          <label>Je ne valide pas les changements</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>69</status>
+          <require_confirmation>False</require_confirmation>
+          <backoffice_info_text>&lt;p&gt;Retour au formulaire pour demander des informations manquantes&lt;/p&gt;
+</backoffice_info_text>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>72</id>
+      <name>Changements valid&#233;s</name>
+      <colour>#00FF00</colour>
+      <visibility />
+      <items>
+        <item type="sendmail" id="1">
+          <to>
+            <item role_id="_submitter">_submitter</item>
+          </to>
+          <subject>{{ form_name }} - {{ form_number }} Validation des changements</subject>
+          <body>Bonjour, 
+
+Les changements et pr&#233;cisions que vous avez apport&#233;(s) &#224; votre demande ont &#233;t&#233; enregistr&#233;s. Le traitement de votre dossier va donc pouvoir reprendre. Vous serez tenu inform&#233; du suivi de celui-ci d&#232;s que possible. 
+
+Cordialement, 
+
+La Cellule Event de la Ville de Charleroi</body>
+        </item>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>82</id>
+      <name>Ajouter un fichier</name>
+      <colour>#0099FF</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item role_id="_cae">_cae</item>
+          </by>
+          <required>False</required>
+          <title>Transf&#233;rer un fichier</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer un fichier</button_label>
+          <display_button>True</display_button>
+          <attach_to_history>True</attach_to_history>
+        </item>
+        <item type="jumponsubmit" id="2">
+          <status>83</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>83</id>
+      <name>Fichier ajout&#233;</name>
+      <colour>#00FF00</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="1">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>85</id>
+      <name>Erreur Pi&#232;ce jointe dans iA.D&#233;lib</name>
+      <colour>#999999</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="choice" id="1">
+          <label>Relancer l'envoi des pi&#232;ces jointe dans iA.D&#233;lib</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </by>
+          <status>81</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+  </possible_status>
+  <global_actions>
+    <action>
+      <id>1</id>
+      <name>Annuler la demande</name>
+      <backoffice_info_text>&lt;p&gt;Cette action annule la demande d'autorisation du citoyen, &amp;agrave; son initiative ou &amp;agrave; celle de l'agent traitant. Le citoyen sera pr&amp;eacute;venu par email.&lt;/p&gt;</backoffice_info_text>
+      <items>
+        <item type="jump" id="1">
+          <status>30</status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne and form_status != "Annul&#233;"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="5c9d3a6b-b8d7-49ea-bb4c-bb14a0d4e720">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>2</id>
+      <name>Changer l'assignation de la demande</name>
+      <items>
+        <item type="jump" id="1">
+          <status>38</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="8248700b-fa61-4517-b9ae-1b20ad7e5c70">
+          <roles>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>7</id>
+      <name>Dossier incomplet</name>
+      <items>
+        <item type="jump" id="1">
+          <status>69</status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email == form_var_assigne and form_status</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="2b176589-82d2-427e-a0c1-ef4e62d5baf4">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>3</id>
+      <name>Informations location de mat&#233;riel</name>
+      <items>
+        <item type="jump" id="1">
+          <status>51</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="af9634b5-1dcd-40eb-8606-a0c7e73ced0c">
+          <identifier>info_location_materiel</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>4</id>
+      <name>Information location de salle</name>
+      <items>
+        <item type="jump" id="1">
+          <status>52</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="a28aee92-2486-4f20-8cf6-fe7b2842dd83">
+          <identifier>info_location_salle</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>5</id>
+      <name>Cr&#233;ation d'une nouvelle demande</name>
+      <backoffice_info_text>&lt;p&gt;Permet de cr&amp;eacute;er une nouvelle demande avec les m&amp;ecirc;mesinformations.&lt;/p&gt;
+
+&lt;h3&gt;Ne pas utiliser de mani&amp;egrave;re globale.&lt;/h3&gt;
+</backoffice_info_text>
+      <items>
+        <item type="create_formdata" id="1">
+          <formdef_slug>organiser-un-evenement-test</formdef_slug>
+          <map_fields_by_varname>True</map_fields_by_varname>
+          <mappings />
+          <backoffice_submission>False</backoffice_submission>
+          <draft>True</draft>
+          <draft_edit_operation_mode>full</draft_edit_operation_mode>
+          <user_association_mode>keep-user</user_association_mode>
+          <keep_submission_context>False</keep_submission_context>
+          <varname>nouvelle_demande_evenement</varname>
+          <attach_to_history>True</attach_to_history>
+        </item>
+        <item type="redirect_to_url" id="2">
+          <url>{{form_links_nouvelle_demande_evenement_form_url}}</url>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="811d991c-4bba-4891-b96d-b9aa4aad126d">
+          <roles>
+            <item role_id="_submitter">_submitter</item>
+          </roles>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>6</id>
+      <name>Vers l'&#233;dition de la demande par agent traitant</name>
+      <items>
+        <item type="jump" id="1">
+          <status>62</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="f079d4d3-f62f-4697-bb36-8fd31cd027e5">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>9</id>
+      <name>Vers la modification de la demande</name>
+      <backoffice_info_text>&lt;p&gt;Modification de la demande par l&amp;#39;usager&lt;/p&gt;
+</backoffice_info_text>
+      <items>
+        <item type="jump" id="1">
+          <status>64</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="5358ad44-443b-46a4-84a1-cb5de51250e4">
+          <roles>
+            <item role_id="_submitter">_submitter</item>
+          </roles>
+          <statuses>
+            <statuse>54</statuse>
+            <statuse>55</statuse>
+            <statuse>25</statuse>
+            <statuse>new</statuse>
+            <statuse>rejected</statuse>
+            <statuse>0</statuse>
+            <statuse>1</statuse>
+            <statuse>11</statuse>
+          </statuses>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>10</id>
+      <name>Joindre un nouveau fichier</name>
+      <backoffice_info_text>&lt;p&gt;Permet d&amp;#39;&amp;ecirc;tre redirig&amp;eacute; vers une boite de dialogue pour ajouter un fichier.&lt;/p&gt;
+</backoffice_info_text>
+      <items>
+        <item type="jump" id="1">
+          <status>82</status>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="4f1d6afe-a1c9-44ba-bf9d-a037b41662c9">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>11</id>
+      <name>Ajouter une note</name>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>note</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>text</type>
+                <label type="str">Commentaire</label>
+                <required type="bool">True</required>
+                <varname type="str">texte</varname>
+                <display_locations />
+                <anonymise type="str">final</anonymise>
+                <display_mode type="str">pre</display_mode>
+                <id type="str">1</id>
+              </field>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;Si vous avez cliqu&amp;eacute; par erreur sur le bouton :&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ form_url_backoffice }}" rel="nofollow"&gt;Revenir &amp;agrave; la page backoffice du formulaire&lt;/a&gt;&lt;/p&gt;
+</label>
+                <display_locations />
+                <id type="str">2</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="register-comment" id="2">
+          <comment>{{ form_workflow_form_note_var_texte }}</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+            <item role_id="_cae">_cae</item>
+          </to>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="3eb8909b-0963-4741-abe9-1361b3f61d11">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>12</id>
+      <name>Remise d'avis</name>
+      <items>
+        <item type="register-comment" id="1">
+          <comment>&lt;hr /&gt;
+&lt;p&gt;{{now}}&lt;/p&gt;
+&lt;h3&gt;{{ caller_form_var_service }}&lt;/h3&gt;
+&lt;p&gt;{{ caller_form_details|linebreaks }}&lt;/p&gt;
+&lt;hr /&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>not form_var_stop_avis or caller_form_name == "R&#233;-encodage des avis"</value>
+          </condition>
+        </item>
+        <item type="set-backoffice-fields" id="4">
+          <label>Remise d'avis</label>
+          <fields>
+            <field>
+              <field_id>bo742affe6-4bd0-480a-99a3-b5204050b181</field_id>
+              <value>{% if form_var_liste_avis_services %}{{ form_var_liste_avis_services }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}------------------------------------{{ "&lt;br&gt;&lt;br&gt;"|safe }}{% endif %}{{ now|datetime:"d/m/Y H:i" }}{{ "&lt;br&gt;"|safe }}{{ "&lt;h3&gt;"|safe }}Service {{ caller_form_var_service }}{{ "&lt;/h3&gt;"|safe }}{{ caller_form_var_service_courriel|default:"Adresse mail introuvable" }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}Avis favorable : {{ caller_form_var_avis_favorable }}{{ "&lt;br&gt;"|safe }}{% if caller_form_var_avis_detail %}{{ caller_form_var_avis_detail|linebreaks }}{{ "&lt;br&gt;"|safe }}{% endif %}</value>
+            </field>
+          </fields>
+          <condition>
+            <type>django</type>
+            <value>not form_var_stop_avis or caller_form_name == "R&#233;-encodage des avis"</value>
+          </condition>
+        </item>
+        <item type="register-comment" id="3">
+          <comment>&lt;p&gt;
+&lt;table&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Service&lt;/th&gt;
+        &lt;th&gt;R&#233;pondu&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    {% for id_fiche in form_var_id_fiches|split:"," %}
+    &lt;tr&gt;
+        &lt;td&gt;{{cards|objects:"imio-doc-event-demande-avis"|filter_by_internal_id:id_fiche|first|get:"service"}}&lt;/td&gt;
+        &lt;td&gt;
+            {% if cards|objects:"imio-doc-event-demande-avis"|filter_by_internal_id:id_fiche|first|get:"avis_favorable" %}
+            Oui
+            {% else %}
+            Non
+            {% endif %}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    {% endfor %}
+&lt;/table&gt;
+&lt;/p&gt;</comment>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>form_var_id_fiches and not form_var_stop_avis</value>
+          </condition>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="webservice" id="d72d3002-1107-4537-9115-b8ef4c64794a">
+          <identifier>remise_avis</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>13</id>
+      <name>vers erreur piece jointe</name>
+      <items>
+        <item type="jump" id="1">
+          <status>85</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="497af9c2-9dde-4ecb-a556-db4f34ca4090">
+          <roles>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </roles>
+          <allow_as_mass_action>True</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>14</id>
+      <name>Test</name>
+      <items>
+        <item type="webservice_call" id="1">
+          <method>POST</method>
+          <url>https://staging3-passerelle.guichet-citoyen.be/passerelle-imio-focus/focus/event/create</url>
+          <qs_data>
+            <item>
+              <name>provider</name>
+              <value>imio</value>
+            </item>
+          </qs_data>
+          <post>True</post>
+          <response_type>json</response_type>
+          <varname>test_ws</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>False</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="5ec661f8-44fe-4b15-8d71-034c17663843">
+          <roles>
+            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+          </roles>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+  </global_actions>
+  <variables>
+    <formdef>
+      <name>-</name>
+      <fields>
+        <field>
+          <type>bool</type>
+          <label type="str">Test</label>
+          <required type="bool">False</required>
+          <varname type="str">test</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">1</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Id du connecteur</label>
+          <required type="bool">True</required>
+          <varname type="str">connecteur</varname>
+          <display_locations />
+          <anonymise type="str">final</anonymise>
+          <id type="str">2</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Verrouill&#233; l'assignation</label>
+          <required type="bool">False</required>
+          <hint type="str">&lt;p&gt;Cochez cette case pour que le premier agent qui s'occupe de cette demande, la traite du d&#233;but &#224; la fin.&lt;/p&gt;</hint>
+          <varname type="str">verrouille_assignation</varname>
+          <display_locations />
+          <id type="str">37b2d6c2-3c98-4ca8-a2dd-03b551b3ed47</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer la location de mat&#233;riel via ATAL</label>
+          <required type="bool">False</required>
+          <varname type="str">location_materiel_atal</varname>
+          <display_locations />
+          <id type="str">a25a18ab-dedb-426e-8e91-474874bd6244</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer la location de salle via ATAL</label>
+          <required type="bool">False</required>
+          <varname type="str">location_salle_atal</varname>
+          <display_locations />
+          <id type="str">0cf5c5e3-f48c-4bbf-9e9c-b9de40ba94e0</id>
+        </field>
+      </fields>
+    </formdef>
+  </variables>
+  <backoffice-fields>
+    <formdef>
+      <name>-</name>
+      <fields>
+        <field>
+          <type>string</type>
+          <label type="str">Assign&#233; &#224;</label>
+          <required type="bool">True</required>
+          <varname type="str">assigne</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo5d846168-a145-4fd5-af08-85e2d2f18eed</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Stop remise avis</label>
+          <required type="bool">False</required>
+          <varname type="str">stop_avis</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Stop spam</label>
+          <required type="bool">True</required>
+          <varname type="str">stop_spam</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo0e7f6a3a-266a-4b6a-bb1c-ebdd2dae0ec6</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">ID Fiches</label>
+          <required type="bool">True</required>
+          <varname type="str">id_fiches</varname>
+          <display_locations />
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo6636c47f-ce33-409f-b942-af37eac4b0b0</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Historique des services consult&#233;s</label>
+          <required type="bool">True</required>
+          <varname type="str">historique_services</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">pre</display_mode>
+          <id type="str">bo18a80be3-9cfb-4965-8708-26e92392783b</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Liste des avis des service</label>
+          <required type="bool">True</required>
+          <varname type="str">liste_avis_services</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">rich</display_mode>
+          <id type="str">bo742affe6-4bd0-480a-99a3-b5204050b181</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Liste des avis des service format&#233;e</label>
+          <required type="bool">True</required>
+          <varname type="str">format_avis</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">pre</display_mode>
+          <id type="str">boc46a19a3-d87a-4c5e-be4e-4e26b3b09fc3</id>
+        </field>
+        <field>
+          <type>file</type>
+          <label type="str">Formulaire</label>
+          <required type="bool">True</required>
+          <varname type="str">formulaire</varname>
+          <display_locations />
+          <anonymise type="str">final</anonymise>
+          <allow_portfolio_picking type="bool">False</allow_portfolio_picking>
+          <automatic_image_resize type="bool">False</automatic_image_resize>
+          <storage type="str">default</storage>
+          <id type="str">boc89892bb-207d-4d87-a012-9d956fe49908</id>
+        </field>
+        <field>
+          <type>file</type>
+          <label type="str">Document avis des services</label>
+          <required type="bool">True</required>
+          <varname type="str">avis_des_services</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <allow_portfolio_picking type="bool">False</allow_portfolio_picking>
+          <automatic_image_resize type="bool">False</automatic_image_resize>
+          <storage type="str">default</storage>
+          <id type="str">bod290d5a2-7f94-4ec0-8696-7f766261af9f</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Titre</label>
+          <required type="bool">True</required>
+          <varname type="str">titre</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">pre</display_mode>
+          <id type="str">bocd330030-9434-41a1-85f9-6762a0d06f35</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Motivation</label>
+          <required type="bool">True</required>
+          <varname type="str">motivation</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">pre</display_mode>
+          <id type="str">bo7149c76a-d98b-4467-89e4-99f438b814a3</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Decision</label>
+          <required type="bool">True</required>
+          <varname type="str">decision</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">pre</display_mode>
+          <id type="str">bo3fc0eb5a-2c28-48b0-a69f-8dddf122a7a9</id>
+        </field>
+        <field>
+          <type>date</type>
+          <label type="str">Date CAE</label>
+          <required type="bool">True</required>
+          <display_locations>
+            <item>summary</item>
+            <item>listings</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <minimum_is_future type="bool">False</minimum_is_future>
+          <date_in_the_past type="bool">False</date_in_the_past>
+          <date_can_be_today type="bool">False</date_can_be_today>
+          <id type="str">bobed095ba-2099-4a5a-850d-26b1c03c1136</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">UID</label>
+          <required type="bool">True</required>
+          <varname type="str">uid</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo51723cc3-a1bf-4078-bda0-8c07b696cdcd</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">External Identifier</label>
+          <required type="bool">True</required>
+          <varname type="str">external_identifier</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo3655d016-e1c0-4be8-b91f-2ca49e73ffeb</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">pr&#233;-param&#233;tr&#233;</label>
+          <required type="bool">False</required>
+          <varname type="str">pre_parametre</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo847a8de1-b635-46bc-b488-2c71f8e2a0e8</id>
+        </field>
+      </fields>
+    </formdef>
+  </backoffice-fields>
+  <status-remapping>
+    <remap status="87" action="reassign-1" timestamp="2024-07-25T19:14:11.939573+02:00" />
+  </status-remapping>
+</workflow>
