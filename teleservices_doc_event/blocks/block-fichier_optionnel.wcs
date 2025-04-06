@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="15" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/15/">
-  <name>Fichier (optionnel)</name>
+<block id="15" url="">
+  <name>iMio - Doc Event - Fichier (optionnel)</name>
   <slug>fichier_optionnel</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>file</type>
       <label type="str">Fichier</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">fichier</varname>
       <display_locations>
         <item>validation</item>

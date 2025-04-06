@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<carddef id="13" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/cards/13/">
+<carddef id="13" url="">
   <name>iMio - Doc Event - Services</name>
   <url_name>imio-doc-event-services</url_name>
   <submission_user_association>none</submission_user_association>
+  <history_pane_default_mode>collapsed</history_pane_default_mode>
   <discussion>false</discussion>
   <detailed_emails>true</detailed_emails>
   <disabled>false</disabled>
@@ -12,12 +13,22 @@
   <always_advertise>false</always_advertise>
   <has_captcha>false</has_captcha>
   <skip_from_360_view>false</skip_from_360_view>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <workflow slug="_carddef_default" workflow_id="_carddef_default">Par d&#233;faut (fiches)</workflow>
   <fields>
     <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;Vous ne trouvez pas le bon r&amp;ocirc;le ? Essayez ce bouton.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ idp_url }}manage/roles/add/" target="_blank" rel="noopener noreferrer nofollow"&gt;Ajouter un r&amp;ocirc;le&lt;/a&gt;&lt;/p&gt;
+</label>
+      <display_locations />
+      <id type="str">bfe05c70-f2bb-4a6f-8b0a-05afa66b1ede</id>
+    </field>
+    <field>
       <type>item</type>
       <label type="str">Service</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">S&#233;lectionnez un r&#244;le</hint>
       <varname type="str">service</varname>
       <display_locations>
@@ -41,24 +52,39 @@
     </field>
   </fields>
   <user-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
-    <role slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
+    <role slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</role>
   </user-roles>
   <backoffice-submission-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
-    <role slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
+    <role slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</role>
   </backoffice-submission-roles>
   <roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_editor">Debug</role>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_viewer">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9" role_key="_editor">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9" role_key="_viewer">Debug</role>
   </roles>
   <options />
-  <custom_views />
+  <custom_views>
+    <custom_view>
+      <title>Par d&#233;faut</title>
+      <slug>par-defaut</slug>
+      <visibility>any</visibility>
+      <filters />
+      <is_default>True</is_default>
+      <columns>
+        <id>id</id>
+        <id>time</id>
+        <id>75f46509-90e0-4b99-9bf7-24b3fcf03318</id>
+      </columns>
+      <order_by>f75f46509-90e0-4b99-9bf7-24b3fcf03318</order_by>
+    </custom_view>
+  </custom_views>
   <geolocations />
   <management_sidebar_items>
     <item>__default__</item>
   </management_sidebar_items>
   <digest_templates>
+    <template key="custom-view:par-defaut">{{ form_var_service }}</template>
     <template key="default">{{ form_var_service }}</template>
   </digest_templates>
 </carddef>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<wscall id="167" url="">
+  <name>iMio - Atal - Informations salle</name>
+  <slug>imio_atal_informations_salle</slug>
+  <request>
+    <url>{{ passerelle_url }}passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/get-room</url>
+    <request_signature_key />
+    <method>GET</method>
+    <timeout />
+    <cache_duration />
+    <qs_data>
+      <param key="expands">FeaturesValues($expand=FeatureLists,FeatureList)</param>
+      <param key="room_id">{% firstof form_var_salle_id form_var_salle_not_parent_id form_var_salle_enfant_0_id form_var_salle_parent_id %}</param>
+    </qs_data>
+    <post_data />
+  </request>
+</wscall>

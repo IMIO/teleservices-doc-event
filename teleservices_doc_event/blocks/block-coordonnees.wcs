@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<block id="18" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/18/">
-  <name>Coordonn&#233;es</name>
+<block id="18" url="">
+  <name>iMio - Doc Event - Coordonn&#233;es</name>
   <slug>coordonnees</slug>
   <digest_template>{{coordonnees_var_nom}} {{coordonnees_var_prenom}}</digest_template>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Nom</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom</varname>
       <display_locations>
         <item>validation</item>
@@ -23,7 +24,7 @@
     <field>
       <type>string</type>
       <label type="str">Pr&#233;nom</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">prenom</varname>
       <display_locations>
         <item>validation</item>
@@ -39,7 +40,7 @@
     <field>
       <type>string</type>
       <label type="str">Rue</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -54,7 +55,7 @@
     <field>
       <type>string</type>
       <label type="str">Num&#233;ro</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -69,7 +70,7 @@
     <field>
       <type>string</type>
       <label type="str">Code postal</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -84,7 +85,7 @@
     <field>
       <type>string</type>
       <label type="str">Ville</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -99,7 +100,7 @@
     <field>
       <type>string</type>
       <label type="str">T&#233;l&#233;phone</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -114,7 +115,7 @@
     <field>
       <type>email</type>
       <label type="str">Email</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -129,7 +130,7 @@
     <field>
       <type>string</type>
       <label type="str">Num&#233;ro national</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -144,7 +145,7 @@
     <field>
       <type>date</type>
       <label type="str">Date de naissance</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -164,7 +165,7 @@
     <field>
       <type>string</type>
       <label type="str">Mission / Responsabilit&#233;</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>

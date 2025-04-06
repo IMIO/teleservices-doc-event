@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<carddef id="15" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/cards/15/">
+<carddef id="15" url="">
   <name>iMio - Doc Event - Template D&#233;lib&#233;ration</name>
   <url_name>imio-doc-event-template-deliberation</url_name>
   <submission_user_association>none</submission_user_association>
+  <history_pane_default_mode>collapsed</history_pane_default_mode>
   <discussion>false</discussion>
   <detailed_emails>true</detailed_emails>
   <disabled>false</disabled>
@@ -12,12 +13,13 @@
   <always_advertise>false</always_advertise>
   <has_captcha>false</has_captcha>
   <skip_from_360_view>false</skip_from_360_view>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <workflow slug="_carddef_default" workflow_id="_carddef_default">Par d&#233;faut (fiches)</workflow>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Titre</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">title</varname>
       <display_locations>
         <item>validation</item>
@@ -30,51 +32,51 @@
     <field>
       <type>text</type>
       <label type="str">Objet</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">objet</varname>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
       </display_locations>
       <anonymise type="str">final</anonymise>
-      <display_mode type="str">pre</display_mode>
+      <display_mode type="str">rich</display_mode>
       <id type="str">8c8128e3-b42b-45db-8fd4-a18c65622819</id>
     </field>
     <field>
       <type>text</type>
       <label type="str">Motivation</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">motivation</varname>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
       </display_locations>
       <anonymise type="str">final</anonymise>
-      <display_mode type="str">pre</display_mode>
+      <display_mode type="str">rich</display_mode>
       <id type="str">3c4ef644-26d8-4682-8145-f58e2b656955</id>
     </field>
     <field>
       <type>text</type>
       <label type="str">D&#233;cision</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">decision</varname>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
       </display_locations>
       <anonymise type="str">final</anonymise>
-      <display_mode type="str">pre</display_mode>
+      <display_mode type="str">rich</display_mode>
       <id type="str">fad0f8dd-5afc-4f39-9fec-108302b21395</id>
     </field>
   </fields>
   <user-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
   </user-roles>
   <backoffice-submission-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
   </backoffice-submission-roles>
   <roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a" role_key="_editor">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9" role_key="_editor">Debug</role>
   </roles>
   <options />
   <custom_views>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<datasource id="370" url="">
+  <name>iMio - Atal - Calendrier Heures salle disponible</name>
+  <slug>calendar_atal_hours</slug>
+  <data_source>
+    <type>json</type>
+    <value>{{ passerelle_url }}passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/generate-hour-availability?room={{ form_var_salle_id }}&amp;start={{ form_option_min_days }}&amp;end={{ form_option_max_days }}</value>
+  </data_source>
+  <category slug="imio-atal" category_id="3">iMio - Atal</category>
+</datasource>

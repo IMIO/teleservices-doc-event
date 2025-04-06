@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<datasource id="369" url="">
+  <name>iMio - Atal - Date ou salle</name>
+  <slug>date_ou_salle</slug>
+  <data_source>
+    <type>jsonvalue</type>
+    <value>[{"id": "dates_puis_salle", "text": "des dates puis une salle"}, {"id": "salle_puis_date", "text": "une salle puis des dates"}]</value>
+  </data_source>
+  <category slug="imio-atal" category_id="3">iMio - Atal</category>
+</datasource>

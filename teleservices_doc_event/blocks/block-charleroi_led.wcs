@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="23" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/23/">
-  <name>Charleroi led</name>
+<block id="23" url="">
+  <name>iMio - Doc Event - Led</name>
   <slug>charleroi_led</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Nombre</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -23,7 +24,7 @@
     <field>
       <type>map</type>
       <label type="str">Localisation</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -40,7 +41,7 @@
     <field>
       <type>string</type>
       <label type="str">Rue</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -56,7 +57,7 @@
     <field>
       <type>string</type>
       <label type="str">Numero</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -75,7 +76,7 @@
     <field>
       <type>text</type>
       <label type="str">But</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>

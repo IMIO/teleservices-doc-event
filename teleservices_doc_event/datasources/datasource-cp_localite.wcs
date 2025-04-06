@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<datasource id="35" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/settings/data-sources/35/">
+<datasource id="35" url="">
   <name>CP - Localit&#233;</name>
   <slug>cp_localite</slug>
   <documentation>Liste des localit&#233;s de Charleroi associ&#233;es &#224; leur code postal.</documentation>

@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="22" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/22/">
-  <name>Charleroi place de stationnement</name>
+<block id="22" url="">
+  <name>iMio - Doc Event - Place de stationnement</name>
   <slug>charleroi_place_de_stationnement</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Rue</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -21,7 +22,7 @@
     <field>
       <type>string</type>
       <label type="str">Du n&#176;</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -36,7 +37,7 @@
     <field>
       <type>string</type>
       <label type="str">Au n&#176;</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -51,7 +52,7 @@
     <field>
       <type>date</type>
       <label type="str">Date de d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -69,7 +70,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -84,7 +85,7 @@
     <field>
       <type>date</type>
       <label type="str">Date de fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -102,7 +103,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<wscall id="254" url="">
+  <name>iMio - Doc Event - Schema</name>
+  <slug>doc_event_schema</slug>
+  <request>
+    <url>{{ eservices_url }}api/formdefs/demande-organisation-evenement/schema</url>
+    <request_signature_key />
+    <method>GET</method>
+    <timeout />
+    <cache_duration>2678400</cache_duration>
+    <qs_data />
+    <post_data />
+  </request>
+  <record_on_errors>true</record_on_errors>
+</wscall>

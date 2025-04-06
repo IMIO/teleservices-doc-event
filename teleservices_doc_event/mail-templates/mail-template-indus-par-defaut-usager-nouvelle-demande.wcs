@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<mail-template id="33" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/mail-templates/33/">
+<mail-template id="33" url="">
   <name>Indus - Par d&#233;faut - Usager - Nouvelle demande</name>
   <slug>indus-par-defaut-usager-nouvelle-demande</slug>
   <documentation>Email envoy&#233; &#224; l'usager lors de l'envoi de sa demande pour confirmation</documentation>

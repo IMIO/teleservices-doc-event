@@ -1,0 +1,626 @@
+<?xml version="1.0"?>
+<formdef id="330" url="">
+  <name>Location de salles</name>
+  <url_name>demande-location-de-salles-atal</url_name>
+  <submission_user_association>any</submission_user_association>
+  <history_pane_default_mode>expanded</history_pane_default_mode>
+  <discussion>false</discussion>
+  <detailed_emails>true</detailed_emails>
+  <disabled>false</disabled>
+  <only_allow_one>false</only_allow_one>
+  <enable_tracking_codes>false</enable_tracking_codes>
+  <confirmation>true</confirmation>
+  <always_advertise>false</always_advertise>
+  <has_captcha>false</has_captcha>
+  <skip_from_360_view>false</skip_from_360_view>
+  <workflow slug="imio-atal-reservation-de-salle" workflow_id="201">iMio - Atal - R&#233;servation de salle</workflow>
+  <fields>
+    <field>
+      <type>page</type>
+      <label type="str">Identification de l'&#233;v&#233;nement</label>
+      <condition>
+        <type>django</type>
+        <value>False</value>
+      </condition>
+      <id type="str">0c69113b-319d-4f97-bb34-f8ee17af2570</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Nom de l'&#233;v&#233;nement</label>
+      <required type="str">required</required>
+      <varname type="str">nom_de_l_evenement</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">final</anonymise>
+      <id type="str">dcff8f46-9152-4f97-a470-59d2dcc12090</id>
+    </field>
+    <field>
+      <type>email</type>
+      <label type="str">Adresse mail de l'organisateur</label>
+      <required type="str">required</required>
+      <varname type="str">mail</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <locked>False</locked>
+        <locked-unless-empty>False</locked-unless-empty>
+        <type>user</type>
+        <value>_email</value>
+      </prefill>
+      <anonymise type="str">final</anonymise>
+      <id type="str">e715aeaf-e4ef-4d53-8b62-b5b9ce3cc1c1</id>
+    </field>
+    <field>
+      <type>page</type>
+      <label type="str">Je choisi en premier</label>
+      <varname type="str">first_page</varname>
+      <id type="str">ecdffa38-a554-4395-b409-b56ec697cb9e</id>
+    </field>
+    <field>
+      <type>subtitle</type>
+      <label type="str">Je choisi en premier</label>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <id type="str">b03fb8dc-dd55-46de-901f-207ef59d14d7</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Je choisi</label>
+      <required type="str">required</required>
+      <varname type="str">date_or_salle</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">radio</display_mode>
+      <items />
+      <data_source>
+        <type>date_ou_salle</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">42a59916-2a08-432a-afe6-78d12c0dd8dd</id>
+    </field>
+    <field>
+      <type>page</type>
+      <label type="str">Choix des dates</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_date_or_salle_raw == "dates_puis_salle"</value>
+      </condition>
+      <post_conditions>
+        <post_condition>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_debut|date &gt; today|date|add_days:form_option_min_days</value>
+          </condition>
+          <error_message>Votre r&#233;servation est trop t&#244;t</error_message>
+        </post_condition>
+        <post_condition>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_fin|date &lt; today|date|add_days:form_option_max_days</value>
+          </condition>
+          <error_message>Votre r&#233;servation est trop tard</error_message>
+        </post_condition>
+        <post_condition>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_debut|add:" "|add:form_var_heure_debut|datetime &lt; form_var_date_fin|add:" "|add:form_var_heure_fin|datetime</value>
+          </condition>
+          <error_message>La date du d&#233;but de votre location se situe apr&#232;s la date de fin</error_message>
+        </post_condition>
+      </post_conditions>
+      <id type="str">400bc21b-c82d-40e1-9081-4b5dd1a63b90</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date de d&#233;but</label>
+      <required type="str">required</required>
+      <varname type="str">date_debut</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-4</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">False</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">05954b4b-d488-45a3-a975-05337a6128db</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">Heure de d&#233;but</label>
+      <required type="str">required</required>
+      <varname type="str">heure_debut</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-2-12</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">8934b0cc-1aba-4b5e-8d29-f661cec4837f</id>
+    </field>
+    <field>
+      <type>date</type>
+      <label type="str">Date de fin</label>
+      <required type="str">required</required>
+      <varname type="str">date_fin</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">newline grid-1-4</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <minimum_is_future type="bool">True</minimum_is_future>
+      <date_in_the_past type="bool">False</date_in_the_past>
+      <date_can_be_today type="bool">False</date_can_be_today>
+      <id type="str">e829f545-276e-4264-99dd-fd8bc78c6707</id>
+    </field>
+    <field>
+      <type>string</type>
+      <label type="str">heure de fin</label>
+      <required type="str">required</required>
+      <varname type="str">heure_fin</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">grid-2-12</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <validation>
+        <type>time</type>
+      </validation>
+      <id type="str">3321df30-272b-405b-a47a-c614948b9859</id>
+    </field>
+    <field>
+      <type>page</type>
+      <label type="str">Choix de la salle</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_date_or_salle_raw == "dates_puis_salle"</value>
+      </condition>
+      <id type="str">f44b12db-9d51-40cc-adf8-4b9917eff723</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Salles Disponibles</label>
+      <required type="str">required</required>
+      <hint type="str">&lt;p&gt;S&#233;lectionnez une salle&lt;/p&gt;</hint>
+      <varname type="str">salle</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">list</display_mode>
+      <data_source>
+        <type>salles_disponibles</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">1eafbc4e-a623-4cac-9f24-266f6eb59729</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;{% with salle=webservice.imio_atal_informations_salle %} {% with features=salle|get:"FeaturesValues" %}
+&lt;/p&gt;&lt;ul&gt;
+{% for feature in features %} {% if feature|get:"Type"|stringformat:"i" in form_option_informations_inclues_raw %} {% if feature|get:"DecimalValue" or feature|get:"TextValue" %}
+	&lt;li&gt;&lt;b&gt;{% with feature_details=form_option_informations_inclues_structured|get_feature_details:feature %}{{ feature_details|get:"text" }}&lt;/b&gt; : {% if feature_details|get:"FeatureValueType"|stringformat:"i" in id_boolean_features_location_salles|split:"," %}{{ feature|get:"DecimalValue"|yesno }}{% else %}{% firstof feature|get:"DecimalValue"|decimal feature|get:"TextValue" %}{% endif %}{% endwith %}&lt;/li&gt;
+{% endif %} {% endif %} {% endfor %}
+&lt;/ul&gt;
+{% endwith %} {% endwith %}&lt;p&gt;&lt;/p&gt;</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_salle</value>
+      </condition>
+      <display_locations />
+      <id type="str">a504c31d-5f2b-43b3-bf09-3b912bc00a97</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;ul&gt;
+{% for response in webservice.imio_atal_photo_salle %}
+	&lt;li&gt;&lt;a href="{{ response|get:'url' }}" target="_blank" rel="noopener noreferrer nofollow"&gt;Photo {{ forloop.counter }}&lt;/a&gt;&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_salle</value>
+      </condition>
+      <display_locations />
+      <id type="str">2b503af8-b202-4dfa-ae8d-3042784fe8ed</id>
+    </field>
+    <field>
+      <type>page</type>
+      <label type="str">Choix de la salle</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_date_or_salle_raw == "salle_puis_date"</value>
+      </condition>
+      <id type="str">0ac2efad-56cc-4ec5-808e-38b78275ae74</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Salle</label>
+      <condition>
+        <type>django</type>
+        <value>not form_option_activer_les_salles_parents_enfants</value>
+      </condition>
+      <required type="str">required</required>
+      <hint type="str">&lt;p&gt;S&#233;lectionnez une salle&lt;/p&gt;</hint>
+      <varname type="str">salle_not_parent</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">autocomplete</display_mode>
+      <data_source>
+        <type>rooms_name</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">5c1557ce-b0ce-4e7b-abbd-0a29512109a3</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Salle</label>
+      <condition>
+        <type>django</type>
+        <value>form_option_activer_les_salles_parents_enfants</value>
+      </condition>
+      <required type="str">required</required>
+      <hint type="str">&lt;p&gt;S&#233;lectionnez une salle&lt;/p&gt;</hint>
+      <varname type="str">salle_parent</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">list</display_mode>
+      <data_source>
+        <type>imio_atal_salles_parents</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">35822df0-594b-4d8a-8672-46c6140a3d95</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Sous salle</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_salle_parent_structured_id and data_source.imio_atal_salles_enfants</value>
+      </condition>
+      <required type="str">optional</required>
+      <hint type="str">&lt;p&gt;S&#233;lection optionnelle&lt;/p&gt;</hint>
+      <varname type="str">salle_enfant_0</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">list</display_mode>
+      <data_source>
+        <type>imio_atal_salles_enfants</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">65eda6e5-b927-4353-a7c1-97789ff600a3</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;{% with salle=webservice.imio_atal_informations_salle %}{% with features=salle|get:"FeaturesValues" %}
+
+&lt;/p&gt;&lt;ul&gt;
+{% for feature in features %}{% if feature|get:"Type"|stringformat:"i" in form_option_informations_inclues_raw %}{% if feature|get:"DecimalValue" or feature|get:"TextValue" or feature|get:"FeatureList" or feature|get:"FeatureLists" %}
+	&lt;li&gt;&lt;b&gt;{% with feature_details=form_option_informations_inclues_structured|get_feature_details:feature %}{{ feature_details|get:"text" }}&lt;/b&gt; : {% if feature_details|get:"FeatureValueType"|stringformat:"i" in id_boolean_features_location_salles|split:"," %}{{ feature|get:"DecimalValue"|yesno }}{% elif feature|get:"FeatureLists" %}&lt;ul&gt;{% for value_list in feature|get:"FeatureLists" %}&lt;li&gt;{{ value_list|get:"Label" }}&lt;/li&gt;{% endfor %}&lt;/ul&gt;{% else %}{% firstof feature|get:"DecimalValue"|decimal feature|get:"TextValue" feature|get:"FeatureList"|get:"Label" %}{% endif %}{% endwith %}&lt;/li&gt;
+{% endif %}{% endif %}{% endfor %}
+&lt;/ul&gt;
+
+{% endwith %}{% endwith %}&lt;p&gt;&lt;/p&gt;</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_salle_not_parent or form_var_salle_parent or form_var_salle_enfant_0</value>
+      </condition>
+      <display_locations />
+      <id type="str">2a62caea-83eb-4ee0-b62f-98310ca18910</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;ul&gt;
+{% for response in webservice.imio_atal_photo_salle %}
+	&lt;li&gt;&lt;a href="{{ response|get:'url' }}" rel="noopener noreferrer nofollow" target="_blank"&gt;Photo {{ forloop.counter }}&lt;/a&gt;&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_salle_not_parent or form_var_salle_parent or form_var_salle_enfant_0</value>
+      </condition>
+      <display_locations />
+      <id type="str">d6a578b1-6ca3-48ec-a69f-9dc5412255c7</id>
+    </field>
+    <field>
+      <type>page</type>
+      <label type="str">Choix de l'horraire</label>
+      <condition>
+        <type>django</type>
+        <value>form_var_date_or_salle_raw == "salle_puis_date"</value>
+      </condition>
+      <post_conditions>
+        <post_condition>
+          <condition>
+            <type>django</type>
+            <value>form_var_jours_disponible|length or form_var_heures_disponible|length</value>
+          </condition>
+          <error_message>Veuillez choisir un cr&#233;neau de r&#233;servation</error_message>
+        </post_condition>
+      </post_conditions>
+      <id type="str">2c84cfda-5280-4ee1-87ed-bd7d134a105e</id>
+    </field>
+    <field>
+      <type>computed</type>
+      <label type="str">salle</label>
+      <varname type="str">salle</varname>
+      <value_template type="str">{% firstof form_var_salle_not_parent_structured form_var_salle_enfant_0_structured form_var_salle_parent_structured %}</value_template>
+      <freeze_on_initial_value type="bool">False</freeze_on_initial_value>
+      <id type="str">50844f2b-6f28-4089-bba9-75888d92be30</id>
+    </field>
+    <field>
+      <type>items</type>
+      <label type="str">Jours</label>
+      <required type="str">optional</required>
+      <varname type="str">jours_disponible</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">hidden</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <items>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+      </items>
+      <display_mode type="str">checkboxes</display_mode>
+      <min_choices type="int">0</min_choices>
+      <max_choices type="int">0</max_choices>
+      <data_source>
+        <type>calendar_atal_days</type>
+        <value>https://canary-passerelle.guichet-citoyen.be/passerelle-imio-ia-tech/atal/generate-day-availability?room=2732&amp;start=90&amp;end=365</value>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">True</display_disabled_items>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">c8102799-1b11-4e02-8266-e97332371355</id>
+    </field>
+    <field>
+      <type>items</type>
+      <label type="str">Heures</label>
+      <required type="str">optional</required>
+      <varname type="str">heures_disponible</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <extra_css_class type="str">hidden</extra_css_class>
+      <anonymise type="str">final</anonymise>
+      <items />
+      <display_mode type="str">checkboxes</display_mode>
+      <min_choices type="int">0</min_choices>
+      <max_choices type="int">0</max_choices>
+      <data_source>
+        <type>calendar_atal_hours</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">True</display_disabled_items>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">e1ecc60a-1c66-47e2-90cf-eab59da0eae1</id>
+    </field>
+    <field>
+      <type>item</type>
+      <label type="str">Choix</label>
+      <condition>
+        <type>django</type>
+        <value>not form_option_selection_par</value>
+      </condition>
+      <required type="str">required</required>
+      <varname type="str">jour_heure</varname>
+      <display_locations>
+        <item>validation</item>
+        <item>summary</item>
+      </display_locations>
+      <prefill>
+        <type>string</type>
+        <value>jours</value>
+      </prefill>
+      <anonymise type="str">no</anonymise>
+      <display_mode type="str">radio</display_mode>
+      <items>
+        <item>Jour</item>
+      </items>
+      <data_source>
+        <type>jour_ou_heure</type>
+      </data_source>
+      <in_filters type="bool">False</in_filters>
+      <display_disabled_items type="bool">False</display_disabled_items>
+      <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+      <image_desktop_size type="str">150</image_desktop_size>
+      <image_mobile_size type="str">75</image_mobile_size>
+      <id type="str">25fd1e74-d253-4b4b-9539-57ed3cb30e03</id>
+    </field>
+    <field>
+      <type>comment</type>
+      <label type="str">&lt;p&gt;reservation salle&lt;/p&gt;
+</label>
+      <extra_css_class type="str">template-atal_room_calendar</extra_css_class>
+      <display_locations />
+      <id type="str">95e64a7c-2016-49aa-aea3-f0feaa0e015f</id>
+    </field>
+  </fields>
+  <options>
+    <option varname="activer_les_salles_parents_enfants" type="bool">false</option>
+    <option varname="informations_exclues" type="list">
+      <item>18249</item>
+      <item>18250</item>
+    </option>
+    <option varname="informations_exclues_display">18249, 18250</option>
+    <option varname="informations_exclues_structured" />
+    <option varname="informations_inclues" type="list">
+      <item>1975</item>
+      <item>1976</item>
+      <item>2229</item>
+      <item>2230</item>
+      <item>4181</item>
+      <item>4182</item>
+      <item>4183</item>
+    </option>
+    <option varname="informations_inclues_display">Acte, Prix acquisition, Accueil Public, Lien Plan, test, test 1, Liste multi</option>
+    <option varname="informations_inclues_structured" type="list">
+      <item type="dict">
+        <FeatureCategoryId type="int">1035</FeatureCategoryId>
+        <FeatureValueType type="int">2</FeatureValueType>
+        <Label>Acte</Label>
+        <Order type="int">1</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">1975</Id>
+        <id type="int">1975</id>
+        <text>Acte</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1035</FeatureCategoryId>
+        <FeatureValueType type="int">2</FeatureValueType>
+        <Label>Prix acquisition</Label>
+        <Order type="int">2</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">1976</Id>
+        <id type="int">1976</id>
+        <text>Prix acquisition</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1052</FeatureCategoryId>
+        <FeatureValueType type="int">5</FeatureValueType>
+        <Label>Accueil Public</Label>
+        <Order type="int">1</Order>
+        <Required type="bool">true</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">2229</Id>
+        <id type="int">2229</id>
+        <text>Accueil Public</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1052</FeatureCategoryId>
+        <FeatureValueType type="int">9</FeatureValueType>
+        <Label>Lien Plan</Label>
+        <Order type="int">2</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">2230</Id>
+        <id type="int">2230</id>
+        <text>Lien Plan</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1052</FeatureCategoryId>
+        <FeatureValueType type="int">3</FeatureValueType>
+        <Label>test</Label>
+        <Order type="int">3</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">4181</Id>
+        <id type="int">4181</id>
+        <text>test</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1052</FeatureCategoryId>
+        <FeatureValueType type="int">3</FeatureValueType>
+        <Label>test 1</Label>
+        <Order type="int">4</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">4182</Id>
+        <id type="int">4182</id>
+        <text>test 1</text>
+      </item>
+      <item type="dict">
+        <FeatureCategoryId type="int">1052</FeatureCategoryId>
+        <FeatureValueType type="int">24</FeatureValueType>
+        <Label>Liste multi</Label>
+        <Order type="int">5</Order>
+        <Required type="bool">false</Required>
+        <Editable type="bool">true</Editable>
+        <History type="bool">false</History>
+        <Active type="bool">true</Active>
+        <ValueList type="list" />
+        <Id type="int">4183</Id>
+        <id type="int">4183</id>
+        <text>Liste multi</text>
+      </item>
+    </option>
+    <option varname="max_days">45</option>
+    <option varname="min_days">5</option>
+    <option varname="selection_par" />
+    <option varname="selection_par_display" />
+    <option varname="selection_par_structured" />
+  </options>
+  <custom_views />
+  <geolocations />
+  <management_sidebar_items>
+    <item>__default__</item>
+  </management_sidebar_items>
+</formdef>

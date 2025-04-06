@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<datasource id="367" url="">
+  <name>iMio - Atal - Calendrier Jour ou Heure</name>
+  <slug>jour_ou_heure</slug>
+  <data_source>
+    <type>jsonvalue</type>
+    <value>[   {     "text": "Jours",     "id": "jours"   },   {     "text": "Heures",     "id": "heures"   } ]</value>
+  </data_source>
+  <category slug="imio-atal" category_id="3">iMio - Atal</category>
+</datasource>

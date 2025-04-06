@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="20" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/20/">
-  <name>Charleroi rue et heure</name>
+<block id="20" url="">
+  <name>iMio - Doc Event - Rue et heure</name>
   <slug>charleroi_rue_et_heure</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>text</type>
       <label type="str">Noms et portions de rues concern&#233;s</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Merci d'indiquer une ou plusieurs rues associ&#233;es &#224; un horaire de fermeture particulier. Si plusieurs rues sont bloqu&#233;es &#224; des moments diff&#233;rents, merci de s&#233;lectionner le bouton "Ajouter un autre".</hint>
       <display_locations>
         <item>validation</item>
@@ -22,7 +23,7 @@
     <field>
       <type>date</type>
       <label type="str">Date d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -40,7 +41,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -55,7 +56,7 @@
     <field>
       <type>date</type>
       <label type="str">Date fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -73,7 +74,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>

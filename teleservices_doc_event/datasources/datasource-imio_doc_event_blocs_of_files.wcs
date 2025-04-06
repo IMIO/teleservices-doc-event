@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<datasource id="380" url="">
+  <name>iMio - Doc Event - Fichiers des Blocs de champs</name>
+  <slug>imio_doc_event_blocs_of_files</slug>
+  <data_source>
+    <type>jsonvalue</type>
+    <value>[{% for i in webservice.doc_event_schema|get:"fields" %}{% if i|get:"type" == "block" and "file" in  i|get:"schema"|get:"fields"|comprehensive_list:"type" %}{"text": {{ i|get:"label"|json_dumps }}, "id": "{{ i|get:"varname" }}"}{% if not forloop.last %}, {% endif %}{% elif forloop.last %}{"text": "Rien", "id": "nothing", "disabled": true}{% endif %}{% endfor %}]</value>
+  </data_source>
+  <category slug="imio-doc-event" category_id="4">iMio - Doc Event</category>
+</datasource>

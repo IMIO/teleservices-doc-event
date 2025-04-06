@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<mail-template id="11" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/mail-templates/11/">
+<mail-template id="11" url="">
   <name>Indus - Par d&#233;faut - Usager - Termin&#233;e</name>
   <slug>indus-par-defaut-usager-terminee</slug>
   <documentation>Email envoy&#233; &#224; l'usager lorsque sa demande est termin&#233;e</documentation>

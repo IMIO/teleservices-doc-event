@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<carddef id="14" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/cards/14/">
+<carddef id="14" url="">
   <name>iMio - Doc Event - Demande d'avis</name>
   <url_name>imio-doc-event-demande-avis</url_name>
   <submission_user_association>none</submission_user_association>
+  <history_pane_default_mode>collapsed</history_pane_default_mode>
   <discussion>false</discussion>
   <detailed_emails>true</detailed_emails>
   <disabled>false</disabled>
@@ -12,7 +13,8 @@
   <always_advertise>false</always_advertise>
   <has_captcha>false</has_captcha>
   <skip_from_360_view>false</skip_from_360_view>
-  <workflow slug="imio-doc-event-fiche-demande-d-avis" workflow_id="37">iMio - Doc Event - Fiche - Demande d'avis</workflow>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
+  <workflow slug="imio-doc-event-fiche-demande-d-avis" workflow_id="203">iMio - Doc Event - Fiche - Demande d'avis</workflow>
   <fields>
     <field>
       <type>page</type>
@@ -22,7 +24,7 @@
     <field>
       <type>item</type>
       <label type="str">Service</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">service</varname>
       <display_locations>
         <item>validation</item>
@@ -49,7 +51,7 @@
     <field>
       <type>email</type>
       <label type="str">Mail</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">service_courriel</varname>
       <display_locations>
         <item>validation</item>
@@ -71,7 +73,8 @@
     </field>
     <field>
       <type>comment</type>
-      <label type="str">&lt;p&gt;&lt;a href="{{form_parent_form_url_backoffice}}" rel="noopener noreferrer" target="_blank"&gt;Liens vers les d&amp;eacute;tails de la demande&lt;/a&gt;&lt;/p&gt;</label>
+      <label type="str">&lt;p&gt;&lt;a href="{{form_parent_form_url_backoffice}}" rel="noopener noreferrer nofollow" target="_blank"&gt;Liens vers les d&amp;eacute;tails de la demande&lt;/a&gt;&lt;/p&gt;
+</label>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -81,7 +84,7 @@
     <field>
       <type>item</type>
       <label type="str">Avis favorable</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">avis_favorable</varname>
       <display_locations>
         <item>validation</item>
@@ -108,7 +111,7 @@
     <field>
       <type>text</type>
       <label type="str">Avis d&#233;taill&#233;</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">avis_detail</varname>
       <display_locations>
         <item>validation</item>
@@ -120,12 +123,11 @@
     </field>
   </fields>
   <user-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
   </user-roles>
   <backoffice-submission-roles>
-    <role slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</role>
+    <role slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</role>
   </backoffice-submission-roles>
-  <roles />
   <options />
   <custom_views>
     <custom_view>

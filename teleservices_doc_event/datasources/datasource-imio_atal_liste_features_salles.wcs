@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<datasource id="377" url="">
+  <name>iMio - Atal - Liste Features salles</name>
+  <slug>imio_atal_liste_features_salles</slug>
+  <cache_duration>86400</cache_duration>
+  <id_attribute>Id</id_attribute>
+  <text_attribute>Label</text_attribute>
+  <data_source>
+    <type>json</type>
+    <value>{{ passerelle_url }}passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/get-features?filters={% for category in id_feature_category_location_salles|split:"," %}FeatureCategoryId eq {{ category }}{% if not forloop.last %} or {% endif %}{% endfor %}</value>
+  </data_source>
+  <category slug="imio-atal" category_id="3">iMio - Atal</category>
+</datasource>

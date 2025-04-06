@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<datasource id="33" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/settings/data-sources/33/">
+<datasource id="33" url="">
   <name>iMio - R&#244;les</name>
   <slug>imio_roles</slug>
   <data_attribute>results</data_attribute>
@@ -7,6 +7,6 @@
   <text_attribute>name</text_attribute>
   <data_source>
     <type>json</type>
-    <value>{{ idp_url }}api/roles/?limit=1000</value>
+    <value>{{ idp_url }}api/roles/?limit=1000&amp;internal=false&amp;ordering=name</value>
   </data_source>
 </datasource>

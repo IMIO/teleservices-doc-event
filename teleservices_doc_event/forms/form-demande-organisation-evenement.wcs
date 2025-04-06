@@ -3,6 +3,7 @@
   <name>Demande d'organisation d'&#233;v&#233;nement</name>
   <url_name>demande-organisation-evenement</url_name>
   <submission_user_association>any</submission_user_association>
+  <history_pane_default_mode>expanded</history_pane_default_mode>
   <discussion>false</discussion>
   <detailed_emails>true</detailed_emails>
   <disabled>false</disabled>
@@ -12,7 +13,8 @@
   <always_advertise>true</always_advertise>
   <has_captcha>false</has_captcha>
   <skip_from_360_view>false</skip_from_360_view>
-  <workflow slug="organiser-un-evenement-phase-31" workflow_id="38">Organiser un &#233;v&#232;nement -  Phase 3.1</workflow>
+  <category slug="doc-event" category_id="146">Doc Event</category>
+  <workflow slug="organiser-un-evenement-phase-31" workflow_id="204">Organiser un &#233;v&#232;nement -  Phase 3.1</workflow>
   <fields>
     <field>
       <type>page</type>
@@ -72,7 +74,7 @@
     <field>
       <type>items</type>
       <label type="str">Pr&#233;cisez le type d&#8217;activit&#233;s et d&#8217;actions pendant l&#8217;&#233;v&#233;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">type_activite</varname>
       <display_locations>
         <item>validation</item>
@@ -132,7 +134,7 @@
         <type>django</type>
         <value>'Autre(s)' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">type_activite_autre</varname>
       <display_locations>
         <item>validation</item>
@@ -150,7 +152,7 @@
     <field>
       <type>items</type>
       <label type="str">L'&#233;v&#233;nement proposera-t-il des installations de divertissement ?</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">installation_div</varname>
       <display_locations>
         <item>validation</item>
@@ -207,7 +209,7 @@
         <type>django</type>
         <value>'Animation sonore, concert' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Toute diffusion de musique est soumise aux droits d&#8217;auteur. Obligation de faire une demande d&#8217;autorisation &#224; la SABAM sauf pour les mariages, anniversaires chez soi ou en famille sans DJ.</hint>
       <varname type="str">description_evenement_detail_animation_sonore_concert_famille_musicale</varname>
       <display_locations>
@@ -228,7 +230,7 @@
         <type>django</type>
         <value>'Cort&#232;ge' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_cortege_type</varname>
       <display_locations>
         <item>validation</item>
@@ -248,7 +250,7 @@
         <type>django</type>
         <value>'F&#234;te locale' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_fete_type</varname>
       <display_locations>
         <item>validation</item>
@@ -268,7 +270,7 @@
         <type>django</type>
         <value>'Activit&#233; sportive' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_activite_sportive_type</varname>
       <display_locations>
         <item>validation</item>
@@ -288,7 +290,7 @@
         <type>django</type>
         <value>'Exposition/Exhibition' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_exposition_art_type</varname>
       <display_locations>
         <item>validation</item>
@@ -308,7 +310,7 @@
         <type>django</type>
         <value>'Brocante' in form_var_type_activite or 'Braderie' in form_var_type_activite or 'March&#233;' in form_var_type_activite or 'Foire' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_brocante_braderie_foire_type</varname>
       <display_locations>
         <item>validation</item>
@@ -339,7 +341,7 @@
         <type>django</type>
         <value>'Vente sur l&#8217;espace public' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_vente_publique</varname>
       <display_locations>
         <item>validation</item>
@@ -359,7 +361,7 @@
         <type>django</type>
         <value>'Action de sensibilisation' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_action_sensibilisation_but</varname>
       <display_locations>
         <item>validation</item>
@@ -379,7 +381,7 @@
         <type>django</type>
         <value>'Action de sensibilisation' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_action_sensibilisation_statique_mobile</varname>
       <display_locations>
         <item>validation</item>
@@ -409,7 +411,7 @@
         <type>django</type>
         <value>"Action(s) promotionnelle(s)" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_action_promo_but</varname>
       <display_locations>
         <item>validation</item>
@@ -429,7 +431,7 @@
         <type>django</type>
         <value>"Action(s) promotionnelle(s)" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_action_promo_statique_mobile</varname>
       <display_locations>
         <item>validation</item>
@@ -459,7 +461,7 @@
         <type>django</type>
         <value>'Tournage' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_detail_tournage_type_deroulement_matos</varname>
       <display_locations>
         <item>validation</item>
@@ -479,7 +481,7 @@
         <type>django</type>
         <value>'Tournage' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">tournage_synopsis</varname>
       <display_locations>
         <item>validation</item>
@@ -501,7 +503,7 @@
         <type>django</type>
         <value>"Comm&#233;moration" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">commemoration</varname>
       <display_locations>
         <item>validation</item>
@@ -530,7 +532,7 @@
         <type>django</type>
         <value>form_var_commemoration == "Autres"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -571,7 +573,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_feu_artifice_carte</varname>
       <display_locations>
         <item>validation</item>
@@ -593,7 +595,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">rue</varname>
       <display_locations>
         <item>validation</item>
@@ -614,7 +616,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">numero</varname>
       <display_locations>
         <item>validation</item>
@@ -635,7 +637,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">cp</varname>
       <display_locations>
         <item>validation</item>
@@ -656,7 +658,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">localite</varname>
       <display_locations>
         <item>validation</item>
@@ -677,7 +679,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_feu_artifice_heure_debut</varname>
       <display_locations>
         <item>validation</item>
@@ -697,7 +699,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_feu_artifice_heure_fin</varname>
       <display_locations>
         <item>validation</item>
@@ -717,7 +719,7 @@
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">description_evenement_feu_artifice_type</varname>
       <display_locations>
         <item>validation</item>
@@ -737,7 +739,7 @@
         <type>django</type>
         <value>'L&#226;cher de ballons/lanternes' in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">L&#8217;organisateur doit obtenir l&#8217;autorisation et se conformer aux directives du SPF Mobilit&#233; et Transport.</hint>
       <varname type="str">description_evenement_lacher_ballon_detail</varname>
       <display_locations>
@@ -765,6 +767,15 @@
     <field>
       <type>page</type>
       <label type="str">Donn&#233;es g&#233;n&#233;rales</label>
+      <post_conditions>
+        <post_condition>
+          <condition>
+            <type>django</type>
+            <value>form_var_debut_evenement &gt;= today|add_days:15</value>
+          </condition>
+          <error_message>Votre &#233;v&#233;nement ne peut avoir une date de d&#233;but inf&#233;rieur au {{ today|add_days:15 }}</error_message>
+        </post_condition>
+      </post_conditions>
       <id type="str">10</id>
     </field>
     <field>
@@ -780,7 +791,7 @@
     <field>
       <type>string</type>
       <label type="str">Nom de l'&#233;v&#232;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_event</varname>
       <display_locations>
         <item>validation</item>
@@ -811,7 +822,7 @@
     <field>
       <type>item</type>
       <label type="str">L'&#233;v&#233;nement aura-t-il lieu &#224; un endroit particulier list&#233; ci-dessous ?</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">S&#233;lectionnez un endroit dans la liste</hint>
       <varname type="str">evenement_lieu_dit</varname>
       <display_locations>
@@ -847,7 +858,7 @@
         <type>django</type>
         <value>form_var_evenement_lieu_dit != none</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_lieu_dit</varname>
       <display_locations>
         <item>validation</item>
@@ -863,7 +874,7 @@
     <field>
       <type>map</type>
       <label type="str">Site</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">carte_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -890,7 +901,7 @@
     <field>
       <type>string</type>
       <label type="str">Rue</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">rue_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -907,7 +918,7 @@
     <field>
       <type>string</type>
       <label type="str">Num&#233;ro</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">numero_porte_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -928,7 +939,7 @@
     <field>
       <type>string</type>
       <label type="str">Bo&#238;te</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">boite_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -944,7 +955,7 @@
     <field>
       <type>item</type>
       <label type="str">Localit&#233;</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">code_postal_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -971,7 +982,7 @@
     <field>
       <type>text</type>
       <label type="str">Listez ici les autres rues o&#249; se d&#233;roulera l'&#233;v&#233;nement</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_liste_rues_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -997,7 +1008,7 @@
     <field>
       <type>date</type>
       <label type="str">D&#233;but de l'&#233;v&#232;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">debut_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -1016,7 +1027,7 @@
     <field>
       <type>date</type>
       <label type="str">Fin de l'&#233;v&#232;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">fin_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -1035,7 +1046,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">heure_debut</varname>
       <display_locations>
         <item>validation</item>
@@ -1051,7 +1062,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">heure_fin</varname>
       <display_locations>
         <item>validation</item>
@@ -1077,7 +1088,7 @@
     <field>
       <type>date</type>
       <label type="str">D&#233;but du montage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">debut_montage</varname>
       <display_locations>
         <item>validation</item>
@@ -1096,7 +1107,7 @@
     <field>
       <type>date</type>
       <label type="str">Fin du montage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">fin_montage</varname>
       <display_locations>
         <item>validation</item>
@@ -1115,7 +1126,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">heure_debut_montage</varname>
       <display_locations>
         <item>validation</item>
@@ -1131,7 +1142,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">heure_fin_montage</varname>
       <display_locations>
         <item>validation</item>
@@ -1147,7 +1158,7 @@
     <field>
       <type>date</type>
       <label type="str">D&#233;but du d&#233;montage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">debut_demontage</varname>
       <display_locations>
         <item>validation</item>
@@ -1166,7 +1177,7 @@
     <field>
       <type>date</type>
       <label type="str">Fin du d&#233;montage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">fin_demontage</varname>
       <display_locations>
         <item>validation</item>
@@ -1185,7 +1196,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">heure_debut_demontage</varname>
       <display_locations>
         <item>validation</item>
@@ -1201,7 +1212,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">heure_fin_demontage</varname>
       <display_locations>
         <item>validation</item>
@@ -1217,7 +1228,7 @@
     <field>
       <type>date</type>
       <label type="str">D&#233;but des r&#233;p&#233;titions</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">debut_repet</varname>
       <display_locations>
         <item>validation</item>
@@ -1236,7 +1247,7 @@
     <field>
       <type>date</type>
       <label type="str">Fin des r&#233;p&#233;titions</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">fin_repet</varname>
       <display_locations>
         <item>validation</item>
@@ -1255,7 +1266,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_heure_debut_repetition</varname>
       <display_locations>
         <item>validation</item>
@@ -1271,7 +1282,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_heure_fin_repetition</varname>
       <display_locations>
         <item>validation</item>
@@ -1287,7 +1298,7 @@
     <field>
       <type>date</type>
       <label type="str">D&#233;but des entra&#238;nements</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">debut_entrainement</varname>
       <display_locations>
         <item>validation</item>
@@ -1306,7 +1317,7 @@
     <field>
       <type>date</type>
       <label type="str">Fin des entra&#238;nements</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">fin_entrainement</varname>
       <display_locations>
         <item>validation</item>
@@ -1325,7 +1336,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de d&#233;but</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_heure_debut_entrainement</varname>
       <display_locations>
         <item>validation</item>
@@ -1341,7 +1352,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure de fin</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_heure_fin_entrainement</varname>
       <display_locations>
         <item>validation</item>
@@ -1357,7 +1368,7 @@
     <field>
       <type>text</type>
       <label type="str">Remarques g&#233;n&#233;rales concernant l&#8217;horaire</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">donnees_generales_remarque_horaire</varname>
       <display_locations>
         <item>validation</item>
@@ -1380,7 +1391,7 @@
     <field>
       <type>items</type>
       <label type="str">Caract&#233;ristiques</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">caracteristique_evenement</varname>
       <display_locations>
         <item>validation</item>
@@ -1411,7 +1422,7 @@
         <type>django</type>
         <value>'Accessible &#224; tous - Payant' in form_var_caracteristique_evenement</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">D&#233;taillez les diff&#233;rents tarifs possibles.</hint>
       <varname type="str">prix</varname>
       <display_locations>
@@ -1437,7 +1448,7 @@
     <field>
       <type>bool</type>
       <label type="str">Cet &#233;v&#233;nement a d&#233;j&#224; &#233;t&#233; organis&#233; dans le pass&#233;</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">evenement_passe</varname>
       <display_locations>
@@ -1457,7 +1468,7 @@
         <type>django</type>
         <value>form_var_evenement_passe == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1476,7 +1487,7 @@
         <type>django</type>
         <value>form_var_evenement_passe == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1498,7 +1509,7 @@
         <type>django</type>
         <value>form_var_evenement_passe == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1517,7 +1528,7 @@
         <type>django</type>
         <value>form_var_evenement_passe == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1544,7 +1555,7 @@
     <field>
       <type>bool</type>
       <label type="str">TV</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">publicite_evenement_tv</varname>
       <display_locations>
         <item>validation</item>
@@ -1563,7 +1574,7 @@
         <type>django</type>
         <value>form_var_publicite_evenement_tv == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">donnees_generales_detail_publicite_evenement_tv</varname>
       <display_locations>
         <item>validation</item>
@@ -1579,7 +1590,7 @@
     <field>
       <type>bool</type>
       <label type="str">Radio</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">publicite_evenement_radio</varname>
       <display_locations>
         <item>validation</item>
@@ -1598,7 +1609,7 @@
         <type>django</type>
         <value>form_var_publicite_evenement_radio == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">donnees_generales_detail_publicite_evenement_radio</varname>
       <display_locations>
         <item>validation</item>
@@ -1614,7 +1625,7 @@
     <field>
       <type>bool</type>
       <label type="str">Affichage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">publicite_evenement_affichage</varname>
       <display_locations>
         <item>validation</item>
@@ -1633,7 +1644,7 @@
         <type>django</type>
         <value>form_var_publicite_evenement_affichage == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">donnees_generales_detail_publicite_evenement_affichage</varname>
       <display_locations>
         <item>validation</item>
@@ -1649,7 +1660,7 @@
     <field>
       <type>bool</type>
       <label type="str">Internet</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">publicite_evenement_internet</varname>
       <display_locations>
         <item>validation</item>
@@ -1668,7 +1679,7 @@
         <type>django</type>
         <value>form_var_publicite_evenement_internet == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">donnees_generales_detail_publicite_evenement_internet</varname>
       <display_locations>
         <item>validation</item>
@@ -1684,7 +1695,7 @@
     <field>
       <type>bool</type>
       <label type="str">Autre(s)</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">publicite_evenement_autre</varname>
       <display_locations>
         <item>validation</item>
@@ -1703,7 +1714,7 @@
         <type>django</type>
         <value>form_var_publicite_evenement_autre == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">publicite_evenement_autre_detail</varname>
       <display_locations>
         <item>validation</item>
@@ -1733,7 +1744,7 @@
     <field>
       <type>item</type>
       <label type="str">Type d'organisation</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">type_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1768,7 +1779,7 @@
         <type>django</type>
         <value>form_var_type_organisation == "Personne physique"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_orga</varname>
       <display_locations>
         <item>validation</item>
@@ -1789,7 +1800,7 @@
         <type>django</type>
         <value>form_var_type_organisation == "Personne physique"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">prenom</varname>
       <display_locations>
         <item>validation</item>
@@ -1810,7 +1821,7 @@
         <type>django</type>
         <value>form_var_type_organisation == "ASBL" or form_var_type_organisation == "SRL/SA"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1827,7 +1838,7 @@
     <field>
       <type>string</type>
       <label type="str">Rue</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">rue_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1843,7 +1854,7 @@
     <field>
       <type>string</type>
       <label type="str">Num&#233;ro</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">numero_porte_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1863,7 +1874,7 @@
     <field>
       <type>string</type>
       <label type="str">Bo&#238;te</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">boite_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1879,7 +1890,7 @@
     <field>
       <type>string</type>
       <label type="str">Code postal</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">code_postal_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1899,7 +1910,7 @@
     <field>
       <type>string</type>
       <label type="str">Ville</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">ville_organisation</varname>
       <display_locations>
         <item>validation</item>
@@ -1919,7 +1930,7 @@
         <type>django</type>
         <value>form_var_type_organisation == "SRL/SA"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisateur_statut_srl_sa</varname>
       <display_locations>
         <item>validation</item>
@@ -1935,7 +1946,7 @@
     <field>
       <type>string</type>
       <label type="str">N&#176; d'entreprise</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">organisateur_numero_entreprise</varname>
       <display_locations>
         <item>validation</item>
@@ -1951,7 +1962,7 @@
     <field>
       <type>string</type>
       <label type="str">T&#233;l&#233;phone</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1966,7 +1977,7 @@
     <field>
       <type>email</type>
       <label type="str">Adresse email</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -1985,7 +1996,7 @@
         <type>django</type>
         <value>form_var_type_organisation != "Personne physique" and form_var_type_organisation != "ASBL"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">responsable_legal</varname>
       <display_locations>
         <item>validation</item>
@@ -2007,7 +2018,7 @@
         <type>django</type>
         <value>form_var_type_organisation != "Personne physique" and form_var_type_organisation == "ASBL"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">responsable_legal</varname>
       <display_locations>
         <item>validation</item>
@@ -2017,7 +2028,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">1</max_items>
-      <add_element_label type="str" />
       <label_display type="str">subtitle</label_display>
       <remove_button type="bool">False</remove_button>
       <block_slug type="str">coordonnees</block_slug>
@@ -2030,7 +2040,7 @@
         <type>django</type>
         <value>form_var_type_organisation != "Personne physique" and form_var_type_organisation == "ASBL"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">responsable_legal_deuxio</varname>
       <display_locations>
         <item>validation</item>
@@ -2057,7 +2067,7 @@
     <field>
       <type>bool</type>
       <label type="str">M&#234;me personne que le responsable l&#233;gal</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">meme_personne_legal</varname>
       <display_locations>
@@ -2077,7 +2087,7 @@
         <type>django</type>
         <value>form_var_meme_personne_legal == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisateur_personne_contact</varname>
       <display_locations>
         <item>validation</item>
@@ -2110,7 +2120,7 @@
     <field>
       <type>item</type>
       <label type="str">Le responsable est :</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">responsable_site</varname>
       <display_locations>
         <item>validation</item>
@@ -2142,7 +2152,7 @@
         <type>django</type>
         <value>form_var_responsable_site == 'Autre'</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisateur_responsable_sur_site</varname>
       <display_locations>
         <item>validation</item>
@@ -2151,7 +2161,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">5</max_items>
-      <add_element_label type="str" />
       <label_display type="str">hidden</label_display>
       <remove_button type="bool">True</remove_button>
       <block_slug type="str">coordonnees</block_slug>
@@ -2169,7 +2178,7 @@
     <field>
       <type>bool</type>
       <label type="str">Idem &#224; celle de la soci&#233;t&#233;</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">meme_adresse_societe</varname>
       <display_locations>
@@ -2189,7 +2198,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2210,7 +2219,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">rue_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2230,7 +2239,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">numero_porte_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2254,7 +2263,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">boite_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2274,7 +2283,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">code_postal_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2298,7 +2307,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">ville_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2318,7 +2327,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisateur_statut_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2338,7 +2347,7 @@
         <type>django</type>
         <value>form_var_meme_adresse_societe == False</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisateur_numero_entreprise_facturation</varname>
       <display_locations>
         <item>validation</item>
@@ -2370,7 +2379,7 @@
     <field>
       <type>block</type>
       <label type="str">Indiquez les informations relatives &#224; l'assurance &#233;v&#233;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">assurance</varname>
       <display_locations>
         <item>validation</item>
@@ -2402,7 +2411,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence d'infrastructures sur le site de l&#8217;&#233;v&#232;nement install&#233;es par vos soins</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">infrastructures</varname>
       <display_locations>
@@ -2437,7 +2446,7 @@
         <type>django</type>
         <value>form_var_infrastructures == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">barriere_infra</varname>
       <display_locations>
         <item>validation</item>
@@ -2468,7 +2477,7 @@
         <type>django</type>
         <value>form_var_barriere_infra</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">infra_nombre_barrieres</varname>
       <display_locations>
         <item>validation</item>
@@ -2488,7 +2497,7 @@
         <type>django</type>
         <value>form_var_barriere_infra</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">infra_but_barrieres</varname>
       <display_locations>
         <item>validation</item>
@@ -2509,7 +2518,7 @@
         <type>django</type>
         <value>form_var_infrastructures == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">tribune_podium_infra</varname>
       <display_locations>
         <item>validation</item>
@@ -2549,7 +2558,7 @@
         <type>django</type>
         <value>'Tribune(s)/gradin(s)' in form_var_tribune_podium_infra</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">infra_nombre_tribune_gradin</varname>
       <display_locations>
         <item>validation</item>
@@ -2572,7 +2581,7 @@
         <type>django</type>
         <value>form_var_infrastructures == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">vehicules_loisirs_infra</varname>
       <display_locations>
         <item>validation</item>
@@ -2609,7 +2618,7 @@
         <type>django</type>
         <value>'V&#233;hicules de commerce(s) ambulant(s)' in form_var_vehicules_loisirs_infra</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">infra_nombre_vehicules_gaz</varname>
       <display_locations>
         <item>validation</item>
@@ -2632,7 +2641,7 @@
         <type>django</type>
         <value>form_var_infrastructures == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">petites_structures</varname>
       <display_locations>
         <item>validation</item>
@@ -2667,7 +2676,7 @@
         <type>django</type>
         <value>'Drapeaux, hampes' in form_var_petites_structures</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">En m&#232;tres</hint>
       <varname type="str">infra_hauteur_drapeaux_hampes</varname>
       <display_locations>
@@ -2691,7 +2700,7 @@
         <type>django</type>
         <value>form_var_infrastructures == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">autre_infra</varname>
       <display_locations>
         <item>validation</item>
@@ -2710,7 +2719,7 @@
         <type>django</type>
         <value>form_var_autre_infra == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">infra_autre_details</varname>
       <display_locations>
         <item>validation</item>
@@ -2740,7 +2749,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence d'un d&#233;bit de boissons ou de restauration</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">boissonsresto</varname>
       <display_locations>
@@ -2776,7 +2785,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">boissons</varname>
       <display_locations>
         <item>validation</item>
@@ -2810,7 +2819,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True and "Autre" in form_var_boissons</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">cuisine_boissons_detail_boisson</varname>
       <display_locations>
         <item>validation</item>
@@ -2830,7 +2839,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">type_resto</varname>
       <display_locations>
         <item>validation</item>
@@ -2864,7 +2873,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">cuisine_boissons_detail_plat</varname>
       <display_locations>
         <item>validation</item>
@@ -2898,7 +2907,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">foodtruck</varname>
       <display_locations>
@@ -2918,7 +2927,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True and form_var_foodtruck == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">cuisine_boissons_detail_foodtruck_restauration</varname>
       <display_locations>
         <item>validation</item>
@@ -2939,7 +2948,7 @@
         <type>django</type>
         <value>form_var_boissonsresto == True and form_var_foodtruck == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">cuisine_boissons_detail_foodtruck_boissons</varname>
       <display_locations>
         <item>validation</item>
@@ -2970,7 +2979,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre estim&#233; de participants pour l&#8217;ensemble de l&#8217;&#233;v&#233;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Ex : dans le cadre de l'organisation d'une brocante, les participants sont les brocanteurs.</hint>
       <varname type="str">participants</varname>
       <display_locations>
@@ -2989,7 +2998,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre maximum fix&#233; de participants pr&#233;sents en m&#234;me temps</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">public_nombre_maximum_participant_simultanement</varname>
       <display_locations>
         <item>validation</item>
@@ -3007,7 +3016,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre estim&#233; de visiteurs pour l'ensemble de l'&#233;v&#233;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Ex : dans le cadre de l'organisation d'une brocante, les visiteurs sont les personnes qui viennent voir la brocante.</hint>
       <varname type="str">nombre_visiteurs</varname>
       <display_locations>
@@ -3026,7 +3035,7 @@
     <field>
       <type>item</type>
       <label type="str">Un syst&#232;me d'inscription est mis en place</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">public_systeme_inscription_oui_non</varname>
       <display_locations>
         <item>validation</item>
@@ -3052,7 +3061,7 @@
     <field>
       <type>item</type>
       <label type="str">Cat&#233;gorie d&#8217;&#226;ge des participants</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">public_categorie_age_participant</varname>
       <display_locations>
         <item>validation</item>
@@ -3080,7 +3089,7 @@
     <field>
       <type>item</type>
       <label type="str">Un syst&#232;me de comptage est mis en place</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">public_systeme_comptage_oui_non</varname>
       <display_locations>
         <item>validation</item>
@@ -3106,7 +3115,7 @@
     <field>
       <type>items</type>
       <label type="str">Type de public attendu</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">public_type_public_attendu</varname>
       <display_locations>
         <item>validation</item>
@@ -3134,7 +3143,7 @@
     <field>
       <type>item</type>
       <label type="str">Densit&#233; du public</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">public_densite_du_public</varname>
       <display_locations>
         <item>validation</item>
@@ -3180,7 +3189,7 @@
         <type>django</type>
         <value>evenement_lieu_dit == "Autres"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Exprimez la longueur x la largeur en m&#232;tres.</hint>
       <varname type="str">zone_occupation_surface_evenement_lieu_dit</varname>
       <display_locations>
@@ -3201,7 +3210,7 @@
         <type>django</type>
         <value>evenement_lieu_dit == "Autres"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Exprimez la longueur x la largeur en m&#232;tres.</hint>
       <varname type="str">zone_occupation_surface_accessible_evenement_lieu_dit</varname>
       <display_locations>
@@ -3218,7 +3227,7 @@
     <field>
       <type>item</type>
       <label type="str">Site cl&#244;tur&#233;</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">site_cloture</varname>
       <display_locations>
         <item>validation</item>
@@ -3248,7 +3257,7 @@
         <type>django</type>
         <value>form_var_site_cloture == 'Oui'</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">site_cloture_oui</varname>
       <display_locations>
         <item>validation</item>
@@ -3278,7 +3287,7 @@
         <type>django</type>
         <value>form_var_site_cloture_oui == 'Autres'</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">zone_occupation_detail_cloture</varname>
       <display_locations>
         <item>validation</item>
@@ -3303,7 +3312,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre de sorties</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">zone_occupation_nombre_sorties</varname>
       <display_locations>
         <item>validation</item>
@@ -3319,7 +3328,7 @@
     <field>
       <type>string</type>
       <label type="str">Largeur des sorties de secours</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">En m&#232;tres.</hint>
       <varname type="str">zone_occupation_largeur_sorties</varname>
       <display_locations>
@@ -3345,7 +3354,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence d'un cort&#232;ge, parcours ou d&#233;fil&#233;</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">cortege</varname>
       <display_locations>
@@ -3365,7 +3374,7 @@
         <type>django</type>
         <value>form_var_cortege == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">zone_occupation_type_cortege_parcours_defile</varname>
       <display_locations>
         <item>validation</item>
@@ -3396,7 +3405,7 @@
         <type>django</type>
         <value>form_var_cortege == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">animaux</varname>
       <display_locations>
@@ -3416,7 +3425,7 @@
         <type>django</type>
         <value>form_var_cortege == "True" and form_var_animaux == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">zone_occupation_cortege_animaux_type</varname>
       <display_locations>
         <item>validation</item>
@@ -3437,7 +3446,7 @@
         <type>django</type>
         <value>form_var_cortege == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">zone_occupation_detail_itineraire</varname>
       <display_locations>
         <item>validation</item>
@@ -3475,7 +3484,7 @@
     <field>
       <type>bool</type>
       <label type="str">Poubelles</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">poubelle</varname>
       <display_locations>
         <item>validation</item>
@@ -3494,7 +3503,7 @@
         <type>django</type>
         <value>form_var_poubelle == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">poubelle_nombre</varname>
       <display_locations>
         <item>validation</item>
@@ -3514,7 +3523,7 @@
         <type>django</type>
         <value>form_var_poubelle == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">poubelle_details</varname>
       <display_locations>
         <item>validation</item>
@@ -3531,7 +3540,7 @@
     <field>
       <type>bool</type>
       <label type="str">Containers</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">containers</varname>
       <display_locations>
         <item>validation</item>
@@ -3550,7 +3559,7 @@
         <type>django</type>
         <value>form_var_containers == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">containers_nombre</varname>
       <display_locations>
         <item>validation</item>
@@ -3570,7 +3579,7 @@
         <type>django</type>
         <value>form_var_containers == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">containers_details</varname>
       <display_locations>
         <item>validation</item>
@@ -3587,7 +3596,7 @@
     <field>
       <type>bool</type>
       <label type="str">Tri s&#233;lectif</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">tri_selectif</varname>
       <display_locations>
         <item>validation</item>
@@ -3606,7 +3615,7 @@
         <type>django</type>
         <value>form_var_tri_selectif == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">tri_selectif_nombre</varname>
       <display_locations>
         <item>validation</item>
@@ -3626,7 +3635,7 @@
         <type>django</type>
         <value>form_var_tri_selectif == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">tri_selectif_details</varname>
       <display_locations>
         <item>validation</item>
@@ -3643,7 +3652,7 @@
     <field>
       <type>bool</type>
       <label type="str">Personnel pr&#233;pos&#233;</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">personnel_proprete</varname>
       <display_locations>
         <item>validation</item>
@@ -3662,7 +3671,7 @@
         <type>django</type>
         <value>form_var_personnel_proprete == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">personnel_proprete_nombre</varname>
       <display_locations>
         <item>validation</item>
@@ -3682,7 +3691,7 @@
         <type>django</type>
         <value>form_var_personnel_proprete == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">personnel_proprete_details</varname>
       <display_locations>
         <item>validation</item>
@@ -3699,7 +3708,7 @@
     <field>
       <type>bool</type>
       <label type="str">Autre(s):</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">autre_proprete</varname>
       <display_locations>
         <item>validation</item>
@@ -3718,7 +3727,7 @@
         <type>django</type>
         <value>form_var_autre_proprete == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">autre_proprete_nombre</varname>
       <display_locations>
         <item>validation</item>
@@ -3738,7 +3747,7 @@
         <type>django</type>
         <value>form_var_autre_proprete == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">autre_proprete_details</varname>
       <display_locations>
         <item>validation</item>
@@ -3755,7 +3764,7 @@
     <field>
       <type>item</type>
       <label type="str">Prestataire de service</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">prestataire_service_proprete</varname>
       <display_locations>
         <item>validation</item>
@@ -3792,7 +3801,7 @@
         <type>django</type>
         <value>form_var_prestataire_service_proprete == "Services communaux" or form_var_prestataire_service_proprete == "Tibi"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_date_horaire_nettoyage_site</varname>
       <display_locations>
         <item>validation</item>
@@ -3814,7 +3823,7 @@
         <type>django</type>
         <value>form_var_prestataire_service_proprete == "Services communaux" or form_var_prestataire_service_proprete == "Tibi"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_date_horaire_depots_poubelles</varname>
       <display_locations>
         <item>validation</item>
@@ -3836,7 +3845,7 @@
         <type>django</type>
         <value>form_var_prestataire_service_proprete == "Services communaux" or form_var_prestataire_service_proprete == "Tibi"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_date_horaire_reprise_poubelles</varname>
       <display_locations>
         <item>validation</item>
@@ -3863,7 +3872,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence de sanitaires</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Sanitaires &#224; pr&#233;voir &#224; vos frais, en nombre suffisant par rapport au public attendu. Une signalisation (fl&#233;chage) ad&#233;quate est aussi &#224; pr&#233;voir.</hint>
       <varname type="str">sanitaires</varname>
       <display_locations>
@@ -3883,7 +3892,7 @@
         <type>django</type>
         <value>form_var_sanitaires == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_nombre_sanitaire</varname>
       <display_locations>
         <item>validation</item>
@@ -3903,7 +3912,7 @@
         <type>django</type>
         <value>form_var_sanitaires == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_detail_sanitaires</varname>
       <display_locations>
         <item>validation</item>
@@ -3929,7 +3938,7 @@
     <field>
       <type>bool</type>
       <label type="str">Mise en place d'actions &#233;cologiques pour l&#8217;&#233;v&#233;nement</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">action_ecologique</varname>
       <display_locations>
         <item>validation</item>
@@ -3948,7 +3957,7 @@
         <type>django</type>
         <value>form_var_action_ecologique == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">proprete_sanitaire_environnement_detail_action_ecologique</varname>
       <display_locations>
         <item>validation</item>
@@ -3979,7 +3988,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre de personnes de votre organisation pr&#233;sentes sur place lors de l&#8217;&#233;v&#233;nement</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisation_nombre_personnes_orga_presente</varname>
       <display_locations>
         <item>validation</item>
@@ -3997,7 +4006,7 @@
     <field>
       <type>string</type>
       <label type="str">Nombre de sous-traitants (h&#244;tesses, techniciens, traiteur, ...)</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">organisation_nombre_sous_traitant</varname>
       <display_locations>
         <item>validation</item>
@@ -4015,7 +4024,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence d'un local de coordination g&#233;n&#233;rale sur site lors de l&#8217;&#233;v&#233;nement</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">organisation_local</varname>
       <display_locations>
@@ -4035,7 +4044,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">organisation_local_carte</varname>
       <display_locations>
         <item>validation</item>
@@ -4057,7 +4066,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">rue_organisation_local</varname>
       <display_locations>
         <item>validation</item>
@@ -4078,7 +4087,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">numero_porte_organisation_local</varname>
       <display_locations>
         <item>validation</item>
@@ -4103,7 +4112,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">boite_organisation_local</varname>
       <display_locations>
         <item>validation</item>
@@ -4123,7 +4132,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">code_postal_organisation_local</varname>
       <display_locations>
         <item>validation</item>
@@ -4148,7 +4157,7 @@
         <type>django</type>
         <value>form_var_organisation_local == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">ville_organisation_local</varname>
       <display_locations>
         <item>validation</item>
@@ -4182,7 +4191,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence d'installations techniques</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">installations_techniques</varname>
       <display_locations>
@@ -4202,7 +4211,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Tous  les  sites  ne  sont  pas  &#233;quip&#233;s  de  bornes  &#233;lectriques.  Renseignez-vous  aupr&#232;s  de  la  commune  comp&#233;tente  pour  toute ouverture de compteur.</hint>
       <varname type="str">installations_techniques_electricite</varname>
       <display_locations>
@@ -4236,7 +4245,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Si la puissance est sup&#233;rieure &#224; 250 kVa, vous devez obtenir avant l&#8217;&#233;v&#233;nement un permis d&#8217;environnement provisoire</hint>
       <varname type="str">installations_techniques_groupe_electrogene</varname>
       <display_locations>
@@ -4268,7 +4277,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">installations_techniques_sons_lumieres</varname>
       <display_locations>
         <item>validation</item>
@@ -4302,7 +4311,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">installations_techniques_alimentation_en_eau</varname>
       <display_locations>
         <item>validation</item>
@@ -4333,7 +4342,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">installations_techniques_cuissons_chauffage</varname>
       <display_locations>
         <item>validation</item>
@@ -4376,7 +4385,7 @@
         <type>django</type>
         <value>form_var_installations_techniques == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">autre_installations_techniques</varname>
       <display_locations>
         <item>validation</item>
@@ -4395,7 +4404,7 @@
         <type>django</type>
         <value>form_var_autre_installations_techniques == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">installations_techniques_detail_autre</varname>
       <display_locations>
         <item>validation</item>
@@ -4428,7 +4437,7 @@
     <field>
       <type>bool</type>
       <label type="str">Modification n&#233;cessaire de la circulation des v&#233;hicules ou des pi&#233;tons</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">modifier_circulation</varname>
       <display_locations>
@@ -4448,7 +4457,7 @@
         <type>django</type>
         <value>form_var_modifier_circulation == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">modif_mobilite_comment</varname>
       <display_locations>
         <item>validation</item>
@@ -4478,7 +4487,7 @@
         <type>django</type>
         <value>form_var_modifier_circulation == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">occupation_rue</varname>
       <display_locations>
         <item>validation</item>
@@ -4508,7 +4517,7 @@
         <type>django</type>
         <value>form_var_modifier_circulation == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">occupation_pourquoi</varname>
       <display_locations>
         <item>validation</item>
@@ -4528,7 +4537,7 @@
         <type>django</type>
         <value>form_var_modifier_circulation == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">modification_circulation_lieux</varname>
       <display_locations>
         <item>validation</item>
@@ -4537,7 +4546,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">50</max_items>
-      <add_element_label type="str" />
       <label_display type="str">subtitle</label_display>
       <remove_button type="bool">True</remove_button>
       <block_slug type="str">charleroi_rue_et_heure</block_slug>
@@ -4560,7 +4568,7 @@
     <field>
       <type>bool</type>
       <label type="str">D&#233;viation n&#233;cessaire des transports en commun</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">deviation_tec</varname>
       <display_locations>
@@ -4580,7 +4588,7 @@
         <type>django</type>
         <value>form_var_deviation_tec == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">deviation_transport_lieux_dates_heures</varname>
       <display_locations>
         <item>validation</item>
@@ -4615,7 +4623,7 @@
     <field>
       <type>bool</type>
       <label type="str">N&#233;cessit&#233; d'interdire ou de r&#233;server des places de stationnement</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">places_stationnement</varname>
       <display_locations>
@@ -4635,7 +4643,7 @@
         <type>django</type>
         <value>form_var_places_stationnement == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">stationnement_vehicule_pourquoi_la_vie</varname>
       <display_locations>
         <item>validation</item>
@@ -4655,7 +4663,7 @@
         <type>django</type>
         <value>form_var_places_stationnement == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">stationnement_vehicule_detail_rues_concernees</varname>
       <display_locations>
         <item>validation</item>
@@ -4664,7 +4672,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">50</max_items>
-      <add_element_label type="str" />
       <label_display type="str">subtitle</label_display>
       <remove_button type="bool">True</remove_button>
       <block_slug type="str">charleroi_place_de_stationnement</block_slug>
@@ -4691,7 +4698,7 @@
     <field>
       <type>bool</type>
       <label type="str">Mise en place de solutions pour r&#233;soudre les &#233;ventuels probl&#232;mes de mobilit&#233; que votre &#233;v&#233;nement pourrait engendrer</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">resolution_probleme_mobilite</varname>
       <display_locations>
@@ -4711,7 +4718,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_conseil_mobilite</varname>
       <display_locations>
         <item>validation</item>
@@ -4731,7 +4738,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_parkings_prevu</varname>
       <display_locations>
         <item>validation</item>
@@ -4751,7 +4758,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_range_velo</varname>
       <display_locations>
         <item>validation</item>
@@ -4771,7 +4778,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_deplacements_organises</varname>
       <display_locations>
         <item>validation</item>
@@ -4791,7 +4798,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_formule_volonte_societe_transport</varname>
       <display_locations>
         <item>validation</item>
@@ -4811,7 +4818,7 @@
         <type>django</type>
         <value>form_var_resolution_probleme_mobilite == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">resolution_probleme_mobilite_detail_formule</varname>
       <display_locations>
         <item>validation</item>
@@ -4848,7 +4855,7 @@
     <field>
       <type>item</type>
       <label type="str">L'&#233;v&#233;nement a-t-il lieu dans une salle qui peut &#234;tre ferm&#233;e &#224; cl&#233; ?</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">salle_ferme</varname>
       <display_locations>
         <item>validation</item>
@@ -4878,7 +4885,7 @@
         <type>django</type>
         <value>form_var_salle_ferme == Non</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance</varname>
       <display_locations>
         <item>validation</item>
@@ -4910,7 +4917,7 @@
         <type>django</type>
         <value>form_var_surveillance == "B&#233;n&#233;vole" and form_var_salle_ferme == "Non"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_coordonnees_benevole</varname>
       <display_locations>
         <item>validation</item>
@@ -4919,7 +4926,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">1</max_items>
-      <add_element_label type="str" />
       <label_display type="str">normal</label_display>
       <remove_button type="bool">False</remove_button>
       <block_slug type="str">coordonnees</block_slug>
@@ -4928,7 +4934,7 @@
     <field>
       <type>bool</type>
       <label type="str">Appel &#224; une soci&#233;t&#233; de gardiennage pour s&#233;curiser tout l'&#233;v&#233;nement</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si la r&#233;ponse est "oui".</hint>
       <varname type="str">societe_gardiennage</varname>
       <display_locations>
@@ -4948,7 +4954,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_nom_societe_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -4968,7 +4974,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_numero_autorisation</varname>
       <display_locations>
         <item>validation</item>
@@ -4988,7 +4994,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_personne_contact</varname>
       <display_locations>
         <item>validation</item>
@@ -5008,7 +5014,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">surveillance_installation_mail_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5028,7 +5034,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_telephone_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5051,7 +5057,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_nombre_pegu_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5074,7 +5080,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_nombre_steward</varname>
       <display_locations>
         <item>validation</item>
@@ -5097,7 +5103,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_heure_debut_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5117,7 +5123,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_heure_fin_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5137,7 +5143,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">surveillance_installation_description_tache_gardiennage</varname>
       <display_locations>
         <item>validation</item>
@@ -5157,7 +5163,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez la case si c'est bien le cas.</hint>
       <varname type="str">surveillance_installation_controlle_acces</varname>
       <display_locations>
@@ -5177,7 +5183,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">surveillance_installation_signe_reconnaissance_texte</varname>
       <display_locations>
         <item>validation</item>
@@ -5197,7 +5203,7 @@
         <type>django</type>
         <value>form_var_societe_gardiennage == "True" or form_var_surveillance == "Soci&#233;t&#233; de gardiennage"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Ajoutez une photo de ce signe de reconnaissance (gilet, uniforme).</hint>
       <varname type="str">signe_reconnaissance</varname>
       <display_locations>
@@ -5230,7 +5236,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence de dispositifs pour l&#8217;accueil et l&#8217;encadrement des personnes &#224; mobilit&#233; r&#233;duite</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez si la r&#233;ponse est "oui".</hint>
       <varname type="str">dipositifs_pmr</varname>
       <display_locations>
@@ -5250,7 +5256,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_accueil</varname>
       <display_locations>
         <item>validation</item>
@@ -5269,7 +5275,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_accueil == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_accueil_particulier</varname>
       <display_locations>
         <item>validation</item>
@@ -5289,7 +5295,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_rampe</varname>
       <display_locations>
         <item>validation</item>
@@ -5308,7 +5314,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_rampe == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_rampe</varname>
       <display_locations>
         <item>validation</item>
@@ -5328,7 +5334,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_accompagnant</varname>
       <display_locations>
         <item>validation</item>
@@ -5347,7 +5353,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_accompagnant == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_equipe</varname>
       <display_locations>
         <item>validation</item>
@@ -5367,7 +5373,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_accueil_signaletique</varname>
       <display_locations>
         <item>validation</item>
@@ -5386,7 +5392,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_accueil_signaletique == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_singnaletique</varname>
       <display_locations>
         <item>validation</item>
@@ -5406,7 +5412,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_accueil_espace</varname>
       <display_locations>
         <item>validation</item>
@@ -5425,7 +5431,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_accueil_espace == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_espace</varname>
       <display_locations>
         <item>validation</item>
@@ -5445,7 +5451,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dipositifs_pmr_accueil_plateforme</varname>
       <display_locations>
         <item>validation</item>
@@ -5464,7 +5470,7 @@
         <type>django</type>
         <value>form_var_dipositifs_pmr_accueil_plateforme == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">accueil_pmr_detail_plateforme_9_3_4</varname>
       <display_locations>
         <item>validation</item>
@@ -5497,7 +5503,7 @@
     <field>
       <type>bool</type>
       <label type="str">Mise en place d'un encadrement des diff&#233;rentes activit&#233;s</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez si la r&#233;ponse est "oui".</hint>
       <varname type="str">encadrement_activites</varname>
       <display_locations>
@@ -5517,7 +5523,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Nombre de personnes</hint>
       <varname type="str">encadrement_activites_public_personnel_encadrement</varname>
       <display_locations>
@@ -5541,7 +5547,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">encadrement_activites_public_heure_debut</varname>
       <display_locations>
         <item>validation</item>
@@ -5561,7 +5567,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">encadrement_activites_public_heure_fin</varname>
       <display_locations>
         <item>validation</item>
@@ -5581,7 +5587,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">(V&#233;rification des tickets, fouilles...)</hint>
       <varname type="str">encadrement_activites_public_description_tache</varname>
       <display_locations>
@@ -5602,7 +5608,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">encadrement_activites_public_signe_reconnaissance</varname>
       <display_locations>
         <item>validation</item>
@@ -5622,7 +5628,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">encadrement_activites_directives</varname>
       <display_locations>
         <item>validation</item>
@@ -5656,7 +5662,7 @@
         <type>django</type>
         <value>"Autres" in form_var_encadrement_activites_directives</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">encadrement_activites_public_autres</varname>
       <display_locations>
         <item>validation</item>
@@ -5689,7 +5695,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">encadrement_activites_vip_presse</varname>
       <display_locations>
         <item>validation</item>
@@ -5708,7 +5714,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites_vip_presse == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">encadrement_activites_public_detail_vip</varname>
       <display_locations>
         <item>validation</item>
@@ -5728,7 +5734,7 @@
         <type>django</type>
         <value>form_var_encadrement_activites == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">En cas d&#8217;arriv&#233;e pr&#233;coce du public, d&#8217;arriv&#233;e massive subite, en cas de saturation ou surcapacit&#233;.</hint>
       <varname type="str">encadrement_activites_public_action_comportement_inattendu</varname>
       <display_locations>
@@ -5759,7 +5765,7 @@
     <field>
       <type>bool</type>
       <label type="str">Mise en place d'une communication avec le public et / ou les participants sur place</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez si la r&#233;ponse est "oui".</hint>
       <varname type="str">communiquer_public</varname>
       <display_locations>
@@ -5779,7 +5785,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_nombre_personnes</varname>
       <display_locations>
         <item>validation</item>
@@ -5802,7 +5808,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communication_evenement_heure_debut</varname>
       <display_locations>
         <item>validation</item>
@@ -5822,7 +5828,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communication_evenement_heure_fin</varname>
       <display_locations>
         <item>validation</item>
@@ -5842,7 +5848,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_description_tache</varname>
       <display_locations>
         <item>validation</item>
@@ -5862,7 +5868,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communication_evenement_signe_reconnaissance</varname>
       <display_locations>
         <item>validation</item>
@@ -5882,7 +5888,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communiquer_public_dispositif</varname>
       <display_locations>
         <item>validation</item>
@@ -5915,7 +5921,7 @@
         <type>django</type>
         <value>"Autres" in form_var_communiquer_public_dispositif</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_detail_signaletique_info</varname>
       <display_locations>
         <item>validation</item>
@@ -5934,7 +5940,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communiquer_public_signaletique</varname>
       <display_locations>
         <item>validation</item>
@@ -5967,7 +5973,7 @@
         <type>django</type>
         <value>"Autres" in form_var_communiquer_public_signaletique</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_detail_signaletique_accessibilite</varname>
       <display_locations>
         <item>validation</item>
@@ -5986,7 +5992,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communiquer_public_accessibilite</varname>
       <display_locations>
         <item>validation</item>
@@ -6017,7 +6023,7 @@
         <type>django</type>
         <value>"Autres" in form_var_communiquer_public_accessibilite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_detail_chope</varname>
       <display_locations>
         <item>validation</item>
@@ -6036,7 +6042,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communiquer_public_securite</varname>
       <display_locations>
         <item>validation</item>
@@ -6071,7 +6077,7 @@
         <type>django</type>
         <value>"Autres" in form_var_communiquer_public_securite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_detail_securite</varname>
       <display_locations>
         <item>validation</item>
@@ -6090,7 +6096,7 @@
         <type>django</type>
         <value>form_var_communiquer_public == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">communiquer_public_led</varname>
       <display_locations>
         <item>validation</item>
@@ -6109,7 +6115,7 @@
         <type>django</type>
         <value>form_var_communiquer_public_led == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">communication_evenement_detail_led</varname>
       <display_locations>
         <item>validation</item>
@@ -6118,7 +6124,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">20</max_items>
-      <add_element_label type="str" />
       <label_display type="str">hidden</label_display>
       <remove_button type="bool">True</remove_button>
       <block_slug type="str">charleroi_led</block_slug>
@@ -6144,7 +6149,7 @@
     <field>
       <type>bool</type>
       <label type="str">Pr&#233;sence de postes de secours</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez si la r&#233;ponse est "oui". Veuillez indiquer clairement la localisation du/des poste(s) de secours sur le plan d&#8217;implantation de l&#8217;&#233;v&#233;nement. </hint>
       <varname type="str">soins_poste_secours</varname>
       <display_locations>
@@ -6164,7 +6169,7 @@
         <type>django</type>
         <value>form_var_soins_poste_secours</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">secours_contact</varname>
       <display_locations>
         <item>validation</item>
@@ -6173,7 +6178,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">1</max_items>
-      <add_element_label type="str" />
       <label_display type="str">subtitle</label_display>
       <remove_button type="bool">False</remove_button>
       <block_slug type="str">personne_detail</block_slug>
@@ -6186,7 +6190,7 @@
         <type>django</type>
         <value>form_var_soins_poste_secours == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">pers_contact_secours</varname>
       <display_locations>
         <item>validation</item>
@@ -6205,7 +6209,7 @@
         <type>django</type>
         <value>form_var_soins_poste_secours and form_var_pers_contact_secours</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">secours_responsable_site</varname>
       <display_locations>
         <item>validation</item>
@@ -6214,7 +6218,6 @@
       <anonymise type="str">final</anonymise>
       <default_items_count type="int">1</default_items_count>
       <max_items type="int">1</max_items>
-      <add_element_label type="str" />
       <label_display type="str">subtitle</label_display>
       <remove_button type="bool">False</remove_button>
       <block_slug type="str">personne_detail</block_slug>
@@ -6227,7 +6230,7 @@
         <type>django</type>
         <value>form_var_soins_poste_secours == True</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">secours_couloirs</varname>
       <display_locations>
         <item>validation</item>
@@ -6246,7 +6249,7 @@
         <type>django</type>
         <value>form_var_secours_couloirs == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">premiers_soins_nombre_couloir</varname>
       <display_locations>
         <item>validation</item>
@@ -6269,7 +6272,7 @@
         <type>django</type>
         <value>form_var_secours_couloirs == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">En m&#232;tres.</hint>
       <varname type="str">premiers_soins_largeur_couloir</varname>
       <display_locations>
@@ -6303,7 +6306,7 @@
     <field>
       <type>items</type>
       <label type="str">Y a-t-il la pr&#233;sence d'au moins un de ces risques ?</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">analyse_risque_inventaire</varname>
       <display_locations>
         <item>validation</item>
@@ -6337,7 +6340,7 @@
         <type>django</type>
         <value>"Autres risques connus ou estim&#233;s" in form_var_analyse_risque_inventaire</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">prevention_incendie_autre_risque</varname>
       <display_locations>
         <item>validation</item>
@@ -6353,7 +6356,7 @@
     <field>
       <type>items</type>
       <label type="str">Avez-vous pr&#233;vu des mesures sp&#233;cifiques pour r&#233;pondre aux risques ?</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Si non, ne cochez rien.</hint>
       <varname type="str">prevention_incendie_mesures_risques</varname>
       <display_locations>
@@ -6389,7 +6392,7 @@
     <field>
       <type>items</type>
       <label type="str">Avez-vous pr&#233;vu des moyens de premi&#232;re intervention de type incendie ?</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Si non, ne cochez rien.</hint>
       <varname type="str">prevention_incendie_agence_risque</varname>
       <display_locations>
@@ -6439,7 +6442,7 @@
     <field>
       <type>bool</type>
       <label type="str">Demande de pr&#234;t de mat&#233;riel &#224; la Ville</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez si oui.</hint>
       <varname type="str">demande_pret</varname>
       <display_locations>
@@ -6459,7 +6462,7 @@
         <type>django</type>
         <value>form_var_demande_pret == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Hors mat&#233;riel &#233;lectrique &#224; demander plus bas.</hint>
       <varname type="str">demande_materiel</varname>
       <display_locations>
@@ -6494,7 +6497,7 @@
         <type>django</type>
         <value>form_var_demande_pret == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Si non, ne cochez rien.</hint>
       <varname type="str">demande_intervention_electricite</varname>
       <display_locations>
@@ -6527,7 +6530,7 @@
         <type>django</type>
         <value>form_var_demande_intervention_electricite and form_var_demande_pret == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nombre_materiel</varname>
       <display_locations>
         <item>validation</item>
@@ -6547,7 +6550,7 @@
         <type>django</type>
         <value>form_var_demande_intervention_electricite and form_var_demande_pret == "True"</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">amperage</varname>
       <display_locations>
         <item>validation</item>
@@ -6572,7 +6575,7 @@
     <field>
       <type>bool</type>
       <label type="str">Demande relative aux b&#226;timents de la Ville</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Cochez cette case si vous souhaitez louer un b&#226;timent de la Ville.</hint>
       <varname type="str">batiment_ville</varname>
       <display_locations>
@@ -6592,8 +6595,8 @@
         <type>django</type>
         <value>form_var_batiment_ville == "True"</value>
       </condition>
-      <required type="bool">True</required>
-      <hint type="str">Attention : la pr&#233;sente demande d'occupation de salle communale ou de tout autre b&#226;timent de la Ville de Charleroi ne fait pas office de r&#233;servation. 
+      <required type="str">required</required>
+      <hint type="str">Attention : la pr&#233;sente demande d'occupation de salle communale ou de tout autre b&#226;timent de la Ville de Charleroi ne fait pas office de r&#233;servation.
 Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#233; et remplir un formulaire demande sp&#233;cifique, &#224; joindre &#224; votre demande d'autorisation d'&#233;v&#233;nement &#224; la page suivante.</hint>
       <varname type="str">batiment_ville_detail</varname>
       <display_locations>
@@ -6607,13 +6610,6 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
       <anonymise type="str">final</anonymise>
       <display_mode type="str">pre</display_mode>
       <id type="str">573</id>
-    </field>
-    <field>
-      <type>comment</type>
-      <label type="str">&lt;p&gt;&lt;strong&gt;Attention : si vous souhaitez louer un b&amp;acirc;timent Ville (salle communale...), vous devez en faire la demande pr&amp;eacute;alable aupr&amp;egrave;s des gestionnaires de salles via cathy.russel@charleroi.be ou eric.vandeloise@charleroi.be.&lt;/strong&gt;&lt;/p&gt;
-</label>
-      <display_locations />
-      <id type="str">628</id>
     </field>
     <field>
       <type>page</type>
@@ -6639,7 +6635,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Plan d&#8217;implantation</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Merci d'ajouter une l&#233;gende d&#233;taill&#233;e de votre plan.</hint>
       <varname type="str">plan_implantation</varname>
       <display_locations>
@@ -6662,7 +6658,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>"Attractions foraines" in form_var_installation_div</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">attractions_foraines</varname>
       <display_locations>
         <item>validation</item>
@@ -6684,7 +6680,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>"Feu d'artifice" in form_var_type_activite</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">dossier_pyrotechnique</varname>
       <display_locations>
         <item>validation</item>
@@ -6706,7 +6702,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>form_var_cortege == True</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">itineraire</varname>
       <display_locations>
         <item>validation</item>
@@ -6724,7 +6720,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Assurance(s) de l'organisateur</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Joignez toutes les copies d'assurances que vous devez souscrire pour l'&#233;v&#233;nement en tant qu'organisateur.</hint>
       <varname type="str">assurance_organisateur</varname>
       <display_locations>
@@ -6747,7 +6743,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>false and form_var_type_organisation == "ASBL"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">statut_asbl</varname>
       <display_locations>
         <item>validation</item>
@@ -6769,7 +6765,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>form_var_type_activite == "Activit&#233; sportive"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">copie_dispositif_medical_preventif</varname>
       <display_locations>
         <item>validation</item>
@@ -6791,7 +6787,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>form_var_batiment_ville == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Ce formulaire de demande d'occupation d'une salle ou d'un b&#226;timent de la Ville doit &#234;tre demand&#233; aupr&#232;s du gestionnaire de la salle concern&#233;e.</hint>
       <varname type="str">occupation_salle_ville</varname>
       <display_locations>
@@ -6814,7 +6810,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>form_var_foodtruck == "True"</value>
       </condition>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Ajoutez les autorisations n&#233;cessaires (AFSCA...).</hint>
       <varname type="str">documents_foodtruck</varname>
       <display_locations>
@@ -6845,7 +6841,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Dossier de pr&#233;sentation</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dossier_presentation</varname>
       <display_locations>
         <item>validation</item>
@@ -6863,7 +6859,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Plan de situation</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">plan_situation</varname>
       <display_locations>
         <item>validation</item>
@@ -6881,7 +6877,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Autorisations pr&#233;alables</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">Gestionnaire du site</hint>
       <varname type="str">autorisations_prealables</varname>
       <display_locations>
@@ -6900,7 +6896,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Photos/Croquis</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">photos_croquis</varname>
       <display_locations>
         <item>validation</item>
@@ -6918,7 +6914,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Programme artistique et des animations</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">programme_animations</varname>
       <display_locations>
         <item>validation</item>
@@ -6936,7 +6932,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Planning du montage et du d&#233;montage</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">planning_montage_demontage</varname>
       <display_locations>
         <item>validation</item>
@@ -6954,7 +6950,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Plan de mobilit&#233;/signal&#233;tique</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">plan_mobilite_signaletique</varname>
       <display_locations>
         <item>validation</item>
@@ -6976,7 +6972,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>"Feu d'artifice" not in form_var_type_activite</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">dossier_pyrotechnique_optionnel</varname>
       <display_locations>
         <item>validation</item>
@@ -6994,7 +6990,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Attestation d&#8217;assurance sp&#233;cifique</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">attestation_assurance_specifique</varname>
       <display_locations>
         <item>validation</item>
@@ -7012,7 +7008,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Liste des commer&#231;ants avec n&#176; d&#8217;entreprise</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">liste_commercants</varname>
       <display_locations>
         <item>validation</item>
@@ -7034,7 +7030,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
         <type>django</type>
         <value>"Attractions foraines" not in form_var_installation_div</value>
       </condition>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">attractions_foraines_optionnel</varname>
       <display_locations>
         <item>validation</item>
@@ -7052,7 +7048,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Inventaire/Analyse des risques</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">inventaire_risques</varname>
       <display_locations>
         <item>validation</item>
@@ -7070,7 +7066,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Liste des personnalit&#233;s invit&#233;es</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">liste_personnalites</varname>
       <display_locations>
         <item>validation</item>
@@ -7088,7 +7084,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>block</type>
       <label type="str">Autres annexes</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <varname type="str">autres_annexes</varname>
       <display_locations>
         <item>validation</item>
@@ -7120,7 +7116,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">Je demande &#224; la Ville de Charleroi de pouvoir organiser l&#8217;&#233;v&#233;nement. Je comprends que le d&#233;p&#244;t de ce formulaire ne constitue pas une autorisation pour l&#8217;organisation d&#8217;un &#233;v&#233;nement.</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -7134,7 +7130,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">Je certifie sur l&#8217;honneur que les renseignements et documents fournis &#224; l&#8217;appui de la demande sont exacts, complets et &#224; jour. Je reconnais avoir pris connaissance de l&#8217;ensemble des prescriptions &#233;num&#233;r&#233;es dans ce document et m&#8217;engage &#224; les respecter.</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -7148,7 +7144,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">Je m&#8217;engage &#224; conclure, avant l&#8217;&#233;v&#233;nement, une assurance couvrant tous les risques inh&#233;rents aux activit&#233;s que j&#8217;organise.</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -7162,7 +7158,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">Le cas &#233;ch&#233;ant, je demande &#224; la Ville de Charleroi de pouvoir b&#233;n&#233;ficier d&#8217;aides logistiques. Je comprends que le d&#233;p&#244;t de ce formulaire ne constitue pas l&#8217;octroi d&#8217;aide logistique de la Ville de Charleroi.</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -7176,7 +7172,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">J'ai pris connaissance du Vademecum ainsi que de la Section 3 du R&#232;glement communal de Police de la Ville de Charleroi.</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -7190,7 +7186,7 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <field>
       <type>bool</type>
       <label type="str">En tant qu'organisateur, je m'engage &#224; effectuer de la pr&#233;vention en mati&#232;re de s&#233;curit&#233; routi&#232;re et du danger de l'alcool au volant.</label>
-      <required type="bool">False</required>
+      <required type="str">optional</required>
       <hint type="str">https://charleroi.guichet-citoyen.be/media/uploads/2021/11/30/a5-asbl-greg-et-mel-10-2020-d.pdf </hint>
       <display_locations>
         <item>validation</item>
@@ -7214,14 +7210,54 @@ Vous devez contacter les gestionnaires de la salle ou du b&#226;timent concern&#
     <role role_id="logged-users">logged-users</role>
   </user-roles>
   <backoffice-submission-roles>
-    <role slug="agent" role_id="49525c71bf1b42deb8566804231a07df">Agent</role>
+    <role slug="agent" role_id="cb61d98767da44658c258c971a421717">Agent</role>
   </backoffice-submission-roles>
   <roles>
-    <role slug="agent" role_id="49525c71bf1b42deb8566804231a07df" role_key="_receiver">Agent</role>
-    <role slug="agents-traitants-cae" role_id="20c778214ca646f09f5c2da98c2bb6c7" role_key="_cae">Agents traitants - CAE</role>
-    <role slug="agent" role_id="49525c71bf1b42deb8566804231a07df" role_key="_service-evenement">Agent</role>
+    <role slug="agent" role_id="cb61d98767da44658c258c971a421717" role_key="_receiver">Agent</role>
+    <role slug="agent" role_id="cb61d98767da44658c258c971a421717" role_key="_cae">Agent</role>
+    <role slug="api-iadelib" role_id="7bfe9b400e71432d987ab06f536d92fe" role_key="_acces-api">API iA.D&#233;lib</role>
   </roles>
-  <options />
+  <options>
+    <option varname="activer_cae" type="bool">false</option>
+    <option varname="blocs_of_files" />
+    <option varname="blocs_of_files_display" />
+    <option varname="blocs_of_files_structured" />
+    <option varname="category">autorisation-d2019organisation-d2019evenement</option>
+    <option varname="config_id">meeting-config-college</option>
+    <option varname="connecteur">iadelib</option>
+    <option varname="envoyer_fichier_creation_point" type="bool">false</option>
+    <option varname="location_materiel_atal" type="bool">false</option>
+    <option varname="location_salle_atal" type="bool">false</option>
+    <option varname="pre_parametrage" type="bool">false</option>
+    <option varname="proposinggroup">service-cev</option>
+    <option varname="proposinggroupwithgroupincharge">b15242dcf91a4bbc9bc626b25adca6a5__groupincharge__14d7d8a6bf194f80978b77a539158a31</option>
+    <option varname="services_preselectionnes_dans_la_selection" type="list">
+      <item>3</item>
+      <item>6</item>
+    </option>
+    <option varname="services_preselectionnes_dans_la_selection_display">Cabinet du bourgmestre, Responsable environnement</option>
+    <option varname="services_preselectionnes_dans_la_selection_structured" type="list">
+      <item type="dict">
+        <id type="int">3</id>
+        <text>Cabinet du bourgmestre</text>
+        <service>cabinet-du-bourgmestre</service>
+      </item>
+      <item type="dict">
+        <id type="int">6</id>
+        <text>Responsable environnement</text>
+        <service>responsable-environement</service>
+      </item>
+    </option>
+    <option varname="simple_files" />
+    <option varname="simple_files_display" />
+    <option varname="simple_files_structured" />
+    <option varname="test" type="bool">false</option>
+    <option varname="type">MeetingItemCollege</option>
+    <option varname="verrouille_assignation" type="bool">false</option>
+    <option varname="workflow_files" />
+    <option varname="workflow_files_display" />
+    <option varname="workflow_files_structured" />
+  </options>
   <custom_views>
     <custom_view>
       <title>2024</title>

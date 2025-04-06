@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="19" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/19/">
-  <name>Date et heure</name>
+<block id="19" url="">
+  <name>iMio - Doc Event - Date et heure</name>
   <slug>date_et_heure</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>date</type>
       <label type="str">date</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">date</varname>
       <display_locations>
         <item>validation</item>
@@ -25,7 +26,7 @@
     <field>
       <type>string</type>
       <label type="str">heure</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <hint type="str">Exemple 11:30</hint>
       <varname type="str">heure</varname>
       <display_locations>

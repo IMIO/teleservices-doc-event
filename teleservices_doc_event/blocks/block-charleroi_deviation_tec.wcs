@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<block id="21" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/21/">
-  <name>Charleroi deviation tec</name>
+<block id="21" url="">
+  <name>iMio - Doc Event - Deviation tec</name>
   <slug>charleroi_deviation_tec</slug>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>text</type>
       <label type="str">Liste des rues concern&#233;es par une d&#233;viation des transports en commun</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -22,7 +23,7 @@
     <field>
       <type>date</type>
       <label type="str">Date d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -40,7 +41,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure d&#233;but</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -55,7 +56,7 @@
     <field>
       <type>date</type>
       <label type="str">Date fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>
@@ -73,7 +74,7 @@
     <field>
       <type>string</type>
       <label type="str">Heure fin</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <display_locations>
         <item>validation</item>
         <item>summary</item>

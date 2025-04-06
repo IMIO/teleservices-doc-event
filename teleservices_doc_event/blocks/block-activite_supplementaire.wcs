@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<block id="16" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/16/">
+<block id="16" url="">
   <name>Activit&#233; suppl&#233;mentaire</name>
   <slug>activite_supplementaire</slug>
   <digest_template>{{activite_supplementaire_var_nom}}</digest_template>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Activit&#233; suppl&#233;mentaire</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom</varname>
       <display_locations>
         <item>validation</item>

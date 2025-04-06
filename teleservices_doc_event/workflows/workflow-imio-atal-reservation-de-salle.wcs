@@ -1,0 +1,565 @@
+<?xml version="1.0"?>
+<workflow id="201" url="">
+  <name>iMio - Atal - R&#233;servation de salle</name>
+  <slug>imio-atal-reservation-de-salle</slug>
+  <category slug="imio-atal" category_id="6">iMio - Atal</category>
+  <roles>
+    <role id="_receiver">Destinataire</role>
+  </roles>
+  <possible_status>
+    <status>
+      <id>1</id>
+      <name>Juste envoy&#233;</name>
+      <colour>#ffffff</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="jump" id="3">
+          <status>10</status>
+          <condition>
+            <type>django</type>
+            <value>not form_var_salle</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="set-backoffice-fields" id="1">
+          <label>Is Hour</label>
+          <fields>
+            <field>
+              <field_id>bo8901006d-4555-48ec-af14-74763c0dc4e4</field_id>
+              <value>{% if form_option_selection_par_raw == "heures" or form_var_jour_heure_raw == "heures" %}{{ True }}{% else %}{{ False }}{% endif %}</value>
+            </field>
+          </fields>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_or_salle_raw == "salle_puis_date"</value>
+          </condition>
+        </item>
+        <item type="jump" id="2">
+          <status>2</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_salle</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>10</id>
+      <name>En attente de la compl&#233;tion du formulaire</name>
+      <colour>#ffff00</colour>
+      <visibility />
+      <items>
+        <item type="editable" id="1">
+          <by>
+            <item role_id="_submitter">_submitter</item>
+          </by>
+          <status>1</status>
+          <label>Compl&#233;ter le formulaire</label>
+          <operation_mode>partial</operation_mode>
+          <page_identifier>first_page</page_identifier>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>2</id>
+      <name>Enregistrement de la demande</name>
+      <colour>#0080ff</colour>
+      <visibility />
+      <items>
+        <item type="jump" id="1">
+          <status>3</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>3</id>
+      <name>Enregistrement de la demande dans Atal</name>
+      <colour>#c0c0c0</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="webservice_call" id="1">
+          <label>Enregistrement demandes locations de salle dans Atal</label>
+          <method>POST</method>
+          <url>{{ passerelle_url }}/passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/bookings-room</url>
+          <qs_data>
+            <item>
+              <name>room</name>
+              <value>{{ form_var_salle_id }}</value>
+            </item>
+            <item>
+              <name>id_tier</name>
+              <value>695</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <post_data>
+            <item>
+              <name>booking_dates</name>
+              <value>{% if not form_var_is_hour %}{{ form_var_jours_disponible_structured }}{% else %}{{ form_var_heures_disponible_structured }}{% endif %}</value>
+            </item>
+          </post_data>
+          <response_type>json</response_type>
+          <varname>bookings_room</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>5</action_on_app_error>
+          <action_on_4xx>5</action_on_4xx>
+          <action_on_5xx>5</action_on_5xx>
+          <action_on_bad_data>5</action_on_bad_data>
+          <action_on_network_errors>5</action_on_network_errors>
+          <record_errors>True</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_or_salle_raw == "salle_puis_date"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="webservice_call" id="2">
+          <label>Location de salle</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/post-reservation-room</url>
+          <qs_data>
+            <item>
+              <name>date_debut</name>
+              <value>{{form_var_date_debut|date:"Y-m-d"}}</value>
+            </item>
+            <item>
+              <name>date_fin</name>
+              <value>{{form_var_date_fin|date:"Y-m-d"}}</value>
+            </item>
+            <item>
+              <name>heure_debut</name>
+              <value>{{form_var_heure_debut}}</value>
+            </item>
+            <item>
+              <name>heure_fin</name>
+              <value>{{form_var_heure_fin}}</value>
+            </item>
+            <item>
+              <name>room</name>
+              <value>{{form_var_salle_id}}</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>booking_room</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>False</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <condition>
+            <type>django</type>
+            <value>form_var_date_or_salle_raw == "dates_puis_salle"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="4">
+          <status>11</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_nom_de_l_evenement</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="3">
+          <status>6</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>5</id>
+      <name>Erreur lors de la r&#233;servation</name>
+      <colour>#ff0000</colour>
+      <visibility />
+      <items>
+        <item type="choice" id="1">
+          <label>Relancer le webservice</label>
+          <by>
+            <item role_id="_submitter">_submitter</item>
+          </by>
+          <status>3</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>11</id>
+      <name>Retour information Doc Event</name>
+      <colour>#c0bfbc</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="external_workflow_global_action" id="1">
+          <slug>formdef:demande-organisation-evenement</slug>
+          <trigger_id>action:info_location_salle</trigger_id>
+          <target_mode>all</target_mode>
+        </item>
+        <item type="jump" id="2">
+          <status>6</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>6</id>
+      <name>En attente de la decision</name>
+      <colour>#FFFFFF</colour>
+      <visibility />
+      <items>
+        <item type="jump" id="1">
+          <status>8</status>
+          <condition>
+            <type>django</type>
+            <value>"0" not in form_var_satuts_reservations and "2" not in form_var_satuts_reservations and "4" not in form_var_satuts_reservations</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="2">
+          <status>4</status>
+          <condition>
+            <type>django</type>
+            <value>"0" not in form_var_satuts_reservations and "3" not in form_var_satuts_reservations and "4" not in form_var_satuts_reservations</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="set-backoffice-fields" id="3">
+          <label>R&#233;cup&#233;ration des ID de locations</label>
+          <fields>
+            <field>
+              <field_id>bo47816793-1ff9-4e51-a0de-6bcdabfbf0db</field_id>
+              <value>{{ form_workflow_wscall_bookings_room_response_data|comprehensive_list:"Id" }}</value>
+            </field>
+            <field>
+              <field_id>bo65bd8dc4-6b44-401a-ad0a-0350795e8f5f</field_id>
+              <value />
+            </field>
+          </fields>
+          <condition>
+            <type>django</type>
+            <value>form_workflow_wscall_bookings_room_response_data</value>
+          </condition>
+        </item>
+        <item type="jump" id="4">
+          <status>7</status>
+          <mode>timeout</mode>
+          <timeout>86400</timeout>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="5">
+          <label>Test Statut locations</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>7</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>7</id>
+      <name>V&#233;rification de la r&#233;servation</name>
+      <colour>#ffffff</colour>
+      <loop_items_template>{{ form_workflow_wscall_bookings_room_response_data|comprehensive_list:"Id" }}</loop_items_template>
+      <after_loop_status>6</after_loop_status>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
+      <items>
+        <item type="webservice_call" id="1">
+          <label>Check reservation</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}/passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/get-reservation-room</url>
+          <qs_data>
+            <item>
+              <name>id</name>
+              <value>{{ status_loop.current_item }}</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>check_reservations</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>False</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <fields>
+            <field>
+              <field_id>bo65bd8dc4-6b44-401a-ad0a-0350795e8f5f</field_id>
+              <value>{{ form_var_statuts_reservations|default:"" }}{{ form_workflow_data_check_reservations_response_data_RequestState }}</value>
+            </field>
+          </fields>
+        </item>
+      </items>
+    </status>
+    <status>
+      <id>4</id>
+      <name>Demande valid&#233;e</name>
+      <colour>#00ff00</colour>
+      <visibility />
+      <items />
+    </status>
+    <status>
+      <id>8</id>
+      <name>Demande refus&#233;e</name>
+      <colour>#ef2929</colour>
+      <visibility />
+      <items />
+    </status>
+    <status>
+      <id>9</id>
+      <name>Annulation</name>
+      <colour>#ffa348</colour>
+      <loop_items_template>{{ form_workflow_wscall_bookings_room_response_data|comprehensive_list:"Id" }}</loop_items_template>
+      <visibility />
+      <items>
+        <item type="webservice_call" id="1">
+          <label>Annulation de la r&#233;servation</label>
+          <method>GET</method>
+          <url>{{ passerelle_url }}/passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/patch-booking-room</url>
+          <qs_data>
+            <item>
+              <name>room_loan_id</name>
+              <value>{{ status_loop.current_item }}</value>
+            </item>
+            <item>
+              <name>request_state</name>
+              <value>4</value>
+            </item>
+          </qs_data>
+          <post>False</post>
+          <response_type>json</response_type>
+          <varname>cancel_reservation</varname>
+          <store_all_responses>False</store_all_responses>
+          <attach_file_to_history>True</attach_file_to_history>
+          <action_on_app_error>:pass</action_on_app_error>
+          <action_on_4xx>:stop</action_on_4xx>
+          <action_on_5xx>:stop</action_on_5xx>
+          <action_on_bad_data>:pass</action_on_bad_data>
+          <action_on_network_errors>:stop</action_on_network_errors>
+          <record_errors>False</record_errors>
+          <record_on_errors>True</record_on_errors>
+          <notify_on_errors>False</notify_on_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
+  </possible_status>
+  <global_actions>
+    <action>
+      <id>2</id>
+      <name>Annulation</name>
+      <items>
+        <item type="jump" id="1">
+          <status>9</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="7c78bef3-1d36-46d0-ae4b-d3835a97c33c">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+            <item role_id="_submitter">_submitter</item>
+          </roles>
+          <statuses>
+            <statuse>6</statuse>
+          </statuses>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>True</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>3</id>
+      <name>&#128679; Debug</name>
+      <items>
+        <item type="jump" id="1">
+          <status>11</status>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="d142dddb-b498-4b46-bbc0-b08f2fbbca0d">
+          <roles>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </roles>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+  </global_actions>
+  <variables>
+    <formdef>
+      <name>-</name>
+      <fields>
+        <field>
+          <type>string</type>
+          <label type="str">min_days</label>
+          <required type="str">required</required>
+          <varname type="str">min_days</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">0490b461-c9f9-4320-b97d-d393516a8d53</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">max_days</label>
+          <required type="str">required</required>
+          <varname type="str">max_days</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">4cf13f87-6e1d-41ce-a401-94bde70c2149</id>
+        </field>
+        <field>
+          <type>item</type>
+          <label type="str">S&#233;lection obligatoire par</label>
+          <required type="str">optional</required>
+          <hint type="str">Aucun</hint>
+          <varname type="str">selection_par</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <display_mode type="str">list</display_mode>
+          <items />
+          <data_source>
+            <type>jour_ou_heure</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <use_hint_as_first_option type="bool">True</use_hint_as_first_option>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">1a74582e-15f6-40fd-a545-4f6908253acd</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer les salles parents enfants</label>
+          <required type="str">optional</required>
+          <varname type="str">activer_les_salles_parents_enfants</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">e97bdf43-263a-4843-b8c7-c35c6a4c800a</id>
+        </field>
+        <field>
+          <type>items</type>
+          <label type="str">Informations inclues</label>
+          <required type="str">optional</required>
+          <varname type="str">informations_inclues</varname>
+          <display_locations />
+          <items>
+            <item>18249</item>
+            <item>18250</item>
+            <item>18254</item>
+            <item>18255</item>
+            <item>18259</item>
+            <item>18260</item>
+            <item>18261</item>
+            <item>18265</item>
+            <item>18262</item>
+            <item>18263</item>
+            <item>18264</item>
+          </items>
+          <display_mode type="str">checkboxes</display_mode>
+          <min_choices type="int">0</min_choices>
+          <max_choices type="int">0</max_choices>
+          <data_source>
+            <type>imio_atal_liste_features_salles</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">dba4e029-6102-4a46-bc56-71ecf4c56e6e</id>
+        </field>
+      </fields>
+    </formdef>
+  </variables>
+  <backoffice-fields>
+    <formdef>
+      <name>-</name>
+      <fields>
+        <field>
+          <type>bool</type>
+          <label type="str">Is Hour</label>
+          <required type="str">optional</required>
+          <varname type="str">is_hour</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">no</anonymise>
+          <id type="str">bo8901006d-4555-48ec-af14-74763c0dc4e4</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Location ID</label>
+          <required type="str">required</required>
+          <varname type="str">location_id</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo47816793-1ff9-4e51-a0de-6bcdabfbf0db</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Satuts R&#233;servations</label>
+          <required type="str">required</required>
+          <varname type="str">satuts_reservations</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bo65bd8dc4-6b44-401a-ad0a-0350795e8f5f</id>
+        </field>
+      </fields>
+    </formdef>
+  </backoffice-fields>
+</workflow>

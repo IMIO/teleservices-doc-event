@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow id="37" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/37/">
+<workflow id="37" url="">
   <name>iMio - Doc Event - Fiche - Demande d'avis</name>
   <slug>imio-doc-event-fiche-demande-d-avis</slug>
   <category slug="imio-doc-event" category_id="7">iMio - Doc Event</category>
@@ -89,8 +89,8 @@ La cellule Event.</body>
       <colour>#0099FF</colour>
       <visibility />
       <items>
-        <item type="external_workflow_global_action" id="2">
-          <slug>formdef:organiser-un-evenement-test</slug>
+        <item type="external_workflow_global_action" id="1">
+          <slug>formdef:demande-organisation-evenement</slug>
           <trigger_id>action:remise_avis</trigger_id>
           <target_mode>all</target_mode>
           <condition>
@@ -98,7 +98,7 @@ La cellule Event.</body>
             <value>not form_parent_form_var_stop_avis</value>
           </condition>
         </item>
-        <item type="sendmail" id="3">
+        <item type="sendmail" id="2">
           <to>
             <item role_id="{{ form_parent_form_var_assigne }}">{{ form_parent_form_var_assigne }}</item>
           </to>
@@ -294,7 +294,7 @@ La cellule Event.</body>
       <triggers>
         <trigger type="manual" id="4eb0230c-5641-48b0-abe2-9eeedb48c0ad">
           <roles>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </roles>
           <allow_as_mass_action>True</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
@@ -318,7 +318,7 @@ La cellule Event.</body>
         <trigger type="webservice" id="18c4207b-3250-440f-b57d-52100b80c57c">
           <identifier>out_of_date</identifier>
           <roles>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
           </roles>
         </trigger>
       </triggers>
@@ -346,7 +346,7 @@ La cellule Event.</body>
         <field>
           <type>string</type>
           <label type="str">Num&#233;ro &#233;v&#232;nement</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <display_locations>
             <item>summary</item>
             <item>listings</item>
@@ -357,7 +357,7 @@ La cellule Event.</body>
         <field>
           <type>string</type>
           <label type="str">Nom &#233;v&#232;nement</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <display_locations>
             <item>summary</item>
             <item>listings</item>
@@ -368,7 +368,7 @@ La cellule Event.</body>
         <field>
           <type>date</type>
           <label type="str">Date d'archivage</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <display_locations>
             <item>validation</item>
             <item>summary</item>

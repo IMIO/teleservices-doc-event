@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<wscall id="168" url="">
+  <name>iMio - Atal - Photo Salle</name>
+  <slug>imio_atal_photo_salle</slug>
+  <request>
+    <url>{{ passerelle_url }}passerelle-imio-ia-tech/atal-demov6/get-attachments-list</url>
+    <request_signature_key />
+    <method>GET</method>
+    <timeout />
+    <cache_duration />
+    <qs_data>
+      <param key="room_id">{% firstof form_var_salle_id form_var_salle_not_parent_id form_var_salle_enfant_0_id form_var_salle_parent_id %}</param>
+    </qs_data>
+    <post_data />
+  </request>
+  <record_on_errors>true</record_on_errors>
+</wscall>

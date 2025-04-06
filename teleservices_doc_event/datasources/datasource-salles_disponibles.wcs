@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<datasource id="209" url="">
+  <name>iMio - Atal - Salles Disponibles</name>
+  <slug>salles_disponibles</slug>
+  <id_attribute>Id</id_attribute>
+  <text_attribute>Label</text_attribute>
+  <data_source>
+    <type>json</type>
+    <value>{{ passerelle_url }}passerelle-imio-ia-tech/{{ id_passerelle_ia_tech }}/get-rooms-dispo?{% if form_var_date_debut %}date_debut={{ form_var_date_debut|date:"Y-m-d" }}{% endif %}{% if form_var_date_fin %}&amp;date_fin={{ form_var_date_fin|date:"Y-m-d" }}{% endif %}{% if form_var_heure_debut %}&amp;heure_debut={{ form_var_heure_debut }}{% endif %}{% if form_var_heure_fin %}&amp;heure_fin={{ form_var_heure_fin }}{% endif %}</value>
+  </data_source>
+  <category slug="imio-atal" category_id="3">iMio - Atal</category>
+</datasource>

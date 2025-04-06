@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<block id="17" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/forms/blocks/17/">
+<block id="17" url="">
   <name>Assurances</name>
   <slug>assurances</slug>
   <digest_template>Nom de l'assurance : {{assurances_var_nom_assurance}}saut_de_ligne Nom de la compagnie d'assurance : {{assurances_var_nom_compagnie}}saut_de_ligne Num&#233;ro de police d'assurance : {{assurances_var_numero}}saut_de_ligne</digest_template>
+  <category slug="imio-doc-event" category_id="2">iMio - Doc Event</category>
   <fields>
     <field>
       <type>string</type>
       <label type="str">Nom de l'assurance</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_assurance</varname>
       <display_locations>
         <item>validation</item>
@@ -23,7 +24,7 @@
     <field>
       <type>string</type>
       <label type="str">Nom de la compagnie d'assurance</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">nom_compagnie</varname>
       <display_locations>
         <item>validation</item>
@@ -39,7 +40,7 @@
     <field>
       <type>string</type>
       <label type="str">Num&#233;ro de police d'assurance</label>
-      <required type="bool">True</required>
+      <required type="str">required</required>
       <varname type="str">numero</varname>
       <display_locations>
         <item>validation</item>

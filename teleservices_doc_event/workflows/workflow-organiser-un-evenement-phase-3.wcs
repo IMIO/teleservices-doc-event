@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<workflow id="38" url="https://staging3-formulaires.guichet-citoyen.be/backoffice/workflows/38/">
+<workflow id="38" url="">
   <name>Organiser un &#233;v&#232;nement -  Phase 3.1</name>
   <slug>organiser-un-evenement-phase-31</slug>
   <category slug="imio-doc-event" category_id="7">iMio - Doc Event</category>
   <roles>
+    <role id="_acces-api">Acces API</role>
     <role id="_agent-finance">Agent Finance</role>
-    <role id="_cabinet-du-bourgmestre">Cabinet du bourgmestre</role>
     <role id="_cae">CAE</role>
     <role id="_observateurs">Observateurs</role>
-    <role id="_receiver">Destinataire</role>
-    <role id="_service-evenement">Service &#233;v&#232;nement</role>
+    <role id="_receiver">Service &#233;v&#233;nement</role>
+    <role id="_responsable-du-service-evenement">Responsable du service &#233;v&#233;nement</role>
   </roles>
   <possible_status>
     <status>
@@ -18,14 +18,6 @@
       <colour>#FFFFFF</colour>
       <visibility />
       <items>
-        <item type="displaymsg" id="1">
-          <message>Merci d'avoir pris le temps de remplir ce formulaire. Nos services vont prendre en charge votre demande et revenir vers vous dans les plus brefs d&#233;lais.</message>
-          <level>success</level>
-          <position>top</position>
-          <to>
-            <item role_id="_submitter">_submitter</item>
-          </to>
-        </item>
         <item type="set-backoffice-fields" id="2">
           <label>Initialisation</label>
           <fields>
@@ -81,7 +73,7 @@ Votre code de suivi {{ form_tracking_code }}</body>
           <status>53</status>
           <condition>
             <type>django</type>
-            <value>form_var_demande_location_materiel == "Oui" and form_option_location_materiel_atal or form_var_demande_location_salle == "Oui" and form_option_location_salle_atal</value>
+            <value>form_var_batiment_ville and form_option_location_salle_atal</value>
           </condition>
           <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
@@ -101,57 +93,43 @@ Votre code de suivi {{ form_tracking_code }}</body>
         <role>__restricted__</role>
       </visibility>
       <items>
-        <item type="create_formdata" id="1">
-          <formdef_slug>demande-de-location-de-materiel</formdef_slug>
-          <map_fields_by_varname>True</map_fields_by_varname>
-          <mappings />
-          <backoffice_submission>False</backoffice_submission>
-          <draft>True</draft>
-          <draft_edit_operation_mode>full</draft_edit_operation_mode>
-          <keep_submission_context>False</keep_submission_context>
-          <varname>demande_location_materiel</varname>
-          <attach_to_history>False</attach_to_history>
-          <condition>
-            <type>django</type>
-            <value>form_var_demande_location_materiel == "Oui"</value>
-          </condition>
-        </item>
-        <item type="create_formdata" id="2">
+        <item type="create_formdata" id="5">
+          <action_label>Location de salle</action_label>
           <formdef_slug>demande-location-de-salles-atal</formdef_slug>
-          <map_fields_by_varname>True</map_fields_by_varname>
-          <mappings />
+          <map_fields_by_varname>False</map_fields_by_varname>
+          <mappings>
+            <mapping field_id="dcff8f46-9152-4f97-a470-59d2dcc12090">{{ form_var_nom_event }}</mapping>
+            <mapping field_id="e715aeaf-e4ef-4d53-8b62-b5b9ce3cc1c1">{{ form_user_email }}</mapping>
+            <mapping field_id="42a59916-2a08-432a-afe6-78d12c0dd8dd">salle_puis_date</mapping>
+          </mappings>
           <backoffice_submission>False</backoffice_submission>
-          <draft>True</draft>
+          <draft>False</draft>
           <draft_edit_operation_mode>full</draft_edit_operation_mode>
           <user_association_mode>keep-user</user_association_mode>
-          <keep_submission_context>False</keep_submission_context>
-          <varname>demande_location_salle</varname>
+          <keep_submission_context>True</keep_submission_context>
+          <varname>location_salle</varname>
           <attach_to_history>True</attach_to_history>
-          <condition>
-            <type>django</type>
-            <value>form_var_demande_location_salle == "Oui"</value>
-          </condition>
         </item>
         <item type="sendmail" id="3">
           <to>
             <item role_id="_submitter">_submitter</item>
           </to>
-          <subject>Compl&#233;tez votre demande de location de salle et/ou de mat&#233;riel</subject>
-          <body>Bonjour, 
+          <subject>Compl&#233;tez votre demande de location de salle</subject>
+          <body>Bonjour,
 
-Vous avez effectu&#233; une demande d'autorisation d'&#233;v&#233;nement &#224; Charleroi. Cette demande ne sera trait&#233;e que lorsque vous aurez compl&#233;t&#233; le formulaire de location de salle et/ou de mat&#233;riel. 
+Vous avez effectu&#233; une demande d'autorisation d'&#233;v&#233;nement &#224; Charleroi. N'oubliez pas de compl&#233;t&#233; le formulaire de location de salle.
 
-{% if form_links_demande_location_materiel_0_form_url %}
-`Compl&#233;ter le formulaire de r&#233;servation de mat&#233;riel &lt;form_links_demande_location_materiel_0_form_url&gt;`_
+{% if form_links_location_salle_form_url %}
+`Compl&#233;ter le formulaire de r&#233;servation de salle &lt;form_links_location_salle_form_url&gt;`_
 {% endif %}
 
-{% if form_links_demande_location_salle_0_form_url %}
-`Compl&#233;ter le formulaire de r&#233;servation de salle &lt;form_links_demande_location_salle_0_form_url&gt;`_
-{% endif %}
-
-Cordialement, 
+Cordialement,
 
 La Ville de Charleroi</body>
+          <condition>
+            <type>django</type>
+            <value>False</value>
+          </condition>
         </item>
         <item type="jump" id="4">
           <status>54</status>
@@ -162,60 +140,15 @@ La Ville de Charleroi</body>
     </status>
     <status>
       <id>54</id>
-      <name>Demandes annexes</name>
+      <name>Demande de location de salle</name>
       <colour>#FF00FF</colour>
       <visibility />
       <items>
-        <item type="displaymsg" id="1">
-          <message>{% if form_var_demande_location_salle == "Oui" and not form_links_demande_location_salle_0_form_details %}
-&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de salle&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
-
-&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_salle_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_salle_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
-{% endif %}
-{% if form_var_demande_location_materiel == "Oui" and not form_links_demande_location_materiel_0_form_details %}
-&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de mat&#233;riel&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
-
-&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_materiel_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_materiel_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
-{% endif %}</message>
-          <level>warning</level>
-          <position>top</position>
-        </item>
         <item type="register-comment" id="2">
-          <comment>{% if form_var_demande_location_salle == "Oui" and not form_links_demande_location_salle_0_form_details %}
-&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de salle&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
-
-&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_salle_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_salle_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
-{% endif %}
-{% if form_var_demande_location_materiel == "Oui" and not form_links_demande_location_materiel_0_form_details %}
-&lt;p&gt;&lt;strong&gt;Pour effectuer la demande de r&#233;servation de mat&#233;riel&lt;/strong&gt;&lt;/br&gt;&lt;/br&gt;
-
-&lt;a href="{% if not is_in_backoffice %}{{form_links_demande_location_materiel_0_form_url}}{% endif %}{% if is_in_backoffice %}{{form_links_demande_location_materiel_0_form_backoffice_url}}{% endif %}" class="pk-button" target="_blank" rel="noopener noreferrer"&gt;Compl&#233;tez ce nouveau formulaire&lt;/a&gt;&lt;/p&gt;
+          <comment>{% if form_links_location_salle_form_url %}
+&lt;a class="pk-button" href="{{ form_links_location_salle_form_url  }}" rel="noopener noreferrer nofollow" target="_blank"&gt;Compl&#233;ter ma demande de location de salle&lt;/a&gt;
 {% endif %}</comment>
-        </item>
-        <item type="jump" id="3">
-          <status>55</status>
-          <condition>
-            <type>django</type>
-            <value>form_links_demande_location_materiel_form_details and form_links_demande_location_materiel or form_links_demande_location_salle_form_details and form_links_demande_location_salle</value>
-          </condition>
-          <mode>immediate</mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>55</id>
-      <name>Merci</name>
-      <colour>#FF0066</colour>
-      <visibility />
-      <items>
-        <item type="register-comment" id="1">
-          <comment>Merci d'avoir compl&#233;t&#233; vos demandes annexes</comment>
-        </item>
-        <item type="displaymsg" id="2">
-          <message>Merci d'avoir compl&#233;t&#233; vos demandes annexes</message>
-          <level>success</level>
-          <position>top</position>
+          <level>info</level>
         </item>
         <item type="jump" id="3">
           <status>25</status>
@@ -259,7 +192,7 @@ La Ville de Charleroi</body>
           <fields>
             <field>
               <field_id>bo5d846168-a145-4fd5-af08-85e2d2f18eed</field_id>
-              <value>{{ session_user_email }}</value>
+              <value>{{ session_user_email|lower }}</value>
             </field>
             <field>
               <field_id>bo0e7f6a3a-266a-4b6a-bb1c-ebdd2dae0ec6</field_id>
@@ -267,7 +200,7 @@ La Ville de Charleroi</body>
             </field>
           </fields>
         </item>
-        <item type="choice" id="3">
+        <item type="choice" id="2">
           <label>Vers En vours de traitement</label>
           <by>
             <item role_id="_receiver">_receiver</item>
@@ -278,10 +211,10 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
-        <item type="choice" id="4">
+        <item type="choice" id="3">
           <label>Pr&#233;-parametrage</label>
           <by>
             <item role_id="_receiver">_receiver</item>
@@ -292,7 +225,7 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne and form_option_pre_parametrage or not form_option_verrouille_assignation and form_option_pre_parametrage</value>
           </condition>
         </item>
       </items>
@@ -314,15 +247,15 @@ La Ville de Charleroi</body>
             </field>
           </fields>
         </item>
-        <item type="form" id="4">
+        <item type="form" id="2">
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>point</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <formdef>
             <name>-</name>
@@ -330,7 +263,7 @@ La Ville de Charleroi</body>
               <field>
                 <type>item</type>
                 <label type="str">Choisissez un mod&#232;le</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <hint type="str">Choisissez un mod&#232;le</hint>
                 <varname type="str">modele</varname>
                 <display_locations />
@@ -354,7 +287,7 @@ La Ville de Charleroi</body>
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">objet</varname>
                 <display_locations />
                 <prefill>
@@ -372,7 +305,7 @@ La Ville de Charleroi</body>
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">motivation</varname>
                 <display_locations />
                 <prefill>
@@ -390,7 +323,7 @@ La Ville de Charleroi</body>
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">decision</varname>
                 <display_locations />
                 <prefill>
@@ -404,9 +337,19 @@ La Ville de Charleroi</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="3">
+        <item type="choice" id="4">
+          <label>Enregistrer le brouillon de d&#233;lib&#233;ration</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>77</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
         </item>
       </items>
     </status>
@@ -418,7 +361,7 @@ La Ville de Charleroi</body>
         <role>__restricted__</role>
       </visibility>
       <items>
-        <item type="set-backoffice-fields" id="4">
+        <item type="set-backoffice-fields" id="1">
           <label>Champs texte du point</label>
           <fields>
             <field>
@@ -535,8 +478,8 @@ Si c'est le cas, cliquez sur &lt;bold&gt;Continuer le processus&lt;/bold&gt;.
 Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le pr&#233;-param&#233;trage&lt;bold&gt;&lt;/p&gt;</comment>
           <to>
             <item role_id="_receiver">_receiver</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
           </to>
           <condition>
             <type>django</type>
@@ -547,8 +490,8 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le pr&#233;-param&#233;t
           <label>Relancer le pr&#233;-param&#233;trage</label>
           <by>
             <item role_id="_receiver">_receiver</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </by>
           <status>77</status>
           <require_confirmation>False</require_confirmation>
@@ -563,8 +506,8 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le pr&#233;-param&#233;t
           <label>Continuer le processus</label>
           <by>
             <item role_id="_receiver">_receiver</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </by>
           <status>78</status>
           <require_confirmation>False</require_confirmation>
@@ -658,16 +601,16 @@ Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&
 Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&gt;&lt;/p&gt;</comment>
           <to>
             <item role_id="_receiver">_receiver</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
           </to>
         </item>
         <item type="choice" id="3">
           <label>Relancer le porcessus</label>
           <by>
             <item role_id="_receiver">_receiver</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </by>
           <status>78</status>
           <require_confirmation>False</require_confirmation>
@@ -695,7 +638,7 @@ Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&
           <set_marker_on_status>True</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="2">
@@ -711,7 +654,7 @@ Si &#231;a ne fonctionne toujours pas &lt;bold&gt;ouvrez-nous un ticket&lt;bold&
           <set_marker_on_status>True</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -747,7 +690,7 @@ Bonne journ&#233;e !</body>
             <item role_id="_agent-finance">_agent-finance</item>
           </by>
           <varname>montant</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <formdef>
             <name>-</name>
             <fields>
@@ -763,7 +706,7 @@ Bonne journ&#233;e !</body>
               <field>
                 <type>text</type>
                 <label type="str">Informations concernant la facturation</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <hint type="str">Cette information sera visible par le citoyen.</hint>
                 <varname type="str">info_facturation</varname>
                 <display_locations />
@@ -777,8 +720,14 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="3">
+        <item type="choice" id="4">
+          <label>Valider le formulaire</label>
+          <by>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </by>
           <status>56</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -796,7 +745,9 @@ Bonne journ&#233;e !</body>
 &lt;p&gt;{{ montant_var_info_facturation }}&lt;/p&gt;</comment>
           <to>
             <item role_id="_agent-finance">_agent-finance</item>
+            <item role_id="_receiver">_receiver</item>
           </to>
+          <level>info</level>
         </item>
         <item type="sendmail" id="2">
           <to>
@@ -821,14 +772,14 @@ Bonne journ&#233;e !</body>
             <item role_id="_agent-finance">_agent-finance</item>
           </by>
           <varname>facture_definitive</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <formdef>
             <name>-</name>
             <fields>
               <field>
                 <type>string</type>
                 <label type="str">Montant</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <hint type="str">Modifiez si besoin puis cliquez sur valider</hint>
                 <varname type="str">montant</varname>
                 <display_locations />
@@ -842,8 +793,14 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="4">
+        <item type="choice" id="5">
+          <label>Valider la facturation</label>
+          <by>
+            <item role_id="_agent-finance">_agent-finance</item>
+          </by>
           <status>21</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -886,19 +843,43 @@ Bonne journ&#233;e !</body>
         <role>__restricted__</role>
       </visibility>
       <items>
+        <item type="set-backoffice-fields" id="4">
+          <fields>
+            <field>
+              <field_id>bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</field_id>
+              <value>{{ False }}</value>
+            </field>
+            <field>
+              <field_id>bo6636c47f-ce33-409f-b942-af37eac4b0b0</field_id>
+              <value />
+            </field>
+          </fields>
+        </item>
         <item type="form" id="1">
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>service</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <formdef>
             <name>-</name>
             <fields>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;Le service que vous cherchez n&amp;#39;est pas l&amp;agrave;, vous voulez en modifier un ? Suivez un de ces deux boutons.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/add/" rel="noopener noreferrer nofollow" target="_blank"&gt;Ajouter des services&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/" rel="noopener noreferrer nofollow" target="_blank"&gt;Modifier/supprimer des services&lt;/a&gt;&lt;/p&gt;
+</label>
+                <extra_css_class type="str">pk-information</extra_css_class>
+                <display_locations />
+                <id type="str">c60d0119-45ef-4a3b-aa48-5e0e66eb47f0</id>
+              </field>
               <field>
                 <type>subtitle</type>
                 <label type="str">Choix des services</label>
@@ -910,16 +891,23 @@ Bonne journ&#233;e !</body>
               </field>
               <field>
                 <type>comment</type>
-                <label type="str">&lt;address&gt;Cochez les services de la ville qui doivent rendre un avis pour cet &amp;eacute;v&amp;egrave;nement. Les services coch&amp;eacute;s recevront un e-mail les invitant &amp;agrave; rendre un avis sur la demande.&lt;/address&gt;</label>
+                <label type="str">&lt;address&gt;Cochez les services de la ville qui doivent rendre un avis pour cet &amp;eacute;v&amp;egrave;nement. Les services coch&amp;eacute;s recevront un e-mail les invitant &amp;agrave; rendre un avis sur la demande.&lt;/address&gt;
+</label>
                 <display_locations />
                 <id type="str">8</id>
               </field>
               <field>
                 <type>items</type>
                 <label type="str">Liste des services</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">liste</varname>
                 <display_locations />
+                <prefill>
+                  <locked>False</locked>
+                  <locked-unless-empty>False</locked-unless-empty>
+                  <type>string</type>
+                  <value>{{ form_option_services_preselectionnes_dans_la_selection_raw }}</value>
+                </prefill>
                 <display_mode type="str">checkboxes</display_mode>
                 <min_choices type="int">0</min_choices>
                 <max_choices type="int">0</max_choices>
@@ -935,12 +923,19 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="2">
+        <item type="choice" id="3">
+          <label>Valider les services interrog&#233;s</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>27</status>
+          <require_confirmation>True</require_confirmation>
+          <confirmation_text>Avez-vous s&#233;lectionn&#233; tous les services ?</confirmation_text>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -964,7 +959,7 @@ Bonne journ&#233;e !</body>
           </mappings>
           <varname>fiche_avis</varname>
         </item>
-        <item type="dispatch" id="4">
+        <item type="dispatch" id="2">
           <role_key>_observateurs</role_key>
           <dispatch_type>manual</dispatch_type>
           <role_id slug="{{ status_loop.current_item.text }}" role_id="{{ status_loop.current_item.text }}">{{ status_loop.current_item.text }}</role_id>
@@ -1018,8 +1013,10 @@ Bonne journ&#233;e !</body>
     <status>
       <id>1</id>
       <name>Demande d'avis des services concern&#233;s</name>
-      <colour>#FF00FF</colour>
-      <visibility />
+      <colour>#ff00ff</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
       <items>
         <item type="register-comment" id="1">
           <comment>&lt;p&gt;
@@ -1058,7 +1055,7 @@ Bonne journ&#233;e !</body>
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
-          <status>60</status>
+          <status>7</status>
           <require_confirmation>False</require_confirmation>
           <backoffice_info_text>&lt;p&gt;Cette action permet de proposer la demande de l&amp;#39;usager au CAE. Le CAE aura la possibilit&amp;eacute; de donner son avis via un formulaire, ou de demander des informations compl&amp;eacute;tentaires n&amp;eacute;cessaires.&lt;/p&gt;
 </backoffice_info_text>
@@ -1066,7 +1063,7 @@ Bonne journ&#233;e !</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne and form_workflow_form_cae_var_datecae or not form_option_verrouille_assignation and form_workflow_form_cae_var_datecae</value>
           </condition>
         </item>
         <item type="choice" id="3">
@@ -1082,7 +1079,7 @@ Bonne journ&#233;e !</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="4">
@@ -1098,8 +1095,29 @@ Bonne journ&#233;e !</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
+        </item>
+        <item type="displaymsg" id="5">
+          <message>&lt;p&gt;Enregistrer une date pour le CAE afin de pouvoir le proposer &#224; ce service.&lt;/p&gt;</message>
+          <level>warning</level>
+          <position>bottom</position>
+          <to>
+            <item role_id="_receiver">_receiver</item>
+          </to>
+          <condition>
+            <type>django</type>
+            <value>not form_workflow_form_cae_var_datecae</value>
+          </condition>
+        </item>
+        <item type="jump" id="6">
+          <status>7</status>
+          <condition>
+            <type>django</type>
+            <value>form_var_passer_a_la_suite == "Oui" and form_workflow_form_cae_var_datecae</value>
+          </condition>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
     </status>
@@ -1145,14 +1163,25 @@ Bonne journ&#233;e !</body>
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>service</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <formdef>
             <name>-</name>
             <fields>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;Le service que vous cherchez n&amp;#39;est pas l&amp;agrave;, vous voulez en modifier un ? Suivez un de ces deux boutons.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/add/" rel="noopener noreferrer nofollow" target="_blank"&gt;Ajouter des services&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/" rel="noopener noreferrer nofollow" target="_blank"&gt;Modifier/supprimer des services&lt;/a&gt;&lt;/p&gt;
+</label>
+                <display_locations />
+                <id type="str">723b466b-ba47-4489-a4b4-7d3d345576c0</id>
+              </field>
               <field>
                 <type>subtitle</type>
                 <label type="str">Choix des services</label>
@@ -1172,9 +1201,11 @@ Bonne journ&#233;e !</body>
               <field>
                 <type>items</type>
                 <label type="str">Liste des services</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">liste</varname>
                 <display_locations />
+                <anonymise type="str">final</anonymise>
+                <items />
                 <display_mode type="str">checkboxes</display_mode>
                 <min_choices type="int">0</min_choices>
                 <max_choices type="int">0</max_choices>
@@ -1190,65 +1221,37 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="3">
-          <status>27</status>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>60</id>
-      <name>Date de la s&#233;ance CAE</name>
-      <colour>#999999</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="form" id="1">
+        <item type="choice" id="4">
+          <label>Valider les services interrog&#233;s</label>
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
-          <varname>cae</varname>
-          <hide_submit_button>False</hide_submit_button>
-          <formdef>
-            <name>-</name>
-            <fields>
-              <field>
-                <type>date</type>
-                <label type="str">Indiquez la date &#224; laquelle le dossier devrait &#234;tre propos&#233; &#224; la CAE</label>
-                <required type="bool">True</required>
-                <varname type="str">datecae</varname>
-                <display_locations />
-                <prefill>
-                  <type>none</type>
-                </prefill>
-                <anonymise type="str">final</anonymise>
-                <minimum_is_future type="bool">False</minimum_is_future>
-                <date_in_the_past type="bool">False</date_in_the_past>
-                <date_can_be_today type="bool">False</date_can_be_today>
-                <id type="str">1</id>
-              </field>
-            </fields>
-          </formdef>
-        </item>
-        <item type="jumponsubmit" id="2">
-          <status>7</status>
+          <status>27</status>
+          <require_confirmation>True</require_confirmation>
+          <confirmation_text>Avez-vous s&#233;lectionn&#233; tous les services ?</confirmation_text>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
         </item>
       </items>
     </status>
     <status>
       <id>7</id>
       <name>Retour avis CAE</name>
-      <colour>#0099FF</colour>
-      <visibility />
+      <colour>#0099ff</colour>
+      <visibility>
+        <role>__restricted__</role>
+      </visibility>
       <items>
         <item type="set-backoffice-fields" id="1">
           <label>Stop remise avis</label>
           <fields>
             <field>
               <field_id>bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</field_id>
-              <value>True</value>
+              <value>{{ True }}</value>
             </field>
           </fields>
         </item>
@@ -1282,17 +1285,9 @@ Bonne journ&#233;e !</body>
         <item type="register-comment" id="4">
           <comment>Date de retour souhait&#233;e : {{ form_workflow_form_cae_var_datecae }}</comment>
           <to>
-            <item slug="agents-traitants-cae" role_id="20c778214ca646f09f5c2da98c2bb6c7">Agents traitants - CAE</item>
+            <item slug="agents-traitants-cae" role_id="326bc446c10c4fa59864df5e2d7014a6">Agents traitants - CAE</item>
           </to>
-        </item>
-        <item type="set-backoffice-fields" id="5">
-          <label>Date CAE</label>
-          <fields>
-            <field>
-              <field_id>bobed095ba-2099-4a5a-850d-26b1c03c1136</field_id>
-              <value>{{ form_workflow_form_cae_var_datecae }}</value>
-            </field>
-          </fields>
+          <level>info</level>
         </item>
         <item type="choice" id="6">
           <label>Compl&#233;ter le formulaire pour rendre un avis</label>
@@ -1333,7 +1328,7 @@ Bonne journ&#233;e !</body>
             <item role_id="_cae">_cae</item>
           </by>
           <varname>demande_info_cae</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <formdef>
             <name>-</name>
             <fields>
@@ -1349,7 +1344,7 @@ Bonne journ&#233;e !</body>
               <field>
                 <type>text</type>
                 <label type="str">Sp&#233;cifiez les informations n&#233;cessaires</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">texte</varname>
                 <display_locations />
                 <prefill>
@@ -1362,8 +1357,14 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="2">
+        <item type="choice" id="3">
+          <label>Valider votre demande d'information</label>
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
           <status>15</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -1406,20 +1407,33 @@ Bonne journ&#233;e !</body>
           <to>
             <item role_id="_receiver">_receiver</item>
           </to>
+          <level>info</level>
         </item>
         <item type="form" id="3">
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>service</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <formdef>
             <name>-</name>
             <fields>
+              <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;Le service que vous cherchez n&amp;#39;est pas l&amp;agrave;, vous voulez en modifier un ? Suivez un de ces deux boutons.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/add/" rel="noopener noreferrer nofollow" target="_blank"&gt;Ajouter des services&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a class="pk-button" href="{{ eservices_url }}backoffice/data/imio-doc-event-services/" rel="noopener noreferrer nofollow" target="_blank"&gt;Modifier/supprimer des services&lt;/a&gt;&lt;/p&gt;
+</label>
+                <extra_css_class type="str">pk-information</extra_css_class>
+                <display_locations />
+                <id type="str">3f4c62fc-7094-4a3b-9e69-69c44d0dea5f</id>
+              </field>
               <field>
                 <type>subtitle</type>
                 <label type="str">Choix des services</label>
@@ -1430,16 +1444,28 @@ Bonne journ&#233;e !</body>
                 <id type="str">6</id>
               </field>
               <field>
+                <type>comment</type>
+                <label type="str">&lt;p&gt;&lt;em&gt;Cochez les services de la ville qui doivent rendre un avis pour cet &amp;eacute;v&amp;egrave;nement. Les services coch&amp;eacute;s recevront un e-mail les invitant &amp;agrave; rendre un avis sur la demande.&lt;/em&gt;&lt;/p&gt;
+</label>
+                <display_locations />
+                <id type="str">6299c7d7-fd1d-4639-91f6-1bdbe9d937d5</id>
+              </field>
+              <field>
                 <type>items</type>
                 <label type="str">Liste des services</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">liste</varname>
                 <display_locations />
+                <prefill>
+                  <locked>False</locked>
+                  <locked-unless-empty>False</locked-unless-empty>
+                  <type>string</type>
+                </prefill>
                 <display_mode type="str">checkboxes</display_mode>
                 <min_choices type="int">0</min_choices>
                 <max_choices type="int">0</max_choices>
                 <data_source>
-                  <type>roles_evenement</type>
+                  <type>carddef:imio-doc-event-services</type>
                 </data_source>
                 <in_filters type="bool">False</in_filters>
                 <display_disabled_items type="bool">False</display_disabled_items>
@@ -1450,13 +1476,32 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="4">
+        <item type="choice" id="6">
+          <label>Valider les services interrog&#233;s</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>27</status>
+          <require_confirmation>True</require_confirmation>
+          <confirmation_text>Avez-vous s&#233;lectionn&#233; tous les services ?</confirmation_text>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
+        </item>
+        <item type="set-backoffice-fields" id="7">
+          <fields>
+            <field>
+              <field_id>bo6636c47f-ce33-409f-b942-af37eac4b0b0</field_id>
+              <value />
+            </field>
+            <field>
+              <field_id>bo9a6910a6-7ab0-4902-9c7f-061e115ddee3</field_id>
+              <value>{{ False }}</value>
+            </field>
+          </fields>
         </item>
       </items>
     </status>
@@ -1473,7 +1518,7 @@ Bonne journ&#233;e !</body>
             <item role_id="_cae">_cae</item>
           </by>
           <varname>avis_cae</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <formdef>
             <name>-</name>
             <fields>
@@ -1489,7 +1534,7 @@ Bonne journ&#233;e !</body>
               <field>
                 <type>text</type>
                 <label type="str">Avis CAE</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">texte</varname>
                 <display_locations />
                 <prefill>
@@ -1502,7 +1547,7 @@ Bonne journ&#233;e !</body>
               <field>
                 <type>block</type>
                 <label type="str">Ajouter des fichiers</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">fichiers</varname>
                 <display_locations />
                 <anonymise type="str">final</anonymise>
@@ -1517,8 +1562,14 @@ Bonne journ&#233;e !</body>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="2">
+        <item type="choice" id="3">
+          <label>Enregistrer votre avis</label>
+          <by>
+            <item role_id="_cae">_cae</item>
+          </by>
           <status>11</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -1533,10 +1584,6 @@ Bonne journ&#233;e !</body>
           <label>Avis CAE</label>
           <fields>
             <field>
-              <field_id>bo72b706f6-3ae0-446a-9d5d-437a78680f76</field_id>
-              <value>{% if form_var_avis_cae %}{{ form_var_avis_cae|retour_chariot }}{% endif %}{{ form_workflow_form_avis_cae_var_texte }}</value>
-            </field>
-            <field>
               <field_id>bo742affe6-4bd0-480a-99a3-b5204050b181</field_id>
               <value>{{ form_var_liste_avis_services }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}------------------------------------{{ "&lt;br&gt;&lt;br/&gt;"|safe }}{{ now|datetime:"d/m/Y H:i" }}{{ "&lt;br&gt;"|safe }}{{ "&lt;h3&gt;Service CAE&lt;/h3&gt;"|safe }}{{ form_workflow_form_avis_cae_var_texte|linebreaks }}{{ "&lt;br&gt;"|safe }}</value>
             </field>
@@ -1546,19 +1593,6 @@ Bonne journ&#233;e !</body>
           <comment>&lt;h4&gt;Avis CAE&lt;/h4&gt;
 
 &lt;p&gt;{{ avis_cae_var_texte }}&lt;/p&gt;</comment>
-        </item>
-        <item type="editable" id="3">
-          <by>
-            <item role_id="_receiver">_receiver</item>
-          </by>
-          <status>11</status>
-          <label>Modifier la demande</label>
-          <condition>
-            <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
-          </condition>
-          <operation_mode>full</operation_mode>
-          <set_marker_on_status>False</set_marker_on_status>
         </item>
         <item type="sendmail" id="4">
           <to>
@@ -1591,7 +1625,7 @@ Bonne journ&#233;e !</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="6">
@@ -1607,11 +1641,11 @@ Bonne journ&#233;e !</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="7">
-          <label>Ev&#233;nement g&#233;r&#233; par la Police Administrative</label>
+          <label>&#201;v&#233;nement g&#233;r&#233; par la Police Administrative</label>
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
@@ -1621,6 +1655,10 @@ Bonne journ&#233;e !</body>
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
         </item>
       </items>
     </status>
@@ -1846,6 +1884,7 @@ aWZlc3QueG1sUEsFBgAAAAARABEAZQQAAJ0mAAAAAA==
           <varname>document_avis_services</varname>
           <backoffice_filefield_id>bod290d5a2-7f94-4ec0-8696-7f766261af9f</backoffice_filefield_id>
           <attach_to_history>False</attach_to_history>
+          <push_to_portfolio>False</push_to_portfolio>
           <method>non-interactive</method>
           <filename>avis_des_services</filename>
         </item>
@@ -2027,6 +2066,7 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
           <varname>formulaire</varname>
           <backoffice_filefield_id>boc89892bb-207d-4d87-a012-9d956fe49908</backoffice_filefield_id>
           <attach_to_history>False</attach_to_history>
+          <push_to_portfolio>False</push_to_portfolio>
           <method>non-interactive</method>
           <by>
             <item role_id="_receiver">_receiver</item>
@@ -2035,10 +2075,6 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
         </item>
         <item type="jump" id="4">
           <status>41</status>
-          <condition>
-            <type>django</type>
-            <value>not form_var_pre_parametre</value>
-          </condition>
           <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
@@ -2077,23 +2113,15 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
             </item>
             <item>
               <name>workflow_files</name>
-              <value>{{ "avis_des_services, formulaire, ettetet"|split:", " }}</value>
-            </item>
-            <item>
-              <name>orig</name>
-              <value>{{ form_role_acces_api_name }}</value>
-            </item>
-            <item>
-              <name>key</name>
-              <value>{{ form_role_acces_api_uuid }}</value>
+              <value>{{ form_option_workflow_files_raw }}</value>
             </item>
             <item>
               <name>blocs_of_files</name>
-              <value>{{ "sdf, sdsdf"|split:", " }}</value>
+              <value>{{ form_option_blocs_of_files_raw }}</value>
             </item>
             <item>
               <name>simple_files</name>
-              <value>{{ "fgh"|split:", " }}</value>
+              <value>{{ form_option_simple_files_raw }}</value>
             </item>
           </post_data>
           <response_type>json</response_type>
@@ -2126,12 +2154,12 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
         <role>__restricted__</role>
       </visibility>
       <items>
-        <item type="form" id="3">
+        <item type="form" id="1">
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>point</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
             <value>session_user_email == form_var_assigne</value>
@@ -2142,11 +2170,13 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
               <field>
                 <type>item</type>
                 <label type="str">Choisissez un mod&#232;le</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <hint type="str">Choisissez un mod&#232;le</hint>
                 <varname type="str">modele</varname>
                 <display_locations />
+                <anonymise type="str">no</anonymise>
                 <display_mode type="str">list</display_mode>
+                <items />
                 <data_source>
                   <type>carddef:imio-doc-event-template-deliberation</type>
                 </data_source>
@@ -2164,15 +2194,16 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">objet</varname>
                 <display_locations />
                 <prefill>
                   <locked>False</locked>
+                  <locked-unless-empty>False</locked-unless-empty>
                   <type>string</type>
-                  <value>{% format_text form_workflow_form_point_var_modele_objet|default:"" %}</value>
+                  <value>{% format_text_none form_workflow_form_point_var_modele_objet|default:"" "session_user_var_first_name_0" session_user_var_first_name|get:0|default:None "session_user_var_last_name_0" session_user_var_last_name|get:0|default:None "today_year" today.year "form_number" form_number|default:None "nom_event" form_var_nom_event|default:None "nom_orga" form_var_nom_orga|default:None "prenom" form_var_prenom|default:None "nom_organisation" form_var_nom_organisation|default:None "evenement_lieu_dit" form_var_evenement_lieu_dit|default:None "nom_lieu_dit" form_var_nom_lieu_dit|default:None "rue_evenement" form_var_rue_evenement|default:None "numero_porte_evenement" form_var_numero_porte_evenement|default:None "boite_evenement" form_var_boite_evenement|default:None "code_postal_evenement" form_var_code_postal_evenement|default:None "debut_evenement" form_var_debut_evenement|default:None "fin_evenement" form_var_fin_evenement|default:None %}</value>
                 </prefill>
-                <display_mode type="str">plain</display_mode>
+                <display_mode type="str">rich</display_mode>
                 <id type="str">68f621c1-84e3-4540-bd68-38fad957bc74</id>
               </field>
               <field>
@@ -2182,15 +2213,16 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">motivation</varname>
                 <display_locations />
                 <prefill>
                   <locked>False</locked>
+                  <locked-unless-empty>False</locked-unless-empty>
                   <type>string</type>
-                  <value>{% format_text form_workflow_form_point_var_modele_motivation|default:"" %}</value>
+                  <value>{% format_text_none form_workflow_form_point_var_modele_motivation|default:"" "nom_orga" form_var_nom_orga|default:None "prenom" form_var_prenom|default:None "organisation" form_var_nom_organisation|default:None "responsable_legal" form_var_responsable_legal|default:None "nom_event" form_var_nom_event|default:None "evenement_lieu_dit" form_var_evenement_lieu_dit|default:None "nom_lieu_dit" form_var_nom_lieu_dit|default:None "rue_evenement" form_var_rue_evenement|default:None "numero_porte_evenement" form_var_numero_porte_evenement|default:None "boite_evenement" form_var_boite_evenement|default:None "code_postal_evenement" form_var_code_postal_evenement|default:None "debut_evenement" form_var_debut_evenement|default:None "fin_evenement" form_var_fin_evenement|default:None "type_activite" form_var_type_activite|default:None "type_activite_autre" form_var_type_activite_autre|default:None "installation_div" form_var_installation_div|default:None "montage" form_var_texte_montage|default:None "heure_debut" form_var_heure_debut|default:None "heure_fin" form_var_heure_fin|default:None "demontage" form_var_texte_demontage|default:None "boissonsresto" form_var_texte_boissonsresto|default:None "assurance" form_var_texte_assurance|default:None "payant" form_var_texte_payant|default:None "nombre_visiteurs" form_var_nombre_visiteurs|default:None "publicite" form_var_texte_publicite|default:None "sorte_publicite" form_var_sorte_publicites|default:None "modifier_circulation" form_var_texte_modifier_circulation|default:None "materiel" form_var_texte_materiel|default:None "demande_materiel" form_var_texte_demande_materiel|default:None "demande_intervention_electricite" form_var_texte_demande_intervention_electricite|default:None "nombre_materiel" form_var_texte_nombre_materiel|default:None "amperage" form_var_texte_amperage|default:None "batiment_ville" form_var_texte_batiment_ville|default:None "service_liste" service_var_liste|default:None "prestataire_service_proprete" form_var_texte_prestataire_service_proprete|default:None "poubelle" form_var_texte_poubelle|default:None "containers" form_var_texte_containers|default:None "tri_selectif" form_var_texte_tri_selectif|default:None "personnel_proprete" form_var_texte_personnel_proprete|default:None "autre_proprete" form_var_texte_autre_proprete|default:None %}</value>
                 </prefill>
-                <display_mode type="str">pre</display_mode>
+                <display_mode type="str">rich</display_mode>
                 <id type="str">1ef06637-eac9-4324-8b1f-6fd911d5675d</id>
               </field>
               <field>
@@ -2200,26 +2232,33 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
                   <type>django</type>
                   <value>form_workflow_form_point_var_modele</value>
                 </condition>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">decision</varname>
                 <display_locations />
                 <prefill>
                   <locked>False</locked>
+                  <locked-unless-empty>False</locked-unless-empty>
                   <type>string</type>
-                  <value>{% format_text form_workflow_form_point_var_modele_decision|default:"" %}</value>
+                  <value>{% format_text_none form_workflow_form_point_var_modele_decision|default:"" "nom_orga" form_var_nom_orga|default:None "prenom" form_var_prenom|default:None "organisation" form_var_nom_organisation|default:None "nom_organisation" form_var_nom_organisation|default:None "nom_event" form_var_nom_event|default:None "evenement_lieu_dit" form_var_evenement_lieu_dit|default:None "nom_lieu_dit" form_var_nom_lieu_dit|default:None "rue_evenement" form_var_rue_evenement|default:None "numero_porte_evenement" form_var_numero_porte_evenement|default:None "boite_evenement" form_var_boite_evenement|default:None "code_postal_evenement" form_var_code_postal_evenement|default:None "debut_evenement" form_var_debut_evenement|default:None "fin_evenement" form_var_fin_evenement|default:None "boissonsresto" form_var_texte_decision_boissonsresto|default:None "nombre_total" form_var_texte_nombre_total|default:None "demande_materiel" form_var_demande_materiel|default:None "demande_intervention_electricite" form_var_demande_intervention_electricite|default:None "nombre_materiel" form_var_nombre_materiel|default:None "amperage" form_var_amperage|default:None "batiment_ville" form_var_batiment_ville|default:None "prestataire_service_proprete" form_var_texte_decision_prestataire_service_proprete|default:None %}</value>
                 </prefill>
-                <display_mode type="str">pre</display_mode>
+                <display_mode type="str">rich</display_mode>
                 <id type="str">63452131-9f5f-4720-ade9-18b35002e00c</id>
               </field>
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="2">
+        <item type="choice" id="3">
+          <label>Envoyer dans iA.D&#233;lib</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>42</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2252,7 +2291,7 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
         <item type="webservice_call" id="2">
           <label>Cr&#233;ation d'un point dans D&#233;lib</label>
           <method>POST</method>
-          <url>{{ passerelle_url }}passerelle-imio-ia-delib/delib/create-item</url>
+          <url>{{ passerelle_url }}passerelle-imio-ia-delib/{{ form_option_connecteur }}/create-item</url>
           <post>False</post>
           <post_data>
             <item>
@@ -2261,23 +2300,23 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
             </item>
             <item>
               <name>category</name>
-              <value>autorisation-d2019organisation-d2019evenement</value>
+              <value>{{ form_option_category }}</value>
             </item>
             <item>
               <name>config_id</name>
-              <value>meeting-config-college</value>
+              <value>{{ form_option_config_id }}</value>
             </item>
             <item>
               <name>proposingGroup</name>
-              <value>service-cev</value>
+              <value>{{ form_option_proposinggroup }}</value>
             </item>
             <item>
               <name>proposingGroupWithGroupInCharge</name>
-              <value>b15242dcf91a4bbc9bc626b25adca6a5__groupincharge__14d7d8a6bf194f80978b77a539158a31</value>
+              <value>{{ form_option_proposinggroupwithgroupincharge }}</value>
             </item>
             <item>
               <name>type</name>
-              <value>MeetingItemCollege</value>
+              <value>{{ form_option_type }}</value>
             </item>
             <item>
               <name>title</name>
@@ -2294,6 +2333,22 @@ RVRBLUlORi9tYW5pZmVzdC54bWxQSwUGAAAAABEAEQBlBAAApSAAAAAA
             <item>
               <name>externalIdentifier</name>
               <value>{{ form_var_external_identifier }}</value>
+            </item>
+            <item>
+              <name>send_files</name>
+              <value>{{ form_option_envoyer_fichier_creation_point }}</value>
+            </item>
+            <item>
+              <name>blocs_of_files</name>
+              <value>{{ form_option_blocs_of_files_raw }}</value>
+            </item>
+            <item>
+              <name>simple_files</name>
+              <value>{{ form_option_simple_files_raw }}</value>
+            </item>
+            <item>
+              <name>workflow_files</name>
+              <value>{{ form_option_workflow_files_raw }}</value>
             </item>
           </post_data>
           <response_type>json</response_type>
@@ -2345,15 +2400,15 @@ Si c'est le cas cliquer sur &lt;bold&gt;Vers en attente du coll&#232;ge&lt;/bold
 Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt;&lt;/p&gt;</comment>
           <to>
             <item role_id="_receiver">_receiver</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
           </to>
         </item>
         <item type="choice" id="3">
           <label>Relancer le webservice</label>
           <by>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>42</status>
@@ -2364,8 +2419,8 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
         <item type="choice" id="4">
           <label>Vers en attente du coll&#232;ge</label>
           <by>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>81</status>
@@ -2517,7 +2572,7 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
         <item type="choice" id="4">
           <label>V&#233;rification manuelle</label>
           <by>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>47</status>
@@ -2536,7 +2591,7 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2571,14 +2626,14 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>17</status>
-          <require_confirmation>False</require_confirmation>
+          <require_confirmation>True</require_confirmation>
           <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que le Coll&amp;egrave;ge a refus&amp;eacute; la demande de l&amp;#39;usager.&lt;/p&gt;
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
-          <set_marker_on_status>True</set_marker_on_status>
+          <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="3">
@@ -2587,14 +2642,14 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>19</status>
-          <require_confirmation>False</require_confirmation>
+          <require_confirmation>True</require_confirmation>
           <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que le Coll&amp;egrave;ge souhaite que des modifications soient apport&amp;eacute;es &amp;agrave; la demande de l&amp;#39;usager. En cliquant sur ce bouton, vous pourrez indiquer dans un formulaire les modifications n&amp;eacute;cessaires. Ensuite, un email sera envoy&amp;eacute; &amp;agrave; l&amp;#39;usager pour qu&amp;#39;il modifie sa demande selon ce qui lui sera indiqu&amp;eacute;.&lt;/p&gt;
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
-          <set_marker_on_status>True</set_marker_on_status>
+          <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_display_name == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="4">
@@ -2603,14 +2658,14 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
             <item role_id="_receiver">_receiver</item>
           </by>
           <status>33</status>
-          <require_confirmation>False</require_confirmation>
+          <require_confirmation>True</require_confirmation>
           <backoffice_info_text>&lt;p&gt;Cette action permet d&amp;#39;indiquer que la demande a &amp;eacute;t&amp;eacute; retir&amp;eacute;e du Coll&amp;egrave;ge. Il n&amp;#39;y aura plus de suite &amp;agrave; donner &amp;agrave; la demande.&lt;/p&gt;
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
-          <set_marker_on_status>True</set_marker_on_status>
+          <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2633,9 +2688,11 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
           <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
           <display_button>True</display_button>
           <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="addattachment" id="2">
@@ -2649,9 +2706,11 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
           <display_button>True</display_button>
           <varname>courrier_notification</varname>
           <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="3">
@@ -2667,7 +2726,7 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2690,9 +2749,11 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
           <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
           <display_button>True</display_button>
           <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="form" id="2">
@@ -2700,10 +2761,10 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>modification</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <formdef>
             <name>-</name>
@@ -2711,7 +2772,7 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
               <field>
                 <type>text</type>
                 <label type="str">Modifications demand&#233;es</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">texte</varname>
                 <display_locations />
                 <prefill>
@@ -2724,12 +2785,18 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="3">
+        <item type="choice" id="4">
+          <label>Enregistrer votre demande d'information</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>20</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2740,11 +2807,12 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
       <colour>#FF9900</colour>
       <visibility />
       <items>
-        <item type="register-comment" id="2">
+        <item type="register-comment" id="1">
           <comment>&lt;h2&gt;Modifications demand&#233;es&lt;/h2&gt;
 &lt;p&gt;{{ form_workflow_form_modification_var_texte }}&lt;/p&gt;</comment>
+          <level>warning</level>
         </item>
-        <item type="sendmail" id="3">
+        <item type="sendmail" id="2">
           <to>
             <item role_id="_submitter">_submitter</item>
           </to>
@@ -2754,7 +2822,7 @@ Dans le cas contraire, cliquez sur &lt;bold&gt;Relancer le webservice&lt;bold&gt
 {% if form_status_changed %}
 Nous vous informons que votre demande pour la d&#233;marche "{{ form_name }}" n&#233;cessite d'&#234;tre modifi&#233;e. {% endif %}
 
-Voici les modifications demand&#233;es : 
+Voici les modifications demand&#233;es :
 
 {{ modification_var_texte }}
 
@@ -2779,7 +2847,7 @@ Cordialement,
 
 La Ville de Charleroi</body>
         </item>
-        <item type="editable" id="4">
+        <item type="editable" id="3">
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
@@ -2787,12 +2855,12 @@ La Ville de Charleroi</body>
           <label>Modifier la demande</label>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <operation_mode>full</operation_mode>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
-        <item type="editable" id="5">
+        <item type="editable" id="4">
           <by>
             <item role_id="_submitter">_submitter</item>
           </by>
@@ -2801,7 +2869,7 @@ La Ville de Charleroi</body>
           <operation_mode>full</operation_mode>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
-        <item type="choice" id="6">
+        <item type="choice" id="5">
           <label>By pass de l'&#233;dition</label>
           <by>
             <item role_id="_receiver">_receiver</item>
@@ -2814,8 +2882,16 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
+        </item>
+        <item type="set-backoffice-fields" id="6">
+          <fields>
+            <field>
+              <field_id>bo6636c47f-ce33-409f-b942-af37eac4b0b0</field_id>
+              <value />
+            </field>
+          </fields>
         </item>
       </items>
     </status>
@@ -2838,7 +2914,7 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2921,9 +2997,11 @@ La Ville de Charleroi</body>
           <button_label>Transf&#233;rer la copie de l'extrait conforme</button_label>
           <display_button>False</display_button>
           <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="2">
@@ -2939,7 +3017,7 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -2962,9 +3040,11 @@ La Ville de Charleroi</body>
           <button_label>Transf&#233;rer un fichier</button_label>
           <display_button>False</display_button>
           <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
         <item type="choice" id="2">
@@ -2980,7 +3060,7 @@ La Ville de Charleroi</body>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
         </item>
       </items>
@@ -3021,7 +3101,7 @@ En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l
 Cordialement,
 </body>
         </item>
-        <item type="jump" id="3">
+        <item type="jump" id="2">
           <status>finished</status>
           <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
@@ -3064,16 +3144,6 @@ En cas de probl&#232;me, munissez-vous du code de suivi et prenez contact avec l
 Cordialement,
 </body>
         </item>
-        <item type="external_workflow_global_action" id="2">
-          <slug>formdef:demande-de-location-de-salle</slug>
-          <trigger_id>action:demande_refus&#233;e</trigger_id>
-          <target_mode>all</target_mode>
-        </item>
-        <item type="external_workflow_global_action" id="3">
-          <slug>formdef:demande-de-location-de-materiel</slug>
-          <trigger_id>action:demande_refus&#233;e</trigger_id>
-          <target_mode>all</target_mode>
-        </item>
       </items>
     </status>
     <status>
@@ -3109,79 +3179,6 @@ Vous pouvez en prendre connaissance en suivant ce lien&#160;: {{ form_url }}
       </items>
     </status>
     <status>
-      <id>38</id>
-      <name>Changement d'assignation</name>
-      <colour>#999999</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="form" id="1">
-          <by>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-          </by>
-          <varname>nouvelle</varname>
-          <hide_submit_button>False</hide_submit_button>
-          <formdef>
-            <name>-</name>
-            <fields>
-              <field>
-                <type>subtitle</type>
-                <label type="str">R&#233;assignation de la demande</label>
-                <display_locations>
-                  <item>validation</item>
-                  <item>summary</item>
-                </display_locations>
-                <id type="str">2</id>
-              </field>
-              <field>
-                <type>string</type>
-                <label type="str">Nouvelle assignation</label>
-                <required type="bool">True</required>
-                <hint type="str">Entrez le mail du nouveau responsable de la demande</hint>
-                <varname type="str">assignation</varname>
-                <display_locations />
-                <prefill>
-                  <type>none</type>
-                </prefill>
-                <anonymise type="str">final</anonymise>
-                <id type="str">1</id>
-              </field>
-            </fields>
-          </formdef>
-        </item>
-        <item type="jumponsubmit" id="2">
-          <status>39</status>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>39</id>
-      <name>Validation du changement d'assignation</name>
-      <colour>#999999</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="set-backoffice-fields" id="1">
-          <label>Nouvelle assignation</label>
-          <fields>
-            <field>
-              <field_id>bo5d846168-a145-4fd5-af08-85e2d2f18eed</field_id>
-              <value>{{ nouvelle_var_assignation }}</value>
-            </field>
-          </fields>
-        </item>
-        <item type="jump" id="2">
-          <status>_previous</status>
-          <mode>immediate</mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
       <id>30</id>
       <name>Annul&#233;</name>
       <colour>#FF0000</colour>
@@ -3198,16 +3195,6 @@ Vous pouvez en prendre connaissance en suivant ce lien&#160;: {{ form_url }}
           <trigger_id>action:annulation_evenement</trigger_id>
           <target_mode>all</target_mode>
         </item>
-        <item type="external_workflow_global_action" id="3">
-          <slug>formdef:demande-de-location-de-salle</slug>
-          <trigger_id>action:demande_annul&#233;e</trigger_id>
-          <target_mode>all</target_mode>
-        </item>
-        <item type="external_workflow_global_action" id="4">
-          <slug>formdef:demande-de-location-de-materiel</slug>
-          <trigger_id>action:demande_annul&#233;e</trigger_id>
-          <target_mode>all</target_mode>
-        </item>
       </items>
     </status>
     <status>
@@ -3220,41 +3207,6 @@ Vous pouvez en prendre connaissance en suivant ce lien&#160;: {{ form_url }}
       <items>
         <item type="jump" id="1">
           <status>43</status>
-          <mode>immediate</mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>51</id>
-      <name>Demande de location de mat&#233;riel</name>
-      <colour>#FFFF00</colour>
-      <visibility />
-      <items>
-        <item type="register-comment" id="1">
-          <comment>{% for i in form_links_demande_location_materiel_0_form_var_locations_materiels %}
-&lt;p&gt;{{i.quantite}} {{i.materiel}}&lt;/br&gt;
-du {{i.date_debut}} {{i.heure_debut}} au {{i.date_fin}} {{i.heure_fin}}&lt;/p&gt;
-{% endfor %}</comment>
-        </item>
-        <item type="jump" id="2">
-          <status>_previous</status>
-          <mode>immediate</mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>52</id>
-      <name>Demande de location de salle</name>
-      <colour>#FFFF00</colour>
-      <visibility />
-      <items>
-        <item type="register-comment" id="1">
-          <comment>{{ form_links_demande_location_salle_0_form_details|linebreaks }}</comment>
-        </item>
-        <item type="jump" id="2">
-          <status>_previous</status>
           <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
@@ -3291,30 +3243,15 @@ du {{i.date_debut}} {{i.heure_debut}} au {{i.date_fin}} {{i.heure_fin}}&lt;/p&gt
           <by>
             <item role_id="_receiver">_receiver</item>
           </by>
-          <status>61</status>
+          <status>_previous</status>
           <label>&#201;diter la demande</label>
           <backoffice_info_text>&lt;p&gt;Permet d&amp;#39;&amp;eacute;diter la demande, par agent traitant&lt;/p&gt;
 </backoffice_info_text>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <operation_mode>full</operation_mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>61</id>
-      <name>Demande &#233;dit&#233;e par agent traitant</name>
-      <colour>#999999</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="jump" id="1">
-          <status>_previous</status>
-          <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -3328,6 +3265,7 @@ du {{i.date_debut}} {{i.heure_debut}} au {{i.date_fin}} {{i.heure_fin}}&lt;/p&gt
         <item type="register-comment" id="1">
           <comment>&lt;p&gt;Cliquez sur &lt;b&gt;Modifier la demande&lt;/b&gt; pour modifier la demande &lt;/br&gt;
 Cliquez sur &lt;b&gt;Annuler&lt;/b&gt; pour revenir en arri&#232;re&lt;/p&gt;</comment>
+          <level>info</level>
         </item>
         <item type="editable" id="2">
           <by>
@@ -3359,6 +3297,12 @@ Cliquez sur &lt;b&gt;Annuler&lt;/b&gt; pour revenir en arri&#232;re&lt;/p&gt;</c
           <backoffice_info_text>&lt;p&gt;Permet de passer &amp;agrave; la suite de la demande sans attendre les modifications du citoyen.&lt;/p&gt;
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="5">
+          <status>68</status>
+          <mode>timeout</mode>
+          <timeout>10800</timeout>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -3413,14 +3357,18 @@ La demande d'&#233;v&#232;nement - {{ form_number }} - {{ form_var_nom_event }} 
             <item role_id="_receiver">_receiver</item>
           </by>
           <varname>informations_manquantes</varname>
-          <hide_submit_button>False</hide_submit_button>
+          <hide_submit_button>True</hide_submit_button>
+          <condition>
+            <type>django</type>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
           <formdef>
             <name>-</name>
             <fields>
               <field>
                 <type>text</type>
                 <label type="str">Informations demand&#233;es</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">texte_long</varname>
                 <display_locations />
                 <prefill>
@@ -3433,13 +3381,30 @@ La demande d'&#233;v&#232;nement - {{ form_number }} - {{ form_var_nom_event }} 
             </fields>
           </formdef>
         </item>
-        <item type="jumponsubmit" id="2">
+        <item type="choice" id="3">
+          <label>Envoyer la demande d'information</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
           <status>70</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne or not form_option_verrouille_assignation</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
+        </item>
+        <item type="choice" id="4">
+          <label>Retour au flux principal</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>_previous</status>
+          <require_confirmation>True</require_confirmation>
+          <confirmation_text>Attention vous allez &#234;tre renvoy&#233; dans le flux principal.</confirmation_text>
+          <ignore_form_errors>True</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
     </status>
@@ -3458,16 +3423,16 @@ La demande d'&#233;v&#232;nement - {{ form_number }} - {{ form_var_nom_event }} 
             <item role_id="_submitter">_submitter</item>
           </to>
           <subject>{{ form_name }} - {{ form_number }} Informations manquantes</subject>
-          <body>Bonjour, 
+          <body>Bonjour,
 
-Nous vous informons que votre demande d'autorisation d'&#233;v&#233;nement n'est pas compl&#232;te. Il nous manque en effet les informations ou documents suivants pour pouvoir y donner suite : 
+Nous vous informons que votre demande d'autorisation d'&#233;v&#233;nement n'est pas compl&#232;te. Il nous manque en effet les informations ou documents suivants pour pouvoir y donner suite :
 
 
 {{ form_workflow_form_informations_manquantes_var_texte_long }}
 
 Merci de `modifier votre demande d'autorisation d'&#233;v&#232;nement &lt;{{ form_url }}&gt;`_ pour que nous puissions poursuivre le traitement de votre demande.
 
-Cordialement, 
+Cordialement,
 
 La Cellule Event de Charleroi</body>
         </item>
@@ -3479,6 +3444,17 @@ La Cellule Event de Charleroi</body>
           <status>71</status>
           <label>Mettre &#224; jour la demande</label>
           <operation_mode>full</operation_mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="4">
+          <label>Retour au flux principal</label>
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <status>_previous</status>
+          <require_confirmation>True</require_confirmation>
+          <confirmation_text>Attention vous allez &#234;tre renvoy&#233; dans le flux principal.</confirmation_text>
+          <ignore_form_errors>True</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
@@ -3494,7 +3470,7 @@ La Cellule Event de Charleroi</body>
             <item role_id="_receiver">_receiver</item>
           </to>
           <subject>{{ form_name }} - {{ form_number }} Demande mise &#224; jour</subject>
-          <body>Bonjour, 
+          <body>Bonjour,
 
 Vous aviez inform&#233; l'organisateur du fait que son dossier n'&#233;tait pas complet. Celui-ci a donc compl&#233;t&#233; sa demande, merci donc de v&#233;rifier si elle est d&#233;sormais compl&#232;te pour continuer son traitement.
 
@@ -3523,7 +3499,9 @@ Vous aviez inform&#233; l'organisateur du fait que son dossier n'&#233;tait pas 
           </by>
           <status>69</status>
           <require_confirmation>False</require_confirmation>
-          <backoffice_info_text>&lt;p&gt;Retour au formulaire pour demander des informations manquantes&lt;/p&gt;
+          <backoffice_info_text>&lt;p&gt;Retour au formulaire pour demander des informations manquantes.&lt;/p&gt;
+
+&lt;p&gt;Si vous voulez revenir au flux principal, cliquez sur ce bouton puis sur &lt;strong&gt;Retour au flux principal&lt;/strong&gt;&lt;/p&gt;
 </backoffice_info_text>
           <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
@@ -3545,56 +3523,15 @@ Vous aviez inform&#233; l'organisateur du fait que son dossier n'&#233;tait pas 
             <item role_id="_submitter">_submitter</item>
           </to>
           <subject>{{ form_name }} - {{ form_number }} Validation des changements</subject>
-          <body>Bonjour, 
+          <body>Bonjour,
 
-Les changements et pr&#233;cisions que vous avez apport&#233;(s) &#224; votre demande ont &#233;t&#233; enregistr&#233;s. Le traitement de votre dossier va donc pouvoir reprendre. Vous serez tenu inform&#233; du suivi de celui-ci d&#232;s que possible. 
+Les changements et pr&#233;cisions que vous avez apport&#233;(s) &#224; votre demande ont &#233;t&#233; enregistr&#233;s. Le traitement de votre dossier va donc pouvoir reprendre. Vous serez tenu inform&#233; du suivi de celui-ci d&#232;s que possible.
 
-Cordialement, 
+Cordialement,
 
 La Cellule Event de la Ville de Charleroi</body>
         </item>
         <item type="jump" id="2">
-          <status>_previous</status>
-          <mode>immediate</mode>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>82</id>
-      <name>Ajouter un fichier</name>
-      <colour>#0099FF</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="addattachment" id="1">
-          <by>
-            <item role_id="_receiver">_receiver</item>
-            <item role_id="_cae">_cae</item>
-          </by>
-          <required>False</required>
-          <title>Transf&#233;rer un fichier</title>
-          <display_title>True</display_title>
-          <button_label>Transf&#233;rer un fichier</button_label>
-          <display_button>True</display_button>
-          <attach_to_history>True</attach_to_history>
-        </item>
-        <item type="jumponsubmit" id="2">
-          <status>83</status>
-          <set_marker_on_status>False</set_marker_on_status>
-        </item>
-      </items>
-    </status>
-    <status>
-      <id>83</id>
-      <name>Fichier ajout&#233;</name>
-      <colour>#00FF00</colour>
-      <visibility>
-        <role>__restricted__</role>
-      </visibility>
-      <items>
-        <item type="jump" id="1">
           <status>_previous</status>
           <mode>immediate</mode>
           <set_marker_on_status>False</set_marker_on_status>
@@ -3613,8 +3550,8 @@ La Cellule Event de la Ville de Charleroi</body>
           <label>Relancer l'envoi des pi&#232;ces jointe dans iA.D&#233;lib</label>
           <by>
             <item role_id="_receiver">_receiver</item>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </by>
           <status>81</status>
           <require_confirmation>False</require_confirmation>
@@ -3623,18 +3560,143 @@ La Cellule Event de la Ville de Charleroi</body>
         </item>
       </items>
     </status>
+    <status>
+      <id>88</id>
+      <name>Informations salle</name>
+      <colour>#f8e45c</colour>
+      <visibility />
+      <items>
+        <item type="register-comment" id="2">
+          <comment>{{ form_var_informations_locations|safe }}</comment>
+        </item>
+        <item type="jump" id="1">
+          <status>_previous</status>
+          <mode>immediate</mode>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+      </items>
+    </status>
   </possible_status>
   <global_actions>
     <action>
+      <id>15</id>
+      <name>&#128197; Date de la CAE</name>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+          </by>
+          <varname>cae</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>date</type>
+                <label type="str">Indiquez la date &#224; laquelle le dossier devrait &#234;tre propos&#233; &#224; la CAE</label>
+                <required type="str">required</required>
+                <varname type="str">datecae</varname>
+                <display_locations />
+                <minimum_is_future type="bool">True</minimum_is_future>
+                <date_in_the_past type="bool">False</date_in_the_past>
+                <date_can_be_today type="bool">False</date_can_be_today>
+                <id type="str">3e320742-bf6a-48fa-a0d9-1321b6de6e4c</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <fields>
+            <field>
+              <field_id>bobed095ba-2099-4a5a-850d-26b1c03c1136</field_id>
+              <value>{{ form_workflow_form_cae_var_datecae }}</value>
+            </field>
+          </fields>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="1ffd5265-c727-436e-95ec-9e640805304b">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <statuses>
+            <statuse>1</statuse>
+            <statuse>7</statuse>
+          </statuses>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>2</id>
+      <name>&#128260; Changer l'assignation de la demande</name>
+      <backoffice_info_text>&lt;p&gt;Permet de changer le responsable du dossier&lt;/p&gt;</backoffice_info_text>
+      <items>
+        <item type="form" id="1">
+          <by>
+            <item role_id="_responsable-du-service-evenement">_responsable-du-service-evenement</item>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <varname>nouvelle</varname>
+          <hide_submit_button>False</hide_submit_button>
+          <formdef>
+            <name>-</name>
+            <fields>
+              <field>
+                <type>subtitle</type>
+                <label type="str">R&#233;assignation de la demande</label>
+                <display_locations>
+                  <item>validation</item>
+                  <item>summary</item>
+                </display_locations>
+                <id type="str">8413e982-4006-48cf-9c2a-94d1a35a41dd</id>
+              </field>
+              <field>
+                <type>email</type>
+                <label type="str">Nouvelle assignation</label>
+                <required type="str">required</required>
+                <hint type="str">&lt;p&gt;Entrez l'adresse mail du nouveau ou de la nouvelle responsable&lt;/p&gt;</hint>
+                <varname type="str">assignation</varname>
+                <display_locations />
+                <id type="str">4aa956cf-02c9-40d5-b5cc-6aae9da0a9f4</id>
+              </field>
+            </fields>
+          </formdef>
+        </item>
+        <item type="set-backoffice-fields" id="2">
+          <label>Nouvelle assignation</label>
+          <fields>
+            <field>
+              <field_id>bo5d846168-a145-4fd5-af08-85e2d2f18eed</field_id>
+              <value>{{ form_workflow_form_nouvelle_var_assignation }}</value>
+            </field>
+          </fields>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="8248700b-fa61-4517-b9ae-1b20ad7e5c70">
+          <roles>
+            <item slug="agent-ayant-acces-aux-fabriques" role_id="9be8b3ce1b3244be8f6e05a9aa003cf0">Agent ayant acces aux fabriques</item>
+            <item role_id="_responsable-du-service-evenement">_responsable-du-service-evenement</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </roles>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
       <id>1</id>
-      <name>Annuler la demande</name>
+      <name>&#9940; Annuler la demande</name>
       <backoffice_info_text>&lt;p&gt;Cette action annule la demande d'autorisation du citoyen, &amp;agrave; son initiative ou &amp;agrave; celle de l'agent traitant. Le citoyen sera pr&amp;eacute;venu par email.&lt;/p&gt;</backoffice_info_text>
       <items>
         <item type="jump" id="1">
           <status>30</status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne and form_status != "Annul&#233;"</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
@@ -3644,41 +3706,30 @@ La Cellule Event de la Ville de Charleroi</body>
           <roles>
             <item role_id="_receiver">_receiver</item>
           </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
-          <require_confirmation>False</require_confirmation>
-        </trigger>
-      </triggers>
-    </action>
-    <action>
-      <id>2</id>
-      <name>Changer l'assignation de la demande</name>
-      <items>
-        <item type="jump" id="1">
-          <status>38</status>
-          <set_marker_on_status>True</set_marker_on_status>
-        </item>
-      </items>
-      <triggers>
-        <trigger type="manual" id="8248700b-fa61-4517-b9ae-1b20ad7e5c70">
-          <roles>
-            <item slug="agent-ayant-acces-aux-fabriques" role_id="35d122b0a99b422083ca61be583dcbd2">Agent ayant acces aux fabriques</item>
-          </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
+          <allow_as_mass_action>False</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
         </trigger>
       </triggers>
     </action>
     <action>
       <id>7</id>
-      <name>Dossier incomplet</name>
+      <name>&#9888;&#65039; Dossier incomplet</name>
       <items>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <condition>
+            <type>django</type>
+            <value>form_status in "&#201;dition par agent traitant|&#201;dition par usager|Informations Manquantes|Dossier incomplet|Validation des changements"|split:"|"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
         <item type="jump" id="1">
           <status>69</status>
           <condition>
             <type>django</type>
-            <value>session_user_email == form_var_assigne and form_status</value>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
           </condition>
-          <set_marker_on_status>False</set_marker_on_status>
+          <set_marker_on_status>True</set_marker_on_status>
         </item>
       </items>
       <triggers>
@@ -3686,51 +3737,18 @@ La Cellule Event de la Ville de Charleroi</body>
           <roles>
             <item role_id="_receiver">_receiver</item>
           </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
+          <allow_as_mass_action>False</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
         </trigger>
       </triggers>
     </action>
     <action>
-      <id>3</id>
-      <name>Informations location de mat&#233;riel</name>
-      <items>
-        <item type="jump" id="1">
-          <status>51</status>
-          <set_marker_on_status>True</set_marker_on_status>
-        </item>
-      </items>
-      <triggers>
-        <trigger type="webservice" id="af9634b5-1dcd-40eb-8606-a0c7e73ced0c">
-          <identifier>info_location_materiel</identifier>
-        </trigger>
-      </triggers>
-    </action>
-    <action>
-      <id>4</id>
-      <name>Information location de salle</name>
-      <items>
-        <item type="jump" id="1">
-          <status>52</status>
-          <set_marker_on_status>True</set_marker_on_status>
-        </item>
-      </items>
-      <triggers>
-        <trigger type="webservice" id="a28aee92-2486-4f20-8cf6-fe7b2842dd83">
-          <identifier>info_location_salle</identifier>
-        </trigger>
-      </triggers>
-    </action>
-    <action>
       <id>5</id>
-      <name>Cr&#233;ation d'une nouvelle demande</name>
-      <backoffice_info_text>&lt;p&gt;Permet de cr&amp;eacute;er une nouvelle demande avec les m&amp;ecirc;mesinformations.&lt;/p&gt;
-
-&lt;h3&gt;Ne pas utiliser de mani&amp;egrave;re globale.&lt;/h3&gt;
-</backoffice_info_text>
+      <name>&#128221; Faire une nouvelle demande</name>
+      <backoffice_info_text>&lt;p&gt;Permet de cr&#233;er une nouvelle demande avec les m&#234;mes informations.&lt;/p&gt;</backoffice_info_text>
       <items>
         <item type="create_formdata" id="1">
-          <formdef_slug>organiser-un-evenement-test</formdef_slug>
+          <formdef_slug>demande-organisation-evenement</formdef_slug>
           <map_fields_by_varname>True</map_fields_by_varname>
           <mappings />
           <backoffice_submission>False</backoffice_submission>
@@ -3756,30 +3774,19 @@ La Cellule Event de la Ville de Charleroi</body>
       </triggers>
     </action>
     <action>
-      <id>6</id>
-      <name>Vers l'&#233;dition de la demande par agent traitant</name>
-      <items>
-        <item type="jump" id="1">
-          <status>62</status>
-          <set_marker_on_status>True</set_marker_on_status>
-        </item>
-      </items>
-      <triggers>
-        <trigger type="manual" id="f079d4d3-f62f-4697-bb36-8fd31cd027e5">
-          <roles>
-            <item role_id="_receiver">_receiver</item>
-          </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
-          <require_confirmation>False</require_confirmation>
-        </trigger>
-      </triggers>
-    </action>
-    <action>
       <id>9</id>
-      <name>Vers la modification de la demande</name>
+      <name>&#9999;&#65039; Modifier la demande</name>
       <backoffice_info_text>&lt;p&gt;Modification de la demande par l&amp;#39;usager&lt;/p&gt;
 </backoffice_info_text>
       <items>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <condition>
+            <type>django</type>
+            <value>form_status in "&#201;dition par agent traitant|&#201;dition par usager|Informations Manquantes|Dossier incomplet|Validation des changements"|split:"|"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
         <item type="jump" id="1">
           <status>64</status>
           <set_marker_on_status>True</set_marker_on_status>
@@ -3806,29 +3813,73 @@ La Cellule Event de la Ville de Charleroi</body>
       </triggers>
     </action>
     <action>
+      <id>6</id>
+      <name>&#128395;&#65039; &#201;diter la demande (agent traitant)</name>
+      <items>
+        <item type="jump" id="2">
+          <status>_previous</status>
+          <condition>
+            <type>django</type>
+            <value>form_status in "&#201;dition par agent traitant|&#201;dition par usager|Informations Manquantes|Dossier incomplet|Validation des changements"|split:"|"</value>
+          </condition>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="1">
+          <status>62</status>
+          <condition>
+            <type>django</type>
+            <value>session_user_email|lower == form_var_assigne or not form_option_verrouille_assignation</value>
+          </condition>
+          <set_marker_on_status>True</set_marker_on_status>
+        </item>
+      </items>
+      <triggers>
+        <trigger type="manual" id="f079d4d3-f62f-4697-bb36-8fd31cd027e5">
+          <roles>
+            <item role_id="_receiver">_receiver</item>
+          </roles>
+          <allow_as_mass_action>False</allow_as_mass_action>
+          <require_confirmation>False</require_confirmation>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
       <id>10</id>
-      <name>Joindre un nouveau fichier</name>
+      <name>&#128450;&#65039; Joindre un fichier</name>
       <backoffice_info_text>&lt;p&gt;Permet d&amp;#39;&amp;ecirc;tre redirig&amp;eacute; vers une boite de dialogue pour ajouter un fichier.&lt;/p&gt;
 </backoffice_info_text>
       <items>
-        <item type="jump" id="1">
-          <status>82</status>
-          <set_marker_on_status>True</set_marker_on_status>
+        <item type="addattachment" id="1">
+          <by>
+            <item role_id="_receiver">_receiver</item>
+            <item role_id="_cae">_cae</item>
+            <item role_id="_responsable-du-service-evenement">_responsable-du-service-evenement</item>
+          </by>
+          <required>True</required>
+          <title>Transf&#233;rer un fichier</title>
+          <display_title>True</display_title>
+          <button_label>Transf&#233;rer un fichier</button_label>
+          <display_button>True</display_button>
+          <attach_to_history>True</attach_to_history>
+          <allow_portfolio_picking>False</allow_portfolio_picking>
+          <push_to_portfolio>False</push_to_portfolio>
         </item>
       </items>
       <triggers>
         <trigger type="manual" id="4f1d6afe-a1c9-44ba-bf9d-a037b41662c9">
           <roles>
             <item role_id="_receiver">_receiver</item>
+            <item role_id="_cae">_cae</item>
+            <item role_id="_responsable-du-service-evenement">_responsable-du-service-evenement</item>
           </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
+          <allow_as_mass_action>False</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
         </trigger>
       </triggers>
     </action>
     <action>
       <id>11</id>
-      <name>Ajouter une note</name>
+      <name>&#128466;&#65039; Ajouter une note</name>
       <items>
         <item type="form" id="1">
           <by>
@@ -3842,7 +3893,7 @@ La Cellule Event de la Ville de Charleroi</body>
               <field>
                 <type>text</type>
                 <label type="str">Commentaire</label>
-                <required type="bool">True</required>
+                <required type="str">required</required>
                 <varname type="str">texte</varname>
                 <display_locations />
                 <anonymise type="str">final</anonymise>
@@ -3874,14 +3925,14 @@ La Cellule Event de la Ville de Charleroi</body>
           <roles>
             <item role_id="_receiver">_receiver</item>
           </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
+          <allow_as_mass_action>False</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
         </trigger>
       </triggers>
     </action>
     <action>
       <id>12</id>
-      <name>Remise d'avis</name>
+      <name>&#128203; Remise d'avis</name>
       <items>
         <item type="register-comment" id="1">
           <comment>&lt;hr /&gt;
@@ -3897,12 +3948,20 @@ La Cellule Event de la Ville de Charleroi</body>
             <value>not form_var_stop_avis or caller_form_name == "R&#233;-encodage des avis"</value>
           </condition>
         </item>
-        <item type="set-backoffice-fields" id="4">
+        <item type="set-backoffice-fields" id="2">
           <label>Remise d'avis</label>
           <fields>
             <field>
               <field_id>bo742affe6-4bd0-480a-99a3-b5204050b181</field_id>
               <value>{% if form_var_liste_avis_services %}{{ form_var_liste_avis_services }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}------------------------------------{{ "&lt;br&gt;&lt;br&gt;"|safe }}{% endif %}{{ now|datetime:"d/m/Y H:i" }}{{ "&lt;br&gt;"|safe }}{{ "&lt;h3&gt;"|safe }}Service {{ caller_form_var_service }}{{ "&lt;/h3&gt;"|safe }}{{ caller_form_var_service_courriel|default:"Adresse mail introuvable" }}{{ "&lt;br&gt;&lt;br&gt;"|safe }}Avis favorable : {{ caller_form_var_avis_favorable }}{{ "&lt;br&gt;"|safe }}{% if caller_form_var_avis_detail %}{{ caller_form_var_avis_detail|linebreaks }}{{ "&lt;br&gt;"|safe }}{% endif %}</value>
+            </field>
+            <field>
+              <field_id>bocabb60a3-d742-4784-b509-18da56891d8f</field_id>
+              <value>{% for id_fiche in form_var_id_fiches|split:"," %}{% if cards|objects:"imio-doc-event-demande-avis"|filter_by_internal_id:id_fiche|first|get:"avis_favorable"|is_empty  %}{{ False }}{% else %}{{ True }}{% endif %}{% endfor %}</value>
+            </field>
+            <field>
+              <field_id>bocabb60a3-d742-4784-b509-18da56891d8f</field_id>
+              <value>{% if "False" in form_var_passer_a_la_suite %}Non{% else %}Oui{% endif %}</value>
             </field>
           </fields>
           <condition>
@@ -3949,57 +4008,115 @@ La Cellule Event de la Ville de Charleroi</body>
       </triggers>
     </action>
     <action>
-      <id>13</id>
-      <name>vers erreur piece jointe</name>
+      <id>4</id>
+      <name>&#127963;&#65039; Information location de salle</name>
       <items>
-        <item type="jump" id="1">
-          <status>85</status>
+        <item type="set-backoffice-fields" id="2">
+          <fields>
+            <field>
+              <field_id>bofed73116-6871-4b42-91f1-5ad226b25849</field_id>
+              <value>&lt;p&gt; Salle r&#233;serv&#233;e : {{ caller_form_var_salle.text }} &lt;br&gt;R&#233;servation(s) : {% if caller_form_var_date_or_salle_raw == "dates_puis_salle" %}Du {{ caller_form_var_date_debut }} &#224; {{ caller_form_var_heure_debut }} au {{ caller_form_var_date_fin }} &#224; {{ caller_form_var_heure_fin }}{% elif caller_form_workflow_wscall_bookings_room_response_data %}&lt;ul&gt;{% for date_salle in caller_form_workflow_wscall_bookings_room_response_data %}&lt;li&gt;Du {{ date_salle.StartDate|datetime }} au {{ date_salle.EndDate|datetime }}&lt;/li&gt;{% endfor %}&lt;/ul&gt;{% endif %} &lt;/p&gt;</value>
+            </field>
+          </fields>
+        </item>
+        <item type="jump" id="3">
+          <status>_previous</status>
+          <condition>
+            <type>django</type>
+            <value>form_status in "&#201;dition par agent traitant|&#201;dition par usager|Informations Manquantes|Dossier incomplet|Validation des changements"|split:"|"</value>
+          </condition>
           <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="jump" id="4">
+          <status>88</status>
+          <set_marker_on_status>True</set_marker_on_status>
         </item>
       </items>
       <triggers>
-        <trigger type="manual" id="497af9c2-9dde-4ecb-a556-db4f34ca4090">
-          <roles>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
-          </roles>
-          <allow_as_mass_action>True</allow_as_mass_action>
-          <require_confirmation>False</require_confirmation>
+        <trigger type="webservice" id="a28aee92-2486-4f20-8cf6-fe7b2842dd83">
+          <identifier>info_location_salle</identifier>
         </trigger>
       </triggers>
     </action>
     <action>
-      <id>14</id>
-      <name>Test</name>
+      <id>3</id>
+      <name>&#9874;&#65039; Informations location de mat&#233;riel</name>
+      <items />
+      <triggers>
+        <trigger type="webservice" id="af9634b5-1dcd-40eb-8606-a0c7e73ced0c">
+          <identifier>info_location_materiel</identifier>
+        </trigger>
+      </triggers>
+    </action>
+    <action>
+      <id>16</id>
+      <name>&#128679; Debug</name>
       <items>
-        <item type="webservice_call" id="1">
-          <method>POST</method>
-          <url>https://staging3-passerelle.guichet-citoyen.be/passerelle-imio-focus/focus/event/create</url>
-          <qs_data>
-            <item>
-              <name>provider</name>
-              <value>imio</value>
-            </item>
-          </qs_data>
-          <post>True</post>
-          <response_type>json</response_type>
-          <varname>test_ws</varname>
-          <store_all_responses>False</store_all_responses>
-          <attach_file_to_history>True</attach_file_to_history>
-          <action_on_app_error>:pass</action_on_app_error>
-          <action_on_4xx>:stop</action_on_4xx>
-          <action_on_5xx>:stop</action_on_5xx>
-          <action_on_bad_data>:pass</action_on_bad_data>
-          <action_on_network_errors>:stop</action_on_network_errors>
-          <record_errors>False</record_errors>
-          <record_on_errors>True</record_on_errors>
-          <notify_on_errors>False</notify_on_errors>
+        <item type="choice" id="6">
+          <label>Cr&#233;ation des demandes annexes</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>53</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="3">
+          <label>Choix des services</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>0</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="2">
+          <label>Retour avis CAE</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>7</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="1">
+          <label>Avis CAE</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>11</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="4">
+          <label>Param&#232;trage du point dans iA.D&#233;lib</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>41</status>
+          <require_confirmation>True</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
+          <set_marker_on_status>False</set_marker_on_status>
+        </item>
+        <item type="choice" id="5">
+          <label>Envoi des pi&#232;ces jointes dans iA.D&#233;lib</label>
+          <by>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
+          </by>
+          <status>81</status>
+          <require_confirmation>False</require_confirmation>
+          <ignore_form_errors>False</ignore_form_errors>
           <set_marker_on_status>False</set_marker_on_status>
         </item>
       </items>
       <triggers>
-        <trigger type="manual" id="5ec661f8-44fe-4b15-8d71-034c17663843">
+        <trigger type="manual" id="b78dc78e-3bf0-4a44-9b1c-5825440c0289">
           <roles>
-            <item slug="debug" role_id="6d2c55fe2ea44e41b7f8111b93f1930a">Debug</item>
+            <item slug="debug" role_id="df908b92acec4a68b3a11bbf516263d9">Debug</item>
           </roles>
           <allow_as_mass_action>False</allow_as_mass_action>
           <require_confirmation>False</require_confirmation>
@@ -4012,9 +4129,244 @@ La Cellule Event de la Ville de Charleroi</body>
       <name>-</name>
       <fields>
         <field>
+          <type>subtitle</type>
+          <label type="str">G&#233;n&#233;ral</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">2feeb001-ede8-4913-adf3-d01c8548bc29</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Verrouill&#233; l'assignation</label>
+          <required type="str">optional</required>
+          <hint type="str">&lt;p&gt;Cochez cette case pour que le premier agent qui s'occupe de cette demande, la traite du d&#233;but &#224; la fin.&lt;/p&gt;</hint>
+          <varname type="str">verrouille_assignation</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <id type="str">37b2d6c2-3c98-4ca8-a2dd-03b551b3ed47</id>
+        </field>
+        <field>
+          <type>subtitle</type>
+          <label type="str">Demande d'avis</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">1ade249d-570f-4736-9833-37c6d9e75e18</id>
+        </field>
+        <field>
+          <type>items</type>
+          <label type="str">Services pr&#233;s&#233;lectionn&#233;s dans la demande d'avis</label>
+          <required type="str">optional</required>
+          <hint type="str">&lt;p&gt;Services qui seront pr&#233;s&#233;lectionn&#233;s dans la liste pour les demandes d'avis.&lt;/p&gt;</hint>
+          <varname type="str">services_preselectionnes_dans_la_selection</varname>
+          <display_locations />
+          <display_mode type="str">checkboxes</display_mode>
+          <min_choices type="int">0</min_choices>
+          <max_choices type="int">0</max_choices>
+          <data_source>
+            <type>carddef:imio-doc-event-services</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">5effd075-d51b-4b41-ac83-15c2bcd39c4b</id>
+        </field>
+        <field>
+          <type>subtitle</type>
+          <label type="str">Liaison iA.Delib</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">14a3fc67-afcb-48c9-9291-3c2184e171ba</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Autoriser le pr&#233;-param&#233;trage</label>
+          <required type="str">optional</required>
+          <varname type="str">pre_parametrage</varname>
+          <display_locations />
+          <id type="str">b38bb89a-3bed-4fde-a91e-ba9f501f0d11</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">Id du connecteur iA.Delib</label>
+          <required type="str">optional</required>
+          <varname type="str">connecteur</varname>
+          <display_locations />
+          <id type="str">2</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">category</label>
+          <required type="str">optional</required>
+          <varname type="str">category</varname>
+          <display_locations />
+          <id type="str">bb215668-0fbe-44fe-b9b2-b25cb74b67f5</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">config_id</label>
+          <required type="str">optional</required>
+          <varname type="str">config_id</varname>
+          <display_locations />
+          <id type="str">220be999-0029-46fd-be2b-c35274d1d730</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">proposingGroup</label>
+          <required type="str">optional</required>
+          <varname type="str">proposinggroup</varname>
+          <display_locations />
+          <id type="str">c7bdf938-6efc-4347-b250-310e2971d26d</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">proposingGroupWithGroupInCharge</label>
+          <required type="str">optional</required>
+          <varname type="str">proposinggroupwithgroupincharge</varname>
+          <display_locations />
+          <id type="str">4c1b81f1-88ad-49ed-b21d-e8a81cc8d6ec</id>
+        </field>
+        <field>
+          <type>string</type>
+          <label type="str">type</label>
+          <required type="str">optional</required>
+          <varname type="str">type</varname>
+          <display_locations />
+          <id type="str">b463c051-dc03-4528-885d-7db5472abcfd</id>
+        </field>
+        <field>
+          <type>subtitle</type>
+          <label type="str">Fichiers</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">2bebbb56-ccdf-4e3e-8493-17b1deafd2a8</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Envoyer les fichiers &#224; la cr&#233;ation du point</label>
+          <required type="str">optional</required>
+          <varname type="str">envoyer_fichier_creation_point</varname>
+          <display_locations />
+          <id type="str">6042cf01-cbca-4434-8441-1ea6d0d3c5a2</id>
+        </field>
+        <field>
+          <type>comment</type>
+          <label type="str">&lt;p&gt;Si aucun fichier n&amp;#39;est s&amp;eacute;lectionn&amp;eacute; tous les fichiers seront envoy&amp;eacute;s dans iA.D&amp;eacute;lib&lt;/p&gt;
+</label>
+          <extra_css_class type="str">pk-information</extra_css_class>
+          <display_locations />
+          <id type="str">245b9b53-b699-4c2e-ad29-154733cefafc</id>
+        </field>
+        <field>
+          <type>items</type>
+          <label type="str">S&#233;lectionnez les fichiers simples</label>
+          <required type="str">optional</required>
+          <varname type="str">simple_files</varname>
+          <display_locations />
+          <display_mode type="str">checkboxes</display_mode>
+          <min_choices type="int">0</min_choices>
+          <max_choices type="int">0</max_choices>
+          <data_source>
+            <type>imio_doc_event_simple_files</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">82ca2601-8152-4598-bc94-1510deb738e0</id>
+        </field>
+        <field>
+          <type>items</type>
+          <label type="str">S&#233;lectionnez les fichiers dans les blocs de champs</label>
+          <required type="str">optional</required>
+          <varname type="str">blocs_of_files</varname>
+          <display_locations />
+          <display_mode type="str">checkboxes</display_mode>
+          <min_choices type="int">0</min_choices>
+          <max_choices type="int">0</max_choices>
+          <data_source>
+            <type>imio_doc_event_blocs_of_files</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">07a8de7b-5bef-4ba1-85bd-78a8471a358e</id>
+        </field>
+        <field>
+          <type>items</type>
+          <label type="str">S&#233;lectionnez les fichiers du worfklow</label>
+          <required type="str">optional</required>
+          <varname type="str">workflow_files</varname>
+          <display_locations />
+          <display_mode type="str">checkboxes</display_mode>
+          <min_choices type="int">0</min_choices>
+          <max_choices type="int">0</max_choices>
+          <data_source>
+            <type>imio_doc_event_workflow_files</type>
+          </data_source>
+          <in_filters type="bool">False</in_filters>
+          <display_disabled_items type="bool">False</display_disabled_items>
+          <image_desktop_size type="str">150</image_desktop_size>
+          <image_mobile_size type="str">75</image_mobile_size>
+          <id type="str">f355a00f-596d-45c1-83a7-db5145b5accf</id>
+        </field>
+        <field>
+          <type>subtitle</type>
+          <label type="str">Liaison iA.Tech</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">fd55c746-805b-4e24-bead-e7dff98495d4</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer la location de salle via ATAL</label>
+          <required type="str">optional</required>
+          <varname type="str">location_salle_atal</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <id type="str">0cf5c5e3-f48c-4bbf-9e9c-b9de40ba94e0</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer la location de mat&#233;riel via ATAL</label>
+          <required type="str">optional</required>
+          <varname type="str">location_materiel_atal</varname>
+          <display_locations />
+          <anonymise type="str">no</anonymise>
+          <id type="str">a25a18ab-dedb-426e-8e91-474874bd6244</id>
+        </field>
+        <field>
+          <type>subtitle</type>
+          <label type="str">Divers</label>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <id type="str">39e32cc8-0195-45b3-8b47-1f45417ac890</id>
+        </field>
+        <field>
+          <type>bool</type>
+          <label type="str">Activer le passage devant la CAE</label>
+          <required type="str">optional</required>
+          <varname type="str">activer_cae</varname>
+          <display_locations />
+          <id type="str">5106f2bc-fba8-4e8b-8c25-24b7d3c767f5</id>
+        </field>
+        <field>
           <type>bool</type>
           <label type="str">Test</label>
-          <required type="bool">False</required>
+          <required type="str">optional</required>
           <varname type="str">test</varname>
           <display_locations>
             <item>validation</item>
@@ -4022,40 +4374,6 @@ La Cellule Event de la Ville de Charleroi</body>
           </display_locations>
           <anonymise type="str">no</anonymise>
           <id type="str">1</id>
-        </field>
-        <field>
-          <type>string</type>
-          <label type="str">Id du connecteur</label>
-          <required type="bool">True</required>
-          <varname type="str">connecteur</varname>
-          <display_locations />
-          <anonymise type="str">final</anonymise>
-          <id type="str">2</id>
-        </field>
-        <field>
-          <type>bool</type>
-          <label type="str">Verrouill&#233; l'assignation</label>
-          <required type="bool">False</required>
-          <hint type="str">&lt;p&gt;Cochez cette case pour que le premier agent qui s'occupe de cette demande, la traite du d&#233;but &#224; la fin.&lt;/p&gt;</hint>
-          <varname type="str">verrouille_assignation</varname>
-          <display_locations />
-          <id type="str">37b2d6c2-3c98-4ca8-a2dd-03b551b3ed47</id>
-        </field>
-        <field>
-          <type>bool</type>
-          <label type="str">Activer la location de mat&#233;riel via ATAL</label>
-          <required type="bool">False</required>
-          <varname type="str">location_materiel_atal</varname>
-          <display_locations />
-          <id type="str">a25a18ab-dedb-426e-8e91-474874bd6244</id>
-        </field>
-        <field>
-          <type>bool</type>
-          <label type="str">Activer la location de salle via ATAL</label>
-          <required type="bool">False</required>
-          <varname type="str">location_salle_atal</varname>
-          <display_locations />
-          <id type="str">0cf5c5e3-f48c-4bbf-9e9c-b9de40ba94e0</id>
         </field>
       </fields>
     </formdef>
@@ -4067,7 +4385,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>string</type>
           <label type="str">Assign&#233; &#224;</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">assigne</varname>
           <display_locations>
             <item>summary</item>
@@ -4078,7 +4396,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>bool</type>
           <label type="str">Stop remise avis</label>
-          <required type="bool">False</required>
+          <required type="str">optional</required>
           <varname type="str">stop_avis</varname>
           <display_locations />
           <anonymise type="str">no</anonymise>
@@ -4087,7 +4405,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>string</type>
           <label type="str">Stop spam</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">stop_spam</varname>
           <display_locations />
           <anonymise type="str">no</anonymise>
@@ -4096,7 +4414,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>string</type>
           <label type="str">ID Fiches</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">id_fiches</varname>
           <display_locations />
           <anonymise type="str">final</anonymise>
@@ -4105,7 +4423,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Historique des services consult&#233;s</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">historique_services</varname>
           <display_locations>
             <item>summary</item>
@@ -4117,7 +4435,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Liste des avis des service</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">liste_avis_services</varname>
           <display_locations>
             <item>summary</item>
@@ -4129,7 +4447,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Liste des avis des service format&#233;e</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">format_avis</varname>
           <display_locations>
             <item>summary</item>
@@ -4141,7 +4459,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>file</type>
           <label type="str">Formulaire</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">formulaire</varname>
           <display_locations />
           <anonymise type="str">final</anonymise>
@@ -4153,7 +4471,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>file</type>
           <label type="str">Document avis des services</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">avis_des_services</varname>
           <display_locations>
             <item>summary</item>
@@ -4167,7 +4485,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Titre</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">titre</varname>
           <display_locations>
             <item>summary</item>
@@ -4179,7 +4497,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Motivation</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">motivation</varname>
           <display_locations>
             <item>summary</item>
@@ -4191,7 +4509,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>text</type>
           <label type="str">Decision</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">decision</varname>
           <display_locations>
             <item>summary</item>
@@ -4203,7 +4521,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>date</type>
           <label type="str">Date CAE</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <display_locations>
             <item>summary</item>
             <item>listings</item>
@@ -4217,7 +4535,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>string</type>
           <label type="str">UID</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">uid</varname>
           <display_locations>
             <item>summary</item>
@@ -4228,7 +4546,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>string</type>
           <label type="str">External Identifier</label>
-          <required type="bool">True</required>
+          <required type="str">required</required>
           <varname type="str">external_identifier</varname>
           <display_locations>
             <item>summary</item>
@@ -4239,7 +4557,7 @@ La Cellule Event de la Ville de Charleroi</body>
         <field>
           <type>bool</type>
           <label type="str">pr&#233;-param&#233;tr&#233;</label>
-          <required type="bool">False</required>
+          <required type="str">optional</required>
           <varname type="str">pre_parametre</varname>
           <display_locations>
             <item>summary</item>
@@ -4247,10 +4565,31 @@ La Cellule Event de la Ville de Charleroi</body>
           <anonymise type="str">no</anonymise>
           <id type="str">bo847a8de1-b635-46bc-b488-2c71f8e2a0e8</id>
         </field>
+        <field>
+          <type>string</type>
+          <label type="str">Tous les services ont rendu leur avis</label>
+          <required type="str">required</required>
+          <varname type="str">passer_a_la_suite</varname>
+          <display_locations>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <id type="str">bocabb60a3-d742-4784-b509-18da56891d8f</id>
+        </field>
+        <field>
+          <type>text</type>
+          <label type="str">Informations locations</label>
+          <required type="str">required</required>
+          <varname type="str">informations_locations</varname>
+          <display_locations>
+            <item>validation</item>
+            <item>summary</item>
+          </display_locations>
+          <anonymise type="str">final</anonymise>
+          <display_mode type="str">plain</display_mode>
+          <id type="str">bofed73116-6871-4b42-91f1-5ad226b25849</id>
+        </field>
       </fields>
     </formdef>
   </backoffice-fields>
-  <status-remapping>
-    <remap status="87" action="reassign-1" timestamp="2024-07-25T19:14:11.939573+02:00" />
-  </status-remapping>
 </workflow>
