@@ -1,68 +1,104 @@
 {
-    "roles": [
+  "roles": [
+    {
+      "uuid": "9be8b3ce1b3244be8f6e05a9aa003cf0",
+      "slug": "agent-ayant-acces-aux-fabriques",
+      "name": "Agent ayant acces aux fabriques",
+      "description": "",
+      "details": "",
+      "emails": [],
+      "emails_to_members": true,
+      "is_superuser": false,
+      "external_id": "",
+      "ou": {
+        "slug": "default",
+        "name": "Collectivit\u00e9 par d\u00e9faut",
+        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+      },
+      "service": null,
+      "parents": [
         {
-            "uuid": "9be8b3ce1b3244be8f6e05a9aa003cf0",
-            "slug": "agent-ayant-acces-aux-fabriques",
-            "name": "Agent ayant acces aux fabriques",
-            "description": "",
-            "details": "",
-            "emails": [],
-            "emails_to_members": true,
-            "is_superuser": false,
-            "external_id": "",
-            "ou": {
-                "slug": "default",
-                "name": "Collectivit\u00e9 par d\u00e9faut",
-                "uuid": "80c2e1cdfff04993bf071a9a0d092604"
-            },
-            "service": null,
-            "parents": [
-                {
-                    "service": null,
-                    "name": "Agent",
-                    "slug": "agent",
-                    "uuid": "cb61d98767da44658c258c971a421717",
-                    "ou": {
-                        "slug": "default",
-                        "name": "Collectivit\u00e9 par d\u00e9faut",
-                        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
-                    }
-                }
-            ]
-        },
-        {
-            "uuid": "cb61d98767da44658c258c971a421717",
-            "slug": "agent",
-            "name": "Agent",
-            "description": "",
-            "details": "",
-            "emails": [],
-            "emails_to_members": true,
-            "is_superuser": false,
-            "external_id": "",
-            "ou": {
-                "slug": "default",
-                "name": "Collectivit\u00e9 par d\u00e9faut",
-                "uuid": "80c2e1cdfff04993bf071a9a0d092604"
-            },
-            "service": null
-        },
-        {
-            "uuid": "326bc446c10c4fa59864df5e2d7014a6",
-            "slug": "agents-traitants-cae",
-            "name": "Agents traitants - CAE",
-            "description": "",
-            "details": "",
-            "emails": [],
-            "emails_to_members": true,
-            "is_superuser": false,
-            "external_id": "",
-            "ou": {
-                "slug": "default",
-                "name": "Collectivit\u00e9 par d\u00e9faut",
-                "uuid": "80c2e1cdfff04993bf071a9a0d092604"
-            },
-            "service": null
+          "service": null,
+          "name": "Agent",
+          "slug": "agent",
+          "uuid": "cb61d98767da44658c258c971a421717",
+          "ou": {
+            "slug": "default",
+            "name": "Collectivit\u00e9 par d\u00e9faut",
+            "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+          }
         }
-    ]
+      ]
+    },
+    {
+      "uuid": "cb61d98767da44658c258c971a421717",
+      "slug": "agent",
+      "name": "Agent",
+      "description": "",
+      "details": "",
+      "emails": [],
+      "emails_to_members": true,
+      "is_superuser": false,
+      "external_id": "",
+      "ou": {
+        "slug": "default",
+        "name": "Collectivit\u00e9 par d\u00e9faut",
+        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+      },
+      "service": null
+    },
+    {
+      "uuid": "326bc446c10c4fa59864df5e2d7014a6",
+      "slug": "agents-traitants-cae",
+      "name": "Agents traitants - CAE",
+      "description": "",
+      "details": "",
+      "emails": [],
+      "emails_to_members": true,
+      "is_superuser": false,
+      "external_id": "",
+      "ou": {
+        "slug": "default",
+        "name": "Collectivit\u00e9 par d\u00e9faut",
+        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+      },
+      "service": null
+    },
+    {
+      "uuid": "df908b92acec4a68b3a11bbf516263d9",
+      "slug": "debug",
+      "name": "Debug",
+      "description": "",
+      "details": "",
+      "emails": [
+        "nicolas.hislaire@imio.be"
+      ],
+      "emails_to_members": true,
+      "is_superuser": false,
+      "external_id": "",
+      "ou": {
+        "slug": "default",
+        "name": "Collectivit\u00e9 par d\u00e9faut",
+        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+      },
+      "service": null
+    },
+    {
+      "uuid": "7bfe9b400e71432d987ab06f536d92fe",
+      "slug": "api-iadelib",
+      "name": "API iA.D\u00e9lib",
+      "description": "",
+      "details": "",
+      "emails": [],
+      "emails_to_members": true,
+      "is_superuser": false,
+      "external_id": "",
+      "ou": {
+        "slug": "default",
+        "name": "Collectivit\u00e9 par d\u00e9faut",
+        "uuid": "80c2e1cdfff04993bf071a9a0d092604"
+      },
+      "service": null
+    }
+  ]
 }
